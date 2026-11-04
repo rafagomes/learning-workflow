@@ -16,6 +16,6 @@ top=$(git rev-parse --show-toplevel 2>/dev/null || pwd); state="${LEARNING_WORKF
 if [ -n "$(find "$state" -mmin +720 2>/dev/null)" ]; then
   exit 0
 fi
-touch "$state" 2>/dev/null
+touch "$state" 2>/dev/null || true
 cat "$state"
 exit 0
