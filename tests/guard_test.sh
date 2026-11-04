@@ -30,3 +30,6 @@ head -c 1100000 /dev/zero > big.bin; git add big.bin; : > big.bin
 expect block "staged blob over 1 MB, truncated on disk" true
 rm -f big.bin
 echo ok > after.md;                                      expect allow "clean commit after blocks" git add after.md
+echo '{}' > customers.config.json;                       expect block "arbitrary *.config.json at root" git add customers.config.json
+mkdir -p vendor/lessons/x/exercises/y/data && echo a > vendor/lessons/x/exercises/y/data/d.csv
+expect block "nested lessons/ path is not an exercise data dir" git add vendor/lessons/x/exercises/y/data/d.csv
