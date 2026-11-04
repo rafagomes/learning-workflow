@@ -1,21 +1,24 @@
 #!/usr/bin/env bash
 # Pre-commit guard for a learning repo: keeps project data and secrets out of history.
+# Checks the staged blobs, not the working tree, so what is checked is what gets committed.
 set -euo pipefail
+shopt -s nocasematch
 
 fail=0
-data_ext='\.(csv|tsv|parquet|feather|arrow|json|jsonl|ndjson|xlsx|xls|sqlite|db|duckdb|dump|sql\.gz|geojson|shp|gpkg|pkl|pt|joblib)$'
-allowed_data='^lessons/[^/]+/exercises/[^/]+/data/'
+max_bytes=1048576
+data_ext='\.(csv|tsv|parquet|feather|arrow|json|jsonl|ndjson|geojson|xlsx|xls|sqlite|sqlite3|db|duckdb|dump|sql\.gz|shp|gpkg|pkl|pickle|pt|joblib|npy|npz|h5|hdf5)$'
+allowed_data='(^|/)lessons/[^/]+/exercises/[^/]+/data/'
+config_json='(^|/)(package\.json|package-lock\.json|tsconfig[^/]*\.json|jsconfig\.json|deno\.json|composer\.json|[^/]+\.config\.json|\.vscode/[^/]+\.json|\.claude/[^/]+\.json|\.devcontainer/[^/]+\.json)$'
 
 while IFS= read -r -d '' f; do
-  [ -f "$f" ] || continue
-  if [[ "$f" =~ $data_ext ]] && ! [[ "$f" =~ $allowed_data ]]; then
+  if [[ "$f" =~ $data_ext ]] && ! [[ "$f" =~ $allowed_data ]] && ! [[ "$f" =~ $config_json ]]; then
     echo "guard: data file outside an exercise data/ dir: $f" >&2; fail=1
   fi
-  size=$(wc -c <"$f")
-  if [ "$size" -gt 1048576 ]; then
+  size=$(git cat-file -s ":$f")
+  if [ "$size" -gt "$max_bytes" ]; then
     echo "guard: file over 1 MB: $f ($size bytes)" >&2; fail=1
   fi
-done < <(git diff --cached --name-only --diff-filter=ACM -z)
+done < <(git diff --cached --name-only --no-renames --diff-filter=ACM -z)
 
 if command -v gitleaks >/dev/null 2>&1; then
   gitleaks protect --staged --no-banner --redact || fail=1
