@@ -27,4 +27,4 @@ Add your own read of the diff: one thing done well, one risk or shortcut worth r
 
 `reflections/<date>-<topic>.md`: link (PR or `<project-slug>@<range>`), prediction vs result table, the gaps and their causes, follow-ups. Follow-ups that belong in the project are phrased as tasks for the project's own workflow (an issue or spec), not done from here.
 
-Add flashcards for the new understanding, mark the topics `built` → `reflected` in `PROGRESS.md`, add new topics to the curriculum if the build revealed gaps, log, commit `docs: reflect on <topic>`.
+Add flashcards for the new understanding, set the phase's topics to `built` (if they aren't already) and then `reflected` in `PROGRESS.md`, add new topics to the curriculum if the build revealed gaps, log, commit `docs: reflect on <topic>`.

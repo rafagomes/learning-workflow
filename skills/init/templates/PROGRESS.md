@@ -1,6 +1,6 @@
 # Progress
 
-Updated by the `/learn` skills. Status: `todo` → `learning` → `practised` → `ready` → `built` → `reflected`.
+Updated by the `/learn` skills. Status: `todo` → `learning` → `practised` → `ready` → `built` → `reflected`. Self-assessed topics start as `claimed` and become `ready` after a passed quiz.
 
 ## Tracks
 
