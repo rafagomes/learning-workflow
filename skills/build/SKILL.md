@@ -9,25 +9,31 @@ Resolve the learning repo and the current project as `/learn:init` describes. Fi
 
 ## 1. Start
 
-1. **Spaced review first.** If `flashcards/deck.md` has due cards, ask up to 3, one at a time, and update their boxes. Skip if the learner says so.
-2. **Set the level**: argument > step > `LEARNING.md` default.
-3. **Turn the mode on** by writing the reminder file (create the directory if needed). `<key>` is the project's git top-level path with every `/` replaced by `_`:
+0. **The project must be linked.** If the current project isn't linked to the resolved learning repo (no `projects[]` entry containing the current directory), offer `/learn:init add <project>` and stop until it is: the project's slug and sensitivity decide what the data policy allows.
+1. **Find the state file** (run from the project; this exact line is also used by the hook, so keep it verbatim):
 
 ```bash
-top=$(git rev-parse --show-toplevel); key=${top//\//_}
-mkdir -p ~/.config/learning-workflow/active
-cat > ~/.config/learning-workflow/active/$key.md <<'MD'
-[learn mode] step <ID> "<title>" · plan <learning repo>/plans/<plan>.md · level <level>
-New concepts not yet shown: <list> · shown: <list>
-Rules: code at the level; stay silent unless a decision in this reply depends on a new concept not yet shown, then add a 2–4 line "▸ concept:" note and offer a deeper dive; ask for a one-line prediction before running tests/evals; when a background task runs and nothing else is pending, offer a 2–5 min deep dive + 1–2 "is this clear?" questions; when the learner says the step is done or its PR is opened, run the done-check from the plan, then the wrap-up (/learn:build), then delete this file.
-MD
+# state-path
+top=$(git rev-parse --show-toplevel 2>/dev/null || pwd); state="${LEARNING_WORKFLOW_HOME:-${HOME:-/nonexistent}/.config/learning-workflow}/active/${top//\//_}.md"
+echo "$state"
 ```
 
-4. Tell the learner in two lines: the step, the level, how many new concepts, and that they can just keep prompting. Then start on the work they ask for.
+   If `"$state"` already exists for **another** step, offer `/learn:off` for that step first (its wrap-up would be lost otherwise). If it exists for **this** step but is older than 12 hours, tell the learner learn mode lapsed and is resuming.
+2. **Spaced review.** If `flashcards/deck.md` has due cards, ask up to 3, one at a time, and update their boxes. Skip if the learner says so.
+3. **Set the level**: argument > step > `LEARNING.md` default.
+4. **Turn the mode on** by writing the reminder to `"$state"` (quote the path; create its directory with `mkdir -p "$(dirname "$state")"`). Use this shape, filling the brackets:
+
+```markdown
+[learn mode] step <ID> "<title>" · plan <learning repo>/plans/<plan>.md · level <level> · project <slug> (<sensitivity>) · state file <state path>
+New concepts not yet shown: <list> · shown: <list>
+Rules: work in the project under its own rules; learning notes, logs and flashcards go only to the learning repo, never the project. Code at the level (adaptive: scaffold the core with a TODO(learner) gap for the learner to fill). Stay silent unless a decision in this reply depends on a new concept not yet shown; then add a 2–4 line "▸ concept:" note, offer a deeper dive, and rewrite this state file moving the concept to "shown". Ask for a one-line prediction before tests/evals. When a background task runs and nothing else is pending, offer a 2–5 min deep dive + 1–2 "is this clear?" questions. Remove every TODO(learner) marker before anything is committed. When the learner says the step is done or its PR opens: done-check, then wrap-up (/learn:build), then delete this file.
+```
+
+5. Mark the step `in progress` in the plan, then tell the learner in two lines: the step, the level, how many new concepts, and that they can just keep prompting. Then start on the work they ask for.
 
 ## 2. While on
 
-You are pair-programming in the **project**, following the project's own rules (its CLAUDE.md, workflow, review process). Learn mode adds to that; it never changes what gets built or how the project's process works.
+You are pair-programming in the **project**, at the learner's request, following the project's own rules (its CLAUDE.md, branching, commits, review). Learn mode adds teaching on top; it never changes what gets built or how the project's process works, and nothing learning-related (plans, logs, notes, flashcards, references to the learning repo) is ever written to the project.
 
 **Hands-on level**, overridable on any prompt ("I'll write this one", "just do it"):
 
@@ -37,13 +43,13 @@ You are pair-programming in the **project**, following the project's own rules (
 | `adaptive` | Writes plumbing; for code that embodies a `new` concept, writes a scaffold with a clearly marked gap (e.g. a `TODO(learner)` body) and asks the learner to fill it, then reviews | Writes the core |
 | `you` | Proposes the next small step, reviews, gives hints (question → approach → snippet) | Writes the code |
 
-Remove every `TODO(learner)` marker before the work is committed.
+Remove every `TODO(learner)` marker before the work is committed (the learner's code replaces it, or you fill it if they hand it back).
 
 **Concept notes.** Silent by default: most replies have none. Add a note only when a decision in this reply depends on a `new` concept not yet shown in this step:
 
 > ▸ concept: **<name>**: 2–4 lines on what it is and why it decides this choice here. Want a deeper dive?
 
-Then update the reminder file (move the concept to "shown"). A concept that needs more than that (math, mechanism, a lab) gets one line and a suggestion to `/learn:teach` it later; add it to the curriculum's backlog. If coding reveals a concept the plan missed, add it to the step in the plan.
+Then rewrite the state file, moving the concept to "shown". A concept that needs more than that (math, mechanism, a lab) gets one line and a suggestion to `/learn:teach` it later; record it under the step's **Follow-ups** in the plan. If coding reveals a concept the plan missed, add it to the step in the plan.
 
 **Predict before running.** Before running tests, an eval, a benchmark or a script whose result teaches something, ask: "What do you expect?" (one line). Run, then compare in one or two sentences. Don't ask for routine runs (formatting, a re-run after a typo fix).
 
@@ -57,7 +63,12 @@ When the learner says the step is done, or a PR for it is opened, ask the step's
 
 ## 4. Wrap-up
 
-1. Write `builds/<date>-<step>.md` in the learning repo: link (`<project-slug>:<branch or PR>@<shortsha>`), concepts shown, predictions vs results, done-check score and misses, follow-ups (concepts to `/learn:teach`, things to revisit). Obey the data policy: aggregates, no data or internal names.
-2. Update the plan: the step's Status → `built` and its Log line. Update `PROGRESS.md` and its log.
-3. Commit in the learning repo: `docs: build log <step>`.
-4. Delete the reminder file. Learn mode is off; say so in one line and suggest the next step.
+1. **Sweep the project** for `TODO(learner)` markers left from this step (`git grep -n "TODO(learner)"`). Resolve each with the learner (they finish it, or you do) before anything else; never leave one behind.
+2. Write `builds/<date>-<step>.md` in the learning repo: link (`<project-slug>@<shortsha>`, or `<project-slug>#<PR number>`; no branch names, which can carry internal names), concepts shown, predictions vs results, done-check score and misses, follow-ups. Obey the data policy: aggregates, no data or internal names.
+3. Update the plan: the step's Status → `done` and its Log line.
+4. Update `PROGRESS.md`:
+   - under **Plans**, the step's status;
+   - under **Concepts**, each concept the step covered: answered correctly in the done-check → `built`; missed → `learning` (it now has a flashcard); shown but not checked → `learning`.
+   - the session log.
+5. Commit in the learning repo: `docs: build log <step>`.
+6. Delete the state file. Learn mode is off; say so in one line and suggest the next step.

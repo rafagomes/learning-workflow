@@ -5,7 +5,7 @@ argument-hint: "<spec path | plan path | artifact URL | goal> [plan name]"
 ---
 Build a learning plan linked to a development plan. Argument: $ARGUMENTS
 
-Resolve the learning repo and the current project as `/learn:init` describes. If there's no learning repo, offer `/learn:init` and stop.
+Resolve the learning repo and the current project as `/learn:init` describes. If there's no learning repo, offer `/learn:init` and stop. If the dev plan belongs to a project not linked to that learning repo, offer `/learn:init add <project>` first.
 
 The **development plan stays where it is**: in the project's docs, specs or issues, owned by the team. This skill only reads it, and writes the learning side in the learning repo. The two are linked by step ID.
 
@@ -19,7 +19,7 @@ The **development plan stays where it is**: in the project's docs, specs or issu
 
 For each step, list the 2–6 concepts a competent engineer would need to make its decisions well. Name them precisely ("isotonic calibration of classifier scores", not "ML"). Then mark each:
 
-- `known`: already `ready`, `claimed`, `built` or `reflected` in `PROGRESS.md`, or the learner confirms it in a quick multi-select (one AskUserQuestion per plan, not per step);
+- `known`: a topic or concept already `ready`, `claimed`, `built` or `reflected` in `PROGRESS.md` (Tracks or Concepts), or the learner confirms it in a quick multi-select (one AskUserQuestion per plan, not per step);
 - `new`: everything else.
 
 A `new` concept that is too big for a 2–4 line note while coding (it needs a mechanism, math, or a lab to be understood) is flagged `deep`; suggest a `/learn:teach` session before or during that step.
@@ -40,6 +40,8 @@ Dev plan: <project-slug>:<path or issue>@<shortsha> · Created <date>
 |---|---|---|---|---|
 | P1 | Candidate blocking | adaptive | blocking keys, recall@k | todo |
 
+Step status: `todo` → `in progress` → `done`.
+
 ## P1 · <title>
 - **Builds:** one line, from the dev plan.
 - **Level:** adaptive
@@ -49,6 +51,7 @@ Dev plan: <project-slug>:<path or issue>@<shortsha> · Created <date>
   - `known` hash joins
 - **Done-check:**
   1. …
+- **Follow-ups:** (filled by /learn:build: deep concepts to /learn:teach, things to revisit)
 - **Log:** (filled by /learn:build: date, concepts shown, check score)
 ```
 
@@ -56,4 +59,4 @@ Obey the data policy: for a `work` project, describe steps and concepts in gener
 
 ## Finish
 
-Update `PROGRESS.md` (plan listed, steps `todo`), commit `docs: learning plan <plan>`, and say how to start: `/learn:build <first step>`; mention any `deep` concepts worth a `/learn:teach` first.
+Update `PROGRESS.md` (under **Plans**: the plan and its steps, `todo`), commit `docs: learning plan <plan>`, and say how to start: `/learn:build <first step>`; mention any `deep` concepts worth a `/learn:teach` first.
