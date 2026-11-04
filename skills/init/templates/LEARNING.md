@@ -20,10 +20,10 @@ Created {{DATE}} with the `learn` plugin (`/learn:init`). Private study space: l
 
 ## Linked projects
 
-Read-only references. Cite code as `<slug>:path@shortsha`.
+Read-only references. Cite code as `<slug>:path@shortsha`. Paths and remotes live only in the local registry (`~/.config/learning-workflow/spaces.json`), never in this repo.
 
-| Slug | Path | Remote | Sensitivity |
-|---|---|---|---|
+| Slug | Sensitivity | What it is (one line, no internal names) |
+|---|---|---|
 {{PROJECT_ROWS}}
 
 ## Data policy
@@ -43,7 +43,7 @@ None.
 | Path | Holds |
 |---|---|
 | `curriculum/<track>.md` | A track: phases → topics → prerequisites → "ready when" |
-| `lessons/<NNN>-<topic>/` | `lesson.md`, `lab.py`, `exercises/`, `quiz.md` |
+| `lessons/<NNN>-<topic>/` | `lesson.md`, the lab (file per the toolchain), `exercises/`, `quiz.md` |
 | `flashcards/deck.md` | Leitner deck, reviewed by `/learn:quiz review` |
 | `reflections/<date>-<topic>.md` | Prediction vs result after building |
 | `PROGRESS.md` | Where the learner is, per track |

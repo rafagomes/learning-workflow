@@ -32,16 +32,19 @@ Copy the templates from this skill's `templates/` directory, filling the placeho
 | `PROGRESS.md` | `PROGRESS.md` |
 | `CLAUDE.md` | `CLAUDE.md`: rules for any Claude session opened in the learning repo |
 | `gitignore` | `.gitignore` |
-| `tools/guard.sh` | `tools/guard.sh`, made executable |
+| `tools/guard.sh`, `tools/hooks/pre-commit` | the guard and the hook that runs it |
 | `deck.md` | `flashcards/deck.md` |
 
 Create the empty directories `curriculum/`, `lessons/`, `reflections/` and `scratch/`. Then:
 
 ```bash
 git init -b main
-ln -s ../../tools/guard.sh .git/hooks/pre-commit
+chmod +x tools/guard.sh tools/hooks/pre-commit
+git config core.hooksPath tools/hooks   # repo-local, so a global core.hooksPath can't bypass the guard
 git add -A && git commit -m "chore: initialize <slug> learning repo"
 ```
+
+`core.hooksPath` is local git config, not committed: after cloning the learning repo on another machine, run that `git config` line again (the repo's `CLAUDE.md` says so).
 
 Do not create a remote. If the user wants one, offer a **private** GitHub repo and create it only after they confirm (`gh repo create <name> --private --source . --push`).
 
@@ -50,7 +53,7 @@ Do not create a remote. If the user wants one, offer a **private** GitHub repo a
 For each project:
 
 - Record its `slug` (repo directory name unless the user names it), absolute path, `git remote get-url origin` (if any), default branch, and **sensitivity**: `work` (employer or client code, the default for repos under an org remote) or `personal`.
-- Add a row to the **Linked projects** table in `LEARNING.md` and to the registry entry.
+- Store path, remote and branch **only in the registry**. In `LEARNING.md` add just a row with the slug, sensitivity and a one-line neutral description, so no absolute paths or work remotes are ever committed.
 - Commit: `chore: link <project-slug>`.
 
 Sensitivity changes how much may be quoted (see the policy). When in doubt, use `work`.
@@ -64,7 +67,7 @@ Sensitivity changes how much may be quoted (see the policy). When in doubt, use 
 - No project ever references the learning repo. Anything learned that should reach a project is rewritten there through that project's normal workflow (spec, branch, PR).
 - Never loosen this policy unless the user writes the exception themselves; record it in `LEARNING.md`.
 
-`tools/guard.sh` enforces the mechanical part: it blocks data files outside `lessons/*/exercises/*/data/`, files over 1 MB, and anything gitleaks flags when gitleaks is installed.
+`tools/guard.sh` enforces the mechanical part on the staged content: it blocks data files outside `lessons/*/exercises/*/data/` (common config files such as `package.json` are allowed), files over 1 MB, and anything gitleaks flags when gitleaks is installed.
 
 ## Registry
 

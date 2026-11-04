@@ -10,3 +10,4 @@ This is a private learning repo managed by the `learn` plugin. Read `LEARNING.md
 - Teach one concept at a time and check understanding before moving on. Ask the learner to predict before running anything.
 - Labs and exercises use the toolchain in `LEARNING.md` (its run and test commands). Pin dependency versions and seed anything random.
 - Update `PROGRESS.md` at the end of every session; commit with conventional messages (`docs:`, `feat:`, `chore:`).
+- The pre-commit guard runs through `git config core.hooksPath tools/hooks`. If `git config core.hooksPath` doesn't print `tools/hooks` (e.g. on a fresh clone), set it before committing.
