@@ -120,4 +120,4 @@ While a slow indexing benchmark runs in the background, Claude offers a 3-minute
 
 > **You:** S1 is done
 
-Claude asks four questions about the code you built, one at a time. You miss one about memory growth, and it becomes a flashcard. Claude checks the project for leftover `TODO(learner)` markers (none), writes `builds/2026-11-06-S1.md`, marks the concepts `built` in `PROGRESS.md`, commits in the learning repo, and turns learn mode off. The notes app now has the index, and nothing in it mentions any of this.
+Claude asks four questions about the code you built, one at a time. You answer the tokenization questions but miss one on how the inverted index grows with vocabulary, which becomes a flashcard. Claude checks the project for leftover `TODO(learner)` markers (none), writes `builds/2026-11-06-S1.md`, and in `PROGRESS.md` marks tokenization `built` and the inverted index back to `learning`. It then commits in the learning repo, and turns learn mode off. The notes app now has the index, and nothing in it mentions any of this.

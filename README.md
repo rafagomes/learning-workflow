@@ -188,7 +188,7 @@ Walkthroughs: [docs/EXAMPLES.md](docs/EXAMPLES.md).
 | [specs/001_build-mode.md](docs/specs/001_build-mode.md) | Build mode design |
 | [SKILLS.md](docs/SKILLS.md) | Every skill: arguments, inputs, outputs, commits |
 | [DATA-POLICY.md](docs/DATA-POLICY.md) | What may and may not enter a learning repo, and how it's enforced |
-| [EXAMPLES.md](docs/EXAMPLES.md) | Three end-to-end walkthroughs |
+| [EXAMPLES.md](docs/EXAMPLES.md) | Four walkthroughs: three for the study loop, one for build mode |
 | [FAQ.md](docs/FAQ.md) | Common questions |
 | [toolchains.md](skills/init/toolchains.md) | Default run/test commands per subject |
 
