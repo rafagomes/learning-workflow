@@ -88,7 +88,7 @@ flowchart LR
 
 - **This repo** is the method only: skills, templates, docs. No lessons, no learner data.
 - **A learning repo** is yours, private by default, one per subject. It holds everything you study and keeps a log of it in git.
-- **Projects** are never edited from a learning session and never point back at the learning repo. What you learn reaches them through their own normal workflow.
+- **Projects** are read-only to the study skills and never point back at the learning repo. In build mode Claude codes in the project with you, under the project's own rules, but plans, logs, notes and learn-mode state stay out of it.
 - **Learn mode is per step, and off by default.** `/learn:build <step>` turns it on for that project and the done-check or `/learn:off` turns it off. Its state lives in `~/.config/learning-workflow/active/`, never in the project. See the [FAQ](docs/FAQ.md#how-do-i-turn-learn-mode-on-and-off).
 
 ### Build mode
@@ -148,7 +148,7 @@ Each topic moves through `todo → learning → practised → ready → built �
 | `/learn:init <subject> [project paths…]` | Create a learning repo; ask level, depth, language and toolchain; link projects | the repo, registry entry |
 | `/learn:init add <project path>` | Link another project to an existing learning repo | `LEARNING.md`, registry |
 | `/learn:plan <spec \| plan \| URL \| goal>` | Link a project's dev plan to a learning plan: per step, the concepts needed (known/new), hands-on level, done-check | `plans/<plan>.md` |
-| `/learn:build <step> [level]` | Learn mode on for a step: pair-program at your level, concept notes only when needed, predictions, idle-time deep dives, done-check and wrap-up | `builds/<date>-<step>.md`, flashcards |
+| `/learn:build <step> [plan] [level]` | Learn mode on for a step: pair-program at your level, concept notes only when needed, predictions, idle-time deep dives, done-check and wrap-up | `builds/<date>-<step>.md`, flashcards |
 | `/learn:off` | End learn mode early; the wrap-up is still saved | `builds/` |
 | `/learn:curriculum <plan \| spec \| URL \| topic>` | Turn a source into a track of 5–15 topics with prerequisites and checkable "ready when" criteria | `curriculum/<track>.md` |
 | `/learn:teach <track>/<n> \| <topic>` | Interactive lesson: problem, intuition, mechanism, lab, project touchpoint, pitfalls, vocabulary, check | `lessons/<NNN>-<topic>/lesson.md`, lab, flashcards |
@@ -173,7 +173,7 @@ Walkthroughs: [docs/EXAMPLES.md](docs/EXAMPLES.md).
 
 ## Guarantees
 
-- **Projects are read-only.** Lessons cite code as `<project>:path@sha`; no learning session edits, commits to or opens PRs in a linked project.
+- **Projects stay clean.** Study skills only read projects and cite code as `<project>:path@sha`. Build mode codes in the project at your request under its own rules, and never leaves learning artefacts, `TODO(learner)` scaffolds or references to the learning repo behind.
 - **Your employer's data stays out.** Projects are tagged `work` or `personal`. Work code is paraphrased and quoted sparingly; no project data is ever committed. Real samples go only in the gitignored `scratch/`; exercises use seeded synthetic data. A pre-commit guard blocks data files, files over 1 MB and, with [gitleaks](https://github.com/gitleaks/gitleaks) installed, secrets. See [docs/DATA-POLICY.md](docs/DATA-POLICY.md).
 - **Numbers come from code that ran.** Lessons quote computed output, not recalled figures.
 - **Reproducible.** Labs are self-contained, pinned and seeded; every session is a commit; months later `git log` and `PROGRESS.md` show what you learned, from what, in what order.

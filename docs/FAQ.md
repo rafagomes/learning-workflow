@@ -4,7 +4,7 @@
 No. It's a learning workflow that uses an AI (Claude Code) as the tutor. The subject can be anything: a programming language, a framework, maths, system design, or something with no code at all.
 
 **How do I turn learn mode on and off?**
-Learn mode is per step of a plan. `/learn:build <step>` turns it on for the project you're in, and it stays on across prompts (and survives context compaction) until you finish the step: you say it's done or its PR is opened, the done-check runs, the wrap-up is saved, and the mode turns off. `/learn:off` stops it early. Nothing is written to the project. The state is a small file in `~/.config/learning-workflow/active/` that a plugin hook reads on each prompt, and it's ignored after 12 hours without use. Without learn mode, the plugin does nothing until you run a `/learn:` command or ask something like "teach me X properly".
+Learn mode is per step of a plan. `/learn:build <step>` turns it on for the project you're in, and it stays on across prompts (and survives context compaction) until you finish the step: you say it's done or its PR is opened, the done-check runs, the wrap-up is saved, and the mode turns off. `/learn:off` stops it early. Nothing is written to the project. The state is a small file in `~/.config/learning-workflow/active/` (or `$LEARNING_WORKFLOW_HOME/active/`) that a plugin hook reads, and refreshes, on each prompt. After 12 hours without a prompt it's ignored; the next `/learn:build` for that step tells you it lapsed and resumes it. Without learn mode, the plugin does nothing until you run a `/learn:` command or ask something like "teach me X properly".
 
 To keep the skills from triggering at all in one project, set `"enabledPlugins": {"learn@learning-workflow": false}` in that project's `.claude/settings.local.json`. To turn the plugin off everywhere: `claude plugin disable learn@learning-workflow`.
 
@@ -24,7 +24,7 @@ No. `/learn:init <subject>` with no paths creates a learning repo for the subjec
 Yes. A learning repo is per **subject** and links any number of projects (`/learn:init add <path>`). Lessons can draw on whichever one illustrates the idea best.
 
 **Will it touch my project?**
-No. Linked projects are read-only from every skill. The plugin never edits, commits to, branches or opens PRs in them, and they never reference the learning repo.
+The study skills never do: they only read. Build mode codes in your project because you asked it to, following the project's own rules, exactly like a normal Claude Code session. What it never does, in any mode, is write learning material (plans, logs, notes, flashcards), learn-mode state, leftover `TODO(learner)` scaffolds, or any reference to the learning repo into the project.
 
 **Can I use it on my employer's code?**
 Link the project as `work` (the default for organisation-owned repos). Lessons cite and paraphrase rather than paste, no project data is committed, and the guard blocks data files and secrets. Keep the learning repo private. Check your employer's policy on using AI tools with their code first; the plugin can't do that for you. See [DATA-POLICY.md](DATA-POLICY.md).

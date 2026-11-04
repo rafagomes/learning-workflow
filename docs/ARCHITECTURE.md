@@ -34,7 +34,7 @@ skills/
     toolchains.md         default run/test commands per subject
     templates/            copied into every new learning repo
       LEARNING.md  PROGRESS.md  CLAUDE.md  gitignore  deck.md  tools/guard.sh
-  plan/SKILL.md            dev plan → learning plan, by step ID
+  plan/SKILL.md           dev plan → learning plan, by step ID
   build/SKILL.md          learn mode for a step
   off/SKILL.md            end learn mode early
   curriculum/SKILL.md
@@ -91,11 +91,11 @@ Entries are only ever added or extended by the skills; removal needs your confir
 
 A skill's instructions can drop out of context when a long session is compacted, so learn mode doesn't rely on them alone:
 
-1. `/learn:build` writes `~/.config/learning-workflow/active/<key>.md`, where `<key>` is the project's git top-level path with `/` replaced by `_` (worktrees are separate projects). The file is a 3-line reminder: step, plan, level, concepts shown and pending, and the condensed rules.
-2. On every prompt, `hooks/learn-mode.sh` resolves the session's project from the hook input's `cwd`. If that project's file exists and was touched in the last 12 hours, the hook prints it, and Claude Code adds it to the context. Otherwise it prints nothing.
+1. `/learn:build` writes `$LEARNING_WORKFLOW_HOME/active/<key>.md` (default `~/.config/learning-workflow/active/`). `<key>` is the project's git top-level path, or the current directory outside git, with `/` replaced by `_`, so worktrees are separate projects. The hook and the `build`/`off` skills compute the path with one identical shell line (marked `# state-path`), and `tests/hook_test.sh` fails if they drift. The file is a 3-line reminder: step, plan, level, project and sensitivity, the state file's own path, concepts shown and pending, and the condensed rules (including the `TODO(learner)` sweep and the data boundary), so it's self-sufficient after compaction.
+2. On every prompt, `hooks/learn-mode.sh` resolves the session's project from the hook input's `cwd`. If that project's file exists and was touched in the last 12 hours, the hook refreshes its timestamp and prints it, and Claude Code adds it to the context. Otherwise it prints nothing.
 3. The skill rewrites the file as concepts are shown. The wrap-up and `/learn:off` delete it.
 
-The hook does no parsing beyond reading `cwd`, writes nothing and never fails a prompt (it always exits 0). `tests/hook_test.sh` covers no state, the active project, subdirectories, other projects, a missing `cwd` and stale files. Set `LEARNING_WORKFLOW_HOME` to relocate the state directory.
+The hook does no parsing beyond reading `cwd`, writes nothing except that timestamp, and never fails a prompt (it always exits 0). `tests/hook_test.sh` covers no state, the active project, subdirectories, other projects, paths with spaces, non-git directories, a missing `cwd`, an unset `HOME`, stale files, the timestamp refresh, and the skill/hook path snippet staying identical. Set `LEARNING_WORKFLOW_HOME` to relocate the state directory.
 
 ## Learning repo layout
 

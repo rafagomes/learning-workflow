@@ -13,9 +13,13 @@ A learning repo often sits next to code you don't own: your employer's, a client
 | Secrets, credentials, personal or customer data | **Never** | **Never** |
 | Internal hostnames, URLs, ticket contents | **Never** | Your call |
 | Real samples for a lab | `scratch/` only (gitignored) | `scratch/` only |
-| Edit, commit, branch or open PRs in the project | **Never** from a learning session | **Never** from a learning session |
+| Edit, commit, branch or open PRs in the project | Study skills: **never**. Build mode: yes, at your request, under the project's own rules | Same |
+| Write learning artefacts (plans, logs, notes, flashcards) or mention the learning repo in the project | **Never**, including in build mode | **Never** |
+| Leave `TODO(learner)` scaffolds in the project | **Never**: swept before every commit and at wrap-up | **Never** |
 
 Exercises always generate **seeded synthetic data** shaped like the real problem.
+
+**Build mode is the one place Claude works in a project**: it's ordinary pair programming you asked for, following the project's own CLAUDE.md, branching, commits and review. The teaching layer stays outside: learning artefacts go to the learning repo and the learn-mode state to `~/.config/learning-workflow/active/`.
 
 Nothing flows back automatically. What you learn reaches a project when you write it there yourself, through that project's process (issue, spec, branch, PR, review), and the project never links to the learning repo.
 

@@ -92,6 +92,8 @@ Further reading: Brown, Roediger & McDaniel, *Make It Stick* (2014); Dunlosky et
 
 ## Statuses
 
+Topics (study loop) and concepts (build mode) share one status set. Plan **steps** have their own: `todo` → `in progress` → `done`. A concept answered correctly in a step's done-check becomes `built`; a missed one stays `learning` with a flashcard.
+
 ```mermaid
 stateDiagram-v2
     [*] --> todo
