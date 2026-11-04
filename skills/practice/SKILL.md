@@ -32,4 +32,4 @@ Create 2–4 exercises, increasing in difficulty, under `lessons/<NNN>-<topic>/e
 
 ## Finish
 
-Update `PROGRESS.md` (topic → `practised` when all exercises pass; a `claimed` topic stays `claimed`, since only a quiz confirms it), add a flashcard for each mistake that taught something, log the session, and commit `feat: exercises for <topic>` (the learner's solutions are committed too, as their work).
+Update `PROGRESS.md` (a `todo` or `learning` topic → `practised` when all exercises pass; any other status stays, since only a quiz confirms a `claimed` topic and practice is never evidence for a demotion), add a flashcard for each mistake that taught something, log the session, and commit `feat: exercises for <topic>` (the learner's solutions are committed too, as their work).

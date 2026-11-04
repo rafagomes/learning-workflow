@@ -88,7 +88,7 @@ With no argument, picks the first `todo` topic whose prerequisites are all `read
 | 7. Vocabulary | Term → one-line definition |
 | 8. Check | 3 questions; results recorded |
 
-Adds 3–6 flashcards. Status → `learning`.
+Adds 3–6 flashcards. Status `todo` → `learning`; other statuses stay.
 
 ## `/learn:practice`
 
@@ -103,12 +103,12 @@ Writes 2–4 exercises of rising difficulty, each with a task README, a stub, fa
 - A passing solution gets a short code review.
 - Toolchain `none`: a problem set with the answer key kept in `scratch/`.
 
-Status → `practised` when every exercise passes.
+Status `todo`/`learning` → `practised` when every exercise passes; other statuses stay.
 
 ## `/learn:quiz`
 
 ```
-/learn:quiz <topic>
+/learn:quiz <track>/<n> | <topic>
 /learn:quiz review
 ```
 
