@@ -37,7 +37,7 @@ claude plugin validate .
 - **Subject-agnostic.** Nothing may assume a language, field or tool beyond the learning repo's recorded toolchain. Examples should vary subjects.
 - **Project-agnostic.** No real employer, client or project names, paths or data anywhere in this repo.
 - **One contract.** Learning-repo resolution, current-project resolution and the data policy live in `skills/init/SKILL.md`. Other skills refer to them; they don't restate them.
-- **Projects are read-only.** No skill may write to a linked project.
+- **Projects stay clean.** Study skills only read linked projects. Build mode (`build`, `off`) may code in the project at the learner's request, under the project's own rules, but must never leave learning artefacts, learn-mode state, `TODO(learner)` scaffolds or references to the learning repo there.
 - **Frontmatter**: `name`, `description` (with trigger phrases), `argument-hint`.
 
 A behaviour change updates `README.md` (skill table), `docs/SKILLS.md`, `docs/WORKFLOW.md` when the loop changes, and `CHANGELOG.md`.
