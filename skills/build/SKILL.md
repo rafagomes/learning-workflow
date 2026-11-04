@@ -68,7 +68,7 @@ When the learner says the step is done, or a PR for it is opened, ask the step's
 3. Update the plan: the step's Status → `done` and its Log line.
 4. Update `PROGRESS.md`:
    - under **Plans**, the step's status;
-   - under **Concepts**, each concept the step covered: answered correctly in the done-check → `built`; missed → `learning` (it now has a flashcard); shown but not checked → `learning`.
+   - under **Concepts** (and the matching Tracks topic, if one exists, so the two never disagree), each concept the step covered, never moving a status backwards: answered correctly in the done-check → `built` unless already `built` or `reflected`; missed or shown but not checked → `learning` unless already further along (a miss still gets a flashcard).
    - the session log.
 5. Commit in the learning repo: `docs: build log <step>`.
 6. Delete the state file. Learn mode is off; say so in one line and suggest the next step.
