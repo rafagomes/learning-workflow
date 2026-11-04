@@ -92,7 +92,7 @@ Further reading: Brown, Roediger & McDaniel, *Make It Stick* (2014); Dunlosky et
 
 ## Statuses
 
-Topics (study loop) and concepts (build mode) share one status set. Plan **steps** have their own: `todo` → `in progress` → `done`. Build mode moves a concept forward only: answered correctly in a step's done-check → `built`; missed or not checked → at least `learning`, with a flashcard for a miss. A status never moves backwards.
+Topics (study loop) and concepts (build mode) share one status set. Plan **steps** have their own: `todo` → `in progress` → `done`. Statuses move back only on evidence: a failed quiz or a missed done-check question sends a topic or concept back to `learning` (a failed `claimed` quiz back to `todo`), with a flashcard. In build mode, a concept answered correctly in the done-check becomes `built`; one shown but not checked becomes at least `learning`; `built` and `reflected` concepts keep their status.
 
 ```mermaid
 stateDiagram-v2
@@ -108,7 +108,11 @@ stateDiagram-v2
     todo --> built: build mode, done-check right
     todo --> learning: build mode, shown or missed
     learning --> built: build mode, done-check right
-    ready --> learning: quiz failed later
+    claimed --> built: build mode, done-check right
+    practised --> built: build mode, done-check right
+    claimed --> learning: build mode, done-check missed
+    practised --> learning: build mode, done-check missed
+    ready --> learning: quiz failed later or done-check missed
 ```
 
 ## Reproducibility

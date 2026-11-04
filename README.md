@@ -42,7 +42,7 @@ claude plugin install learn@learning-workflow
 Learn while building a step of a real project:
 
 ```
-/learn:init machine-learning ~/code/recsys # learning repo for the subject, project linked read-only
+/learn:init machine-learning ~/code/recsys # learning repo for the subject, project linked
 /learn:plan ~/code/recsys/docs/plan.md     # per dev step: concepts you need, who codes, done-check
 /learn:build P1                            # learn mode on; now just keep prompting
 …                                          # "let's write the candidate generator", "run the eval", …
@@ -67,7 +67,7 @@ Two kinds of repo, and one direction of reference:
 ```mermaid
 flowchart LR
     subgraph plugin["learning-workflow (this repo)"]
-        S["skills/<br/>init · curriculum · teach<br/>practice · quiz · reflect"]
+        S["skills/<br/>init · plan · build · off<br/>curriculum · teach · practice<br/>quiz · reflect"]
         T["skills/init/templates/"]
     end
     subgraph space["Your learning repo (one per subject)"]
@@ -82,8 +82,8 @@ flowchart LR
     P2["Project B<br/>(personal)"]
     T -- "/learn:init creates" --> space
     S -- "reads and writes" --> space
-    space -. "reads only, cites path@sha" .-> P1
-    space -. "reads only, cites path@sha" .-> P2
+    space -. "study: reads, cites path@sha · build mode: codes with you" .-> P1
+    space -. "study: reads, cites path@sha · build mode: codes with you" .-> P2
 ```
 
 - **This repo** is the method only: skills, templates, docs. No lessons, no learner data.
@@ -149,7 +149,7 @@ Each topic moves through `todo → learning → practised → ready → built �
 | `/learn:init add <project path>` | Link another project to an existing learning repo | `LEARNING.md`, registry |
 | `/learn:plan <spec \| plan \| URL \| goal>` | Link a project's dev plan to a learning plan: per step, the concepts needed (known/new), hands-on level, done-check | `plans/<plan>.md` |
 | `/learn:build <step> [plan] [level]` | Learn mode on for a step: pair-program at your level, concept notes only when needed, predictions, idle-time deep dives, done-check and wrap-up | `builds/<date>-<step>.md`, flashcards |
-| `/learn:off` | End learn mode early; the wrap-up is still saved | `builds/` |
+| `/learn:off [no-wrapup]` | End learn mode early; the wrap-up is saved unless `no-wrapup` | `builds/` |
 | `/learn:curriculum <plan \| spec \| URL \| topic>` | Turn a source into a track of 5–15 topics with prerequisites and checkable "ready when" criteria | `curriculum/<track>.md` |
 | `/learn:teach <track>/<n> \| <topic>` | Interactive lesson: problem, intuition, mechanism, lab, project touchpoint, pitfalls, vocabulary, check | `lessons/<NNN>-<topic>/lesson.md`, lab, flashcards |
 | `/learn:practice <topic> [easy\|medium\|hard]` | 2–4 exercises with stubs and failing tests (verified against a hidden reference solution); hints one rung at a time | `exercises/` |
