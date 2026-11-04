@@ -17,7 +17,7 @@ Two pieces, linked by step ID:
 
 ### Skills
 
-- `/learn:plan <spec | plan | artifact | goal>`: reads the dev plan (read-only), splits it into steps (keeping the plan's own IDs, or assigning `S1…`), and for each step lists the concepts it needs, marked `known` (already `ready`/`claimed` in PROGRESS, or self-assessed) or `new`, plus the hands-on level and 3–5 done-check questions. When you can't say what you need to learn, this is where it gets worked out.
+- `/learn:plan <spec | plan | artifact | goal>`: reads the dev plan (read-only), splits it into steps (keeping the plan's own IDs, or assigning `S1…`), and for each step lists the concepts it needs, marked `known` (already `claimed`, `ready`, `built` or `reflected` in PROGRESS, or self-assessed) or `new`, plus the hands-on level and 3–5 done-check questions. When you can't say what you need to learn, this is where it gets worked out.
 - `/learn:build <step>`: turns learn mode on for that step in the current project. Stays on across prompts until the step is done and checked, or `/learn:off`.
 - `/learn:off [no-wrapup]`: ends learn mode early; the wrap-up still runs unless `no-wrapup` is given (the `TODO(learner)` sweep always runs).
 
