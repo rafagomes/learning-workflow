@@ -12,7 +12,7 @@ All skills resolve the learning repo the same way ([ARCHITECTURE.md](ARCHITECTUR
 Creates a learning repo for a subject, or links another project to an existing one.
 
 - **Asks** (only what's missing): subject slug, projects to link, location (default `~/Learning/<slug>`, never inside a project), level, depth, lesson language, toolchain (proposed from [toolchains.md](../skills/init/toolchains.md) or detected from a linked project's manifest).
-- **Creates**: `LEARNING.md` (including the default hands-on level for build mode), `PROGRESS.md`, `CLAUDE.md`, `.gitignore`, `flashcards/deck.md`, `tools/guard.sh` with `tools/hooks/pre-commit` (enabled via repo-local `core.hooksPath`), and empty `curriculum/`, `lessons/`, `reflections/`, `scratch/`.
+- **Creates**: `LEARNING.md` (including the default hands-on level for build mode), `PROGRESS.md`, `CLAUDE.md`, `.gitignore`, `flashcards/deck.md`, `tools/guard.sh` with `tools/hooks/pre-commit` (enabled via repo-local `core.hooksPath`), and empty `curriculum/`, `plans/`, `builds/`, `lessons/`, `reflections/`, `scratch/`.
 - **Registers** the repo in `~/.config/learning-workflow/spaces.json`.
 - **Never** creates a remote unless you confirm; it offers a private GitHub repo.
 - Per linked project it records slug, path, remote, default branch and sensitivity (`work` by default for org-owned repos) in the registry; `LEARNING.md` gets only the slug, sensitivity and a neutral one-line description.
@@ -37,14 +37,14 @@ Links a project's development plan (read-only, stays in the project) to a learni
 
 Turns learn mode on for one step in the current project.
 
-1. **Start:** asks up to 3 due flashcards, sets the level, writes `~/.config/learning-workflow/active/<project-key>.md` (the plugin's `UserPromptSubmit` hook re-injects it on every prompt in that project).
+1. **Start:** requires the project to be linked (offers `/learn:init add`), checks for an already-active step (offers `/learn:off` for it), asks up to 3 due flashcards, sets the level, marks the step `in progress`, and writes the state file (the plugin's `UserPromptSubmit` hook re-injects it on every prompt in that project).
 2. **While on:** normal pair programming under the project's own rules, plus:
    - code at the hands-on level (overridable per prompt);
    - a `▸ concept:` note (2–4 lines) only when a decision depends on a `new` concept not yet shown;
    - a one-line prediction before tests, evals or benchmarks;
    - during background waits, one offer of a 2–5 minute deep dive with 1–2 "is this clear?" questions.
 3. **Done-check** when you say the step is done or its PR opens: the step's questions, one at a time; misses become flashcards.
-4. **Wrap-up:** writes `builds/<date>-<step>.md`, updates the plan and `PROGRESS.md`, commits in the learning repo, and deletes the state file.
+4. **Wrap-up:** sweeps the project for `TODO(learner)` markers, writes `builds/<date>-<step>.md`, sets the step `done`, records each concept in `PROGRESS.md` → Concepts (`built` if answered correctly, `learning` if missed), commits in the learning repo, and deletes the state file.
 
 With no plan, it can create a one-step plan from your description.
 
@@ -54,7 +54,7 @@ With no plan, it can create a one-step plan from your description.
 /learn:off [no-wrapup]
 ```
 
-Ends learn mode early: saves the wrap-up with the step `in progress` (skips the done-check), then deletes the state file. `/learn:build <step>` resumes later.
+Ends learn mode early: sweeps `TODO(learner)` markers, saves the wrap-up with the step left `in progress` (skips the done-check), then deletes the state file. `/learn:build <step>` resumes later.
 
 ## `/learn:curriculum`
 
