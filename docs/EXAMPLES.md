@@ -8,7 +8,7 @@ Three walkthroughs, from no project at all to a work project. Output is abbrevia
 /learn:init python
 ```
 
-Claude asks your level (*new*), depth (*practical first*), lesson language, and proposes the Python toolchain (`uv run lab.py`, `uv run --with pytest pytest`). It creates `~/Learning/python` and commits.
+Claude asks your level (*new*), depth (*practical first*), lesson language, and proposes the Python toolchain (`uv run lab.py` for labs, `uv run --with pytest --with-requirements <dir>/requirements.txt pytest <dir>` for exercises). It creates `~/Learning/python` and commits.
 
 ```
 /learn:curriculum "automate the reports I build in spreadsheets every week"
