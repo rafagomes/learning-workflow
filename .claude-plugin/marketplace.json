@@ -1,6 +1,6 @@
 {
   "name": "learning-workflow",
-  "description": "The learn plugin: learn any subject with Claude Code, just ahead of what you build.",
+  "description": "The learn plugin: learn any subject with Claude Code, while you build or before you do.",
   "owner": {
     "name": "Rafa Gomes"
   },
@@ -8,7 +8,7 @@
     {
       "name": "learn",
       "source": "./",
-      "description": "Learning workflow: init, curriculum, teach, practice, quiz, reflect."
+      "description": "Learning workflow: build mode (plan, build, off) and study loop (curriculum, teach, practice, quiz, reflect)."
     }
   ]
 }

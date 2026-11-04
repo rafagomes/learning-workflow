@@ -1,8 +1,8 @@
 <h1 align="center">learning-workflow</h1>
 
 <p align="center">
-  <strong>Learn any subject with <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a> as your tutor, just ahead of what you build.</strong><br/>
-  Curriculum from your plan · interactive lessons with runnable labs · tested exercises · quizzes · spaced repetition · reflection on what you shipped.
+  <strong>Learn any subject with <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a>, while you build or before you do.</strong><br/>
+  Build mode: code with Claude in your real project and learn what each step needs · Study loop: curriculum, lessons with labs, exercises, quizzes · Spaced repetition and reflection throughout.
 </p>
 
 <p align="center">
@@ -23,7 +23,10 @@
 
 ---
 
-Asking an assistant to "explain X" gives you an answer you forget by next week. This plugin turns Claude Code into a structured tutor: it builds a curriculum from what you are about to do, teaches one concept at a time, makes you predict before it runs anything, checks you with tests and quizzes, and brings ideas back on a spaced-repetition schedule. It works for **any subject**: Python from zero, Rust ownership, distributed systems, statistics, SQL, music theory.
+Asking an assistant to "explain X" gives you an answer you forget by next week. This plugin gives you two ways to actually learn with Claude Code, for **any subject**: Python from zero, Rust ownership, distributed systems, statistics, SQL, music theory.
+
+- **Build mode** (learn while you code). You work on a real step of a real project and keep prompting as usual. Claude codes with you at the hands-on level you choose, stays quiet unless a decision depends on something you haven't learned yet, asks you to predict before running things, uses background waits for short deep dives, and checks what you learned when the step is done.
+- **Study loop** (learn before you code). A curriculum from your plan, interactive lessons with runnable labs, exercises with tests, and quizzes.
 
 Your lessons live in **your own learning repo**, which the plugin creates. You can link it to the projects you work on, at your job or on the side, so lessons use real situations from your code while those projects stay untouched.
 
@@ -36,7 +39,17 @@ claude plugin marketplace add rafagomes/learning-workflow
 claude plugin install learn@learning-workflow
 ```
 
-Then:
+Learn while building a step of a real project:
+
+```
+/learn:init machine-learning ~/code/recsys # learning repo for the subject, project linked read-only
+/learn:plan ~/code/recsys/docs/plan.md     # per dev step: concepts you need, who codes, done-check
+/learn:build P1                            # learn mode on; now just keep prompting
+…                                          # "let's write the candidate generator", "run the eval", …
+"P1 is done"                               # 3–5 questions on what you built, wrap-up saved, mode off
+```
+
+Or study first:
 
 ```
 /learn:init python                         # create ~/Learning/python, pick level and toolchain
@@ -45,13 +58,6 @@ Then:
 /learn:practice 1                          # exercises with failing tests
 /learn:quiz 1                              # are you ready?
 /learn:quiz review                         # a few minutes of flashcards, most days
-```
-
-Learning for a project you're building? Link it:
-
-```
-/learn:init rust ~/code/ray-tracer         # subject + linked project(s)
-/learn:curriculum ~/code/ray-tracer/PLAN.md
 ```
 
 ## How it works
@@ -83,9 +89,41 @@ flowchart LR
 - **This repo** is the method only: skills, templates, docs. No lessons, no learner data.
 - **A learning repo** is yours, private by default, one per subject. It holds everything you study and keeps a log of it in git.
 - **Projects** are never edited from a learning session and never point back at the learning repo. What you learn reaches them through their own normal workflow.
-- **There's no mode to switch on.** Linking a project writes nothing into it; learning starts when you run a `/learn:` command and ends with that session. See the [FAQ](docs/FAQ.md#is-there-a-learning-mode-i-turn-on-and-off).
+- **Learn mode is per step, and off by default.** `/learn:build <step>` turns it on for that project and the done-check or `/learn:off` turns it off. Its state lives in `~/.config/learning-workflow/active/`, never in the project. See the [FAQ](docs/FAQ.md#how-do-i-turn-learn-mode-on-and-off).
 
-### The loop
+### Build mode
+
+```mermaid
+sequenceDiagram
+    actor You
+    participant C as Claude (in your project)
+    participant H as learn-mode hook
+    participant L as Learning repo
+    You->>C: /learn:build P1
+    C->>L: read the step in plans/ (concepts, level, done-check)
+    C-->>You: due flashcards (≤3), then "learn mode on"
+    loop every prompt until the step is done
+        You->>C: "write the scorer" / "run the eval" / …
+        H->>C: reminder: step, level, concepts not yet shown
+        C-->>You: code at your level · ▸ concept note only if a decision needs it
+        C-->>You: "what do you expect?" before tests/evals
+        C-->>You: background task running? offer a 3-min deep dive
+    end
+    You->>C: "P1 is done" (or the PR opens)
+    C-->>You: done-check, one question at a time
+    C->>L: build log, flashcards, plan status, commit
+    C-->>You: learn mode off
+```
+
+| Hands-on level | Claude | You |
+|---|---|---|
+| `claude` | Writes the code, explains decisions that touch new concepts | Read, ask |
+| `adaptive` | Writes plumbing; scaffolds the core with a marked gap for you | Write the core |
+| `you` | Plans the next small step, reviews, hints | Write the code |
+
+The default is set per subject; any step or prompt can override it ("I'll write this one").
+
+### The study loop
 
 ```mermaid
 flowchart TD
@@ -109,6 +147,9 @@ Each topic moves through `todo → learning → practised → ready → built �
 |---|---|---|
 | `/learn:init <subject> [project paths…]` | Create a learning repo; ask level, depth, language and toolchain; link projects | the repo, registry entry |
 | `/learn:init add <project path>` | Link another project to an existing learning repo | `LEARNING.md`, registry |
+| `/learn:plan <spec \| plan \| URL \| goal>` | Link a project's dev plan to a learning plan: per step, the concepts needed (known/new), hands-on level, done-check | `plans/<plan>.md` |
+| `/learn:build <step> [level]` | Learn mode on for a step: pair-program at your level, concept notes only when needed, predictions, idle-time deep dives, done-check and wrap-up | `builds/<date>-<step>.md`, flashcards |
+| `/learn:off` | End learn mode early; the wrap-up is still saved | `builds/` |
 | `/learn:curriculum <plan \| spec \| URL \| topic>` | Turn a source into a track of 5–15 topics with prerequisites and checkable "ready when" criteria | `curriculum/<track>.md` |
 | `/learn:teach <track>/<n> \| <topic>` | Interactive lesson: problem, intuition, mechanism, lab, project touchpoint, pitfalls, vocabulary, check | `lessons/<NNN>-<topic>/lesson.md`, lab, flashcards |
 | `/learn:practice <topic> [easy\|medium\|hard]` | 2–4 exercises with stubs and failing tests (verified against a hidden reference solution); hints one rung at a time | `exercises/` |
@@ -125,6 +166,7 @@ Full reference: [docs/SKILLS.md](docs/SKILLS.md).
 | Learn Python from scratch | `/learn:init python` → `/learn:curriculum "automate my spreadsheets"` |
 | Learn Rust while building a side project | `/learn:init rust ~/code/ray-tracer` → `/learn:curriculum ~/code/ray-tracer/PLAN.md` |
 | Learn a technique your team is about to adopt | `/learn:init distributed-systems ~/work/payments` → `/learn:curriculum ~/work/payments/docs/design/outbox.md` |
+| Build something you don't fully understand yet, and learn as you go | `/learn:plan <spec>` → `/learn:build <step>` |
 | Learn something with no code | `/learn:init music-theory` (toolchain `none`: worked problems instead of labs) |
 
 Walkthroughs: [docs/EXAMPLES.md](docs/EXAMPLES.md).
@@ -142,7 +184,8 @@ Walkthroughs: [docs/EXAMPLES.md](docs/EXAMPLES.md).
 | Doc | Covers |
 |---|---|
 | [WORKFLOW.md](docs/WORKFLOW.md) | The method and the learning science behind it |
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Plugin layout, the shared contract, registry schema, learning-repo layout, state machine |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Plugin layout, the shared contract, registry, learn-mode state and hook, learning-repo layout |
+| [specs/001_build-mode.md](docs/specs/001_build-mode.md) | Build mode design |
 | [SKILLS.md](docs/SKILLS.md) | Every skill: arguments, inputs, outputs, commits |
 | [DATA-POLICY.md](docs/DATA-POLICY.md) | What may and may not enter a learning repo, and how it's enforced |
 | [EXAMPLES.md](docs/EXAMPLES.md) | Three end-to-end walkthroughs |
