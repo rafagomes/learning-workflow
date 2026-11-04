@@ -83,9 +83,9 @@ Sensitivity changes how much may be quoted (see the policy). When in doubt, use 
       "created": "2026-11-04",
       "projects": [
         {"slug": "billing-service", "path": "/home/me/work/billing-service",
-         "remote": "git@github.com:acme/billing-service.git", "sensitivity": "work"},
+         "remote": "git@github.com:acme/billing-service.git", "branch": "main", "sensitivity": "work"},
         {"slug": "ray-tracer", "path": "/home/me/code/ray-tracer",
-         "remote": null, "sensitivity": "personal"}
+         "remote": null, "branch": "main", "sensitivity": "personal"}
       ]
     }
   ]

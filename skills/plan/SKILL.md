@@ -11,7 +11,7 @@ The **development plan stays where it is**: in the project's docs, specs or issu
 
 ## 1. Read the development plan
 
-- A path: read it. A claude.ai artifact URL: use the Artifact tool's `read` action. An issue or PR: `gh`. A plain goal ("build the owner-matching agent"): ask 1–2 questions to pin down what will be built, then propose steps for the learner to confirm.
+- A path: read it. A claude.ai artifact URL: use the Artifact tool's `read` action. An issue or PR: `gh`. A plain goal ("build a recommendation feed for the app"): ask 1–2 questions to pin down what will be built, then propose steps for the learner to confirm.
 - Keep the plan's own step IDs (`P1`, `Z2`, `Phase 3`, …). If it has none, assign `S1, S2, …` and show the mapping.
 - Read the code the steps will touch (read-only) so concepts come from what will actually be written, not from the topic in general.
 
@@ -38,7 +38,7 @@ Dev plan: <project-slug>:<path or issue>@<shortsha> · Created <date>
 
 | Step | What gets built | Level | New concepts | Status |
 |---|---|---|---|---|
-| P1 | Candidate blocking | adaptive | blocking keys, recall@k | todo |
+| P1 | Candidate generation | adaptive | approximate nearest neighbours, recall@k | todo |
 
 Step status: `todo` → `in progress` → `done`.
 
@@ -46,9 +46,9 @@ Step status: `todo` → `in progress` → `done`.
 - **Builds:** one line, from the dev plan.
 - **Level:** adaptive
 - **Concepts:**
-  - `new` blocking keys and candidate generation: why: P1 decides which pairs are ever compared.
-  - `new` `deep` recall@k: why: the exit criterion is recall@20 ≥ 99%. Suggest /learn:teach first.
-  - `known` hash joins
+  - `new` approximate nearest neighbours: why: P1 decides which items can ever be recommended.
+  - `new` `deep` recall@k: why: the step is done when recall@100 meets the plan's target. Suggest /learn:teach first.
+  - `known` vector embeddings
 - **Done-check:**
   1. …
 - **Follow-ups:** (filled by /learn:build: deep concepts to /learn:teach, things to revisit)
