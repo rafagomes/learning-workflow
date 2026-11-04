@@ -7,14 +7,15 @@ shopt -s nocasematch
 fail=0
 max_bytes=1048576
 data_ext='\.(csv|tsv|parquet|feather|arrow|json|jsonl|ndjson|geojson|xlsx|xls|sqlite|sqlite3|db|duckdb|dump|sql\.gz|shp|gpkg|pkl|pickle|pt|joblib|npy|npz|h5|hdf5)$'
-allowed_data='(^|/)lessons/[^/]+/exercises/[^/]+/data/'
-config_json='(^|/)(package\.json|package-lock\.json|tsconfig[^/]*\.json|jsconfig\.json|deno\.json|composer\.json|[^/]+\.config\.json|\.vscode/[^/]+\.json|\.claude/[^/]+\.json|\.devcontainer/[^/]+\.json)$'
+allowed_data='^lessons/[^/]+/exercises/[^/]+/data/'
+config_json='(^|/)(package\.json|package-lock\.json|tsconfig[^/]*\.json|jsconfig\.json|deno\.json|composer\.json|\.vscode/[^/]+\.json|\.claude/[^/]+\.json|\.devcontainer/[^/]+\.json)$'
 
 while IFS= read -r -d '' f; do
   if [[ "$f" =~ $data_ext ]] && ! [[ "$f" =~ $allowed_data ]] && ! [[ "$f" =~ $config_json ]]; then
     echo "guard: data file outside an exercise data/ dir: $f" >&2; fail=1
   fi
-  size=$(git cat-file -s ":$f")
+  # Submodule entries (gitlinks) have no blob to size.
+  size=$(git cat-file -s ":$f" 2>/dev/null) || continue
   if [ "$size" -gt "$max_bytes" ]; then
     echo "guard: file over 1 MB: $f ($size bytes)" >&2; fail=1
   fi
