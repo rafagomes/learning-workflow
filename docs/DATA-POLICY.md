@@ -29,7 +29,7 @@ Nothing flows back automatically. What you learn reaches a project when you writ
 
 The pre-commit guard installed by `/learn:init` blocks:
 
-- data-like files outside `lessons/*/exercises/*/data/`;
+- data-like files (any case) outside `lessons/*/exercises/*/data/`, except common config files such as `package.json`;
 - files over 1 MB;
 - secrets flagged by [gitleaks](https://github.com/gitleaks/gitleaks), when it's installed (recommended).
 

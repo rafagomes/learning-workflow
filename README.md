@@ -100,7 +100,7 @@ flowchart TD
     G -.-> H
 ```
 
-Each topic moves through `todo → learning → practised → ready → built → reflected`, tracked in `PROGRESS.md`.
+Each topic moves through `todo → learning → practised → ready → built → reflected` (self-assessed topics start as `claimed` and need a passed quiz), tracked in `PROGRESS.md`.
 
 ## Skills
 
