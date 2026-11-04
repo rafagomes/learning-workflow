@@ -33,6 +33,6 @@ Work through these parts, writing `lessons/<NNN>-<topic-slug>/lesson.md` as you 
 ## Finish
 
 - Add 3–6 flashcards for the core ideas to `flashcards/deck.md` (box 1, next = today).
-- Update `PROGRESS.md`: topic → `learning`; log the session with one line on what clicked and what didn't.
+- Update `PROGRESS.md`: a `todo` topic → `learning` (any other status stays, since teaching isn't evidence of a gap); log the session with one line on what clicked and what didn't.
 - Commit `docs: lesson <NNN> <topic>`.
 - Suggest the next step: `/learn:practice <topic>`, or `/learn:quiz <topic>` if the check went perfectly.
