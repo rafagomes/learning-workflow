@@ -56,7 +56,7 @@ Or study first:
 /learn:curriculum "write and test small CLI tools in Python"
 /learn:teach python-cli/1                  # first lesson, interactive
 /learn:practice 1                          # exercises with failing tests
-/learn:quiz 1                              # are you ready?
+/learn:quiz python-cli/1                   # are you ready?
 /learn:quiz review                         # a few minutes of flashcards, most days
 ```
 
@@ -153,7 +153,7 @@ Each topic moves through `todo → learning → practised → ready → built �
 | `/learn:curriculum <plan \| spec \| URL \| topic>` | Turn a source into a track of 5–15 topics with prerequisites and checkable "ready when" criteria | `curriculum/<track>.md` |
 | `/learn:teach <track>/<n> \| <topic>` | Interactive lesson: problem, intuition, mechanism, lab, project touchpoint, pitfalls, vocabulary, check | `lessons/<NNN>-<topic>/lesson.md`, lab, flashcards |
 | `/learn:practice <topic> [easy\|medium\|hard]` | 2–4 exercises with stubs and failing tests (verified against a hidden reference solution); hints one rung at a time | `exercises/` |
-| `/learn:quiz <topic>` | 8–12 adaptive questions, one at a time; ready at ≥ 80% with every critical question right | `quiz.md`, flashcards |
+| `/learn:quiz <track>/<n> \| <topic>` | 8–12 adaptive questions, one at a time; ready at ≥ 80% with every critical question right | `quiz.md`, flashcards |
 | `/learn:quiz review` | Spaced-repetition review of due flashcards | `flashcards/deck.md` |
 | `/learn:reflect <topic> [PR \| commit range]` | After building: prediction vs result, gaps, follow-ups | `reflections/<date>-<topic>.md` |
 

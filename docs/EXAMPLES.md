@@ -32,9 +32,9 @@ No plan exists, so it asks which outcomes matter (read and clean CSVs, compute s
 The lesson is a conversation. Before the lab prints `type(0.1 + 0.2)` and `0.1 + 0.2 == 0.3`, you're asked what you expect. The surprise about floats becomes a flashcard.
 
 ```
-/learn:practice 1        # stubs + failing tests in lessons/001-values-and-types/exercises/
-/learn:quiz 1            # 9/10, both critical right → ready
-/learn:quiz review       # tomorrow, two minutes
+/learn:practice 1                      # stubs + failing tests in lessons/001-values-and-types/exercises/
+/learn:quiz spreadsheet-automation/1   # 9/10, both critical right → ready
+/learn:quiz review                     # tomorrow, two minutes
 ```
 
 ## 2. Learning Rust while building a personal project
