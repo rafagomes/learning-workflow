@@ -28,7 +28,7 @@ claude --plugin-dir .
 Run the checks before opening a PR:
 
 ```bash
-bash tests/run.sh            # manifests, frontmatter, guard and hook behaviour, home-path/email scan
+bash tests/run.sh            # manifests, frontmatter, guard and hook behaviour, home-path/email scan, diagram drift
 claude plugin validate .
 ```
 

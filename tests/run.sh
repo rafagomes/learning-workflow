@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Repo checks: manifests, skill frontmatter, guard behaviour, banned-term scan.
+# Repo checks: manifests, skill frontmatter, guard and hook behaviour, home-path/email scan, diagram drift, banned terms.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -38,11 +38,16 @@ else
   ok "no personal email addresses"
 fi
 gen=$(mktemp -d)
-if DIAGRAMS_OUT="$gen" python3 docs/diagrams/render.py && diff -rq --exclude=render.py "$gen" docs/diagrams >/dev/null; then
-  ok "diagram SVGs match docs/diagrams/render.py"
+stale=""
+if DIAGRAMS_OUT="$gen" python3 docs/diagrams/render.py; then
+  for f in "$gen"/*.svg docs/diagrams/*.svg; do
+    n=$(basename "$f")
+    cmp -s "$gen/$n" "docs/diagrams/$n" || stale="$stale $n"
+  done
 else
-  bad "diagram SVGs are stale: run python3 docs/diagrams/render.py"
+  stale=" (render.py failed)"
 fi
+if [ -z "$stale" ]; then ok "diagram SVGs match docs/diagrams/render.py"; else bad "diagram SVGs differ from render.py:$stale (run python3 docs/diagrams/render.py)"; fi
 rm -rf "$gen"
 # Optional private list, e.g. BANNED_TERMS='acme|globex' bash tests/run.sh
 if [ -z "${BANNED_TERMS:-}" ]; then
