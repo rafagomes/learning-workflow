@@ -63,10 +63,12 @@ Further reading: Brown, Roediger & McDaniel, *Make It Stick* (2014); Dunlosky et
 ```mermaid
 stateDiagram-v2
     [*] --> todo
+    [*] --> claimed: self-assessed
+    claimed --> ready: quiz passed
+    claimed --> todo: quiz failed
     todo --> learning: teach
     learning --> practised: practice (all tests pass)
     practised --> ready: quiz passed
-    learning --> ready: quiz passed (self-assessed known)
     ready --> built: shipped in a project
     built --> reflected: reflect
     ready --> learning: quiz failed later

@@ -81,7 +81,7 @@ Entries are only ever added or extended by the skills; removal needs your confir
 ## Learning repo layout
 
 ```
-LEARNING.md          identity: learner profile, toolchain, linked projects, data policy + exceptions
+LEARNING.md          identity: learner profile, toolchain, linked projects (slug + sensitivity only), data policy + exceptions
 PROGRESS.md          tracks, per-topic status, session log
 CLAUDE.md            rules for any Claude session opened inside the learning repo
 curriculum/<track>.md
@@ -97,7 +97,7 @@ lessons/<NNN>-<topic>/
 flashcards/deck.md   Leitner deck
 reflections/<date>-<topic>.md
 scratch/             gitignored: real samples, reference solutions, throwaway
-tools/guard.sh       pre-commit hook
+tools/guard.sh       pre-commit guard; tools/hooks/pre-commit runs it
 ```
 
 ## Skill I/O
@@ -113,9 +113,9 @@ tools/guard.sh       pre-commit hook
 
 ## Enforcement
 
-The pre-commit guard (`tools/guard.sh`, symlinked into `.git/hooks/pre-commit` by `/learn:init`) blocks, on every commit:
+The pre-commit guard (`tools/guard.sh`, run by `tools/hooks/pre-commit`, which `/learn:init` enables with repo-local `git config core.hooksPath tools/hooks` so a global hooks path can't bypass it) checks the **staged** content of every commit, renames included, and blocks:
 
-- data-like files (`csv`, `parquet`, `json`, `sqlite`, `xlsx`, model artefacts, …) outside `lessons/*/exercises/*/data/`;
+- data-like files (`csv`, `parquet`, `json`, `sqlite`, `xlsx`, model artefacts, …, any case) outside `lessons/*/exercises/*/data/`, except common config files (`package.json`, `tsconfig*.json`, …);
 - any file over 1 MB;
 - anything [gitleaks](https://github.com/gitleaks/gitleaks) flags, when it's installed.
 
@@ -127,7 +127,7 @@ The guard is a seatbelt, not the policy: the skills also follow the policy when 
 |---|---|---|
 | Learning repo separate from projects | A `learning/` folder in each project | Separate: keeps team history clean, spans several projects, survives leaving a job |
 | One repo per subject, many projects | One repo per project | Per subject: what you learn about Rust on project A is the same Rust on project B |
-| Registry outside git | Paths committed in the learning repo | Outside: no absolute paths or work remotes in a repo you might publish |
+| Registry outside git | Paths committed in the learning repo | Outside: `LEARNING.md` names projects by slug and sensitivity only, so no absolute paths or work remotes reach a repo you might publish |
 | Toolchain recorded per repo | Hard-coded language | Per repo: the same skills teach Python, Rust, SQL or music theory |
 | Plain Markdown state | A database or app | Markdown + git: diffable, portable, readable without the plugin |
 | Leitner boxes | SM-2 / FSRS scheduling | Leitner: simple enough to keep in a Markdown file and reason about; good enough for a personal deck |

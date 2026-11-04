@@ -12,10 +12,10 @@ All skills resolve the learning repo the same way ([ARCHITECTURE.md](ARCHITECTUR
 Creates a learning repo for a subject, or links another project to an existing one.
 
 - **Asks** (only what's missing): subject slug, projects to link, location (default `~/Learning/<slug>`, never inside a project), level, depth, lesson language, toolchain (proposed from [toolchains.md](../skills/init/toolchains.md) or detected from a linked project's manifest).
-- **Creates**: `LEARNING.md`, `PROGRESS.md`, `CLAUDE.md`, `.gitignore`, `flashcards/deck.md`, `tools/guard.sh` (installed as the pre-commit hook), and empty `curriculum/`, `lessons/`, `reflections/`, `scratch/`.
+- **Creates**: `LEARNING.md`, `PROGRESS.md`, `CLAUDE.md`, `.gitignore`, `flashcards/deck.md`, `tools/guard.sh` with `tools/hooks/pre-commit` (enabled via repo-local `core.hooksPath`), and empty `curriculum/`, `lessons/`, `reflections/`, `scratch/`.
 - **Registers** the repo in `~/.config/learning-workflow/spaces.json`.
 - **Never** creates a remote unless you confirm; it offers a private GitHub repo.
-- Per linked project it records slug, path, remote, default branch and sensitivity (`work` by default for org-owned repos).
+- Per linked project it records slug, path, remote, default branch and sensitivity (`work` by default for org-owned repos) in the registry; `LEARNING.md` gets only the slug, sensitivity and a neutral one-line description.
 
 ## `/learn:curriculum`
 

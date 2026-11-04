@@ -24,8 +24,21 @@ done
 if bash -n skills/init/templates/tools/guard.sh; then ok "guard.sh parses"; else bad "guard.sh syntax"; fi
 if bash tests/guard_test.sh; then ok "guard behaviour"; else bad "guard behaviour"; fi
 
-# Skills must stay project-agnostic; extend this list if a real name ever leaks.
-if [ -n "${BANNED_TERMS:-}" ] && grep -rniE "$BANNED_TERMS" --exclude-dir=.git --exclude-dir=tests . ; then
+# Skills and docs must stay project-agnostic: no real home paths or personal email addresses.
+if grep -rnE '/(home|Users)/[A-Za-z0-9._-]+/' --exclude-dir=.git --exclude-dir=tests . | grep -vE '/(home|Users)/me/'; then
+  bad "real home path found (use /home/me/...)"
+else
+  ok "no real home paths"
+fi
+if grep -rnoE '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' --exclude-dir=.git --exclude-dir=tests . | grep -vE '@(example\.(com|org)|anthropic\.com|github\.com)'; then
+  bad "email address found"
+else
+  ok "no personal email addresses"
+fi
+# Optional private list, e.g. BANNED_TERMS='acme|globex' bash tests/run.sh
+if [ -z "${BANNED_TERMS:-}" ]; then
+  echo "skip banned terms (set BANNED_TERMS to check)"
+elif grep -rniE "$BANNED_TERMS" --exclude-dir=.git --exclude-dir=tests .; then
   bad "banned term found"
 else
   ok "no banned terms"
