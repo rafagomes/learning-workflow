@@ -5,7 +5,7 @@ argument-hint: "<topic or lesson number> [easy|medium|hard]"
 ---
 Set exercises for a topic. Argument: $ARGUMENTS
 
-Resolve the learning repo as `/learn:init` describes and find the topic's lesson folder (create a minimal one if the topic was self-assessed as known).
+Resolve the learning repo as `/learn:init` describes and find the topic's lesson folder (create a minimal one, with the next free NNN, if the topic is `claimed` and has none).
 
 ## Write the exercises
 
@@ -17,6 +17,7 @@ Create 2–4 exercises, increasing in difficulty, under `lessons/<NNN>-<topic>/e
 | solution stub | Signatures and doc comments with a not-implemented body, named the toolchain's way (`solution.py`, `solution.ts`, `src/lib.rs`, …). The learner edits this file. |
 | tests | Tests in the toolchain's test framework that fail on the stub and pass on a correct solution: normal cases, an edge case, and one property or tolerance check where it fits. |
 | data generator | Seeded synthetic data generator, only if the exercise needs data; writes to `data/`. |
+| dependency file | Whatever the toolchain needs to pin the exercise's dependencies (`requirements.txt`, `package.json`, `Cargo.toml`, `go.mod`, …); may be empty. |
 
 - Exercises mirror the shape of a linked project's problem when there is one, but never use its data.
 - Before handing over, write a reference solution in `scratch/`, run the toolchain's test command against it, confirm the tests pass, then confirm they fail on the stub. Never commit the reference solution.
@@ -31,4 +32,4 @@ Create 2–4 exercises, increasing in difficulty, under `lessons/<NNN>-<topic>/e
 
 ## Finish
 
-Update `PROGRESS.md` (topic → `practised` when all exercises pass), add a flashcard for each mistake that taught something, log the session, and commit `feat: exercises for <topic>` (the learner's solutions are committed too, as their work).
+Update `PROGRESS.md` (topic → `practised` when all exercises pass; a `claimed` topic stays `claimed`, since only a quiz confirms it), add a flashcard for each mistake that taught something, log the session, and commit `feat: exercises for <topic>` (the learner's solutions are committed too, as their work).

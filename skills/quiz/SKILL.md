@@ -13,13 +13,13 @@ Read `flashcards/deck.md`, take every card whose `next` date is today or earlier
 
 ## Topic mode
 
-1. Read the topic's "ready when" from the curriculum and its lesson. Plan 8–12 questions covering every ready-when item; mark 2–3 as **critical** (the ideas the project phase depends on).
+1. Read the topic's "ready when" from the curriculum and its lesson, if it has one. A `claimed` topic may have no lesson folder: create `lessons/<NNN>-<topic>/` (next free NNN) to hold `quiz.md`. Plan 8–12 questions covering every ready-when item; mark 2–3 as **critical** (the ideas the project phase depends on).
 2. Mix formats: explain-in-your-words, predict-the-output (show a short snippet; run it afterwards to confirm), spot-the-bug, choose-and-justify (a design decision from the project phase), and calculation with numbers you computed.
 3. Ask **one question at a time**. After each answer: right/partly/wrong, and the one-sentence reason. Adapt: two misses on a sub-idea → one easier follow-up on it.
 4. Do not reveal upcoming questions or hint at answers in the question wording.
 
 **Score:** ready at ≥ 80% **and** all critical questions right. Otherwise list the gaps and point to the exact lesson part or exercise to revisit.
 
-Write `lessons/<NNN>-<topic>/quiz.md` (date, questions, learner's answers summarised, score, gaps). Add a flashcard per miss. Update `PROGRESS.md` (topic → `ready` if passed; a failed `claimed` topic → `todo`), log, commit `docs: quiz <topic>`.
+Write `lessons/<NNN>-<topic>/quiz.md` (date, questions, learner's answers summarised, score, gaps). Add a flashcard per miss. Update `PROGRESS.md`: passed → `ready`; failed `claimed` → `todo`; failed `ready` (a re-check) → `learning`, log, commit `docs: quiz <topic>`.
 
-When a whole phase's topics are `ready`, say so: the learner can now build that phase in the project, through the project's own workflow. When the learner says the phase is built (or runs `/learn:reflect`), its topics move to `built`.
+When a whole phase's topics are `ready`, say so: the learner can now build that phase in the project, through the project's own workflow. After building it, `/learn:reflect` records the result and moves those topics to `built` and `reflected`.

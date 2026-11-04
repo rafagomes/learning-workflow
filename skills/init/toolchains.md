@@ -4,11 +4,11 @@
 
 | Subject | Lab file | Run | Test | Notes |
 |---|---|---|---|---|
-| Python, data, ML | `lab.py` with an inline [PEP 723](https://peps.python.org/pep-0723/) dependency block | `uv run lab.py` | `uv run --with pytest --with-requirements requirements.txt pytest <dir>` | Pin lab deps in the script block; each exercise pins its deps in `requirements.txt` (may be empty) |
+| Python, data, ML | `lab.py` with an inline [PEP 723](https://peps.python.org/pep-0723/) dependency block | `uv run lab.py` | `uv run --with pytest --with-requirements <dir>/requirements.txt pytest <dir>` | Pin lab deps in the script block; each exercise pins its deps in `requirements.txt` (may be empty) |
 | JavaScript / TypeScript | `lab.ts` | `bun lab.ts` | `bun test <dir>` | `node`/`npx tsx` and `vitest` also fine |
 | Rust | `src/bin/lab.rs` in a lesson crate | `cargo run --bin lab` | `cargo test` | One crate per lesson keeps builds small |
 | Go | `lab/main.go` in a lesson module | `go run ./lab` | `go test ./...` | Each lesson folder has its own `go.mod` (`go mod init lesson<NNN>`) |
-| Java | `Lab.java` | `java Lab.java` | `java -ea TestSolution.java` | Single-file source launch, assert-based tests; no build tool needed |
+| Java | `Lab.java` | `java Lab.java` | `javac -d out *.java && java -ea -cp out TestSolution` | Run from the exercise folder; assert-based tests, no build tool; works on JDK 17+ (`out/` is gitignored) |
 | C / C++ | `lab.c` | `cc -O2 lab.c -o lab.out && ./lab.out` | `cc test.c solution.c -o test.out && ./test.out` | Binaries land in the lesson folder and are gitignored (`*.out`) |
 | SQL | `lab.sql` | `duckdb < lab.sql` | expected-output diff | DuckDB needs no server |
 | Shell | `lab.sh` | `bash lab.sh` | `bats <dir>` | |
