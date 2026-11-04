@@ -66,7 +66,7 @@ Two kinds of repo, and one direction of reference:
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/repo-model-dark.svg">
-  <img alt="The plugin creates a private learning repo per subject, which reads your linked work and personal projects; projects never reference it." src="docs/diagrams/repo-model-light.svg" width="880">
+  <img alt="The plugin creates a private learning repo per subject. Study skills read your linked work and personal projects; in build mode Claude codes in the project with you. Projects never reference the learning repo." src="docs/diagrams/repo-model-light.svg" width="880">
 </picture>
 
 - **This repo** is the method only: skills, templates, docs. No lessons, no learner data.

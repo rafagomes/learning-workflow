@@ -17,6 +17,9 @@ THEMES = {
 }
 
 
+MARKER_COLORS = ("line", "purple", "green", "blue", "orange")
+
+
 class Svg:
     def __init__(self, w, h, t):
         self.w, self.h, self.t, self.parts = w, h, t, []
@@ -27,14 +30,18 @@ class Svg:
     def text(self, x, y, s, size=13, weight=400, color="text", anchor="start", mono=False):
         fam = MONO if mono else SANS
         self.add(f'<text x="{x}" y="{y}" font-family="{fam}" font-size="{size}" font-weight="{weight}" '
-                 f'fill="{self.t.get(color, color)}" text-anchor="{anchor}" xml:space="preserve">{escape(s)}</text>')
+                 f'fill="{self.t[color]}" text-anchor="{anchor}" xml:space="preserve">{escape(s)}</text>')
 
-    def card(self, x, y, w, h, accent, title=None, sub=None, lines=(), mono_lines=False, dashed=False, tint=True):
+    def box(self, x, y, w, h, accent, rx=12, dashed=False, plain=False, stroke=1.5):
+        # Opaque underlay first, so arrows passing behind never show through the translucent tint.
         c = self.t[accent]
-        fill = c + self.t["fill_alpha"] if tint else self.t["card"]
-        dash = ' stroke-dasharray="5 4"' if dashed else ""
-        self.add(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="12" fill="{self.t["card"]}"/>')
-        self.add(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="12" fill="{fill}" stroke="{c}" stroke-width="1.5"{dash}/>')
+        fill = self.t["card"] if plain else c + self.t["fill_alpha"]
+        dash = ' stroke-dasharray="6 4"' if dashed else ""
+        self.add(f'<rect x="{x:g}" y="{y:g}" width="{w:g}" height="{h:g}" rx="{rx}" fill="{self.t["card"]}"/>')
+        self.add(f'<rect x="{x:g}" y="{y:g}" width="{w:g}" height="{h:g}" rx="{rx}" fill="{fill}" stroke="{c}" stroke-width="{stroke}"{dash}/>')
+
+    def card(self, x, y, w, h, accent, title=None, sub=None, lines=()):
+        self.box(x, y, w, h, accent)
         ty = y + 26
         if title:
             self.text(x + 16, ty, title, 14, 600)
@@ -43,30 +50,24 @@ class Svg:
             self.text(x + 16, ty, sub, 12, 400, accent)
             ty += 22
         for line in lines:
-            self.text(x + 16, ty, line, 12.5, 400, "muted", mono=mono_lines)
+            self.text(x + 16, ty, line, 12.5, 400, "muted")
             ty += 19
 
-    def pill(self, cx, cy, s, accent, mono=False, size=12.5):
-        w = len(s) * (7.6 if mono else 6.9) + 26
-        c = self.t[accent]
-        self.add(f'<rect x="{cx - w / 2:.1f}" y="{cy - 14}" width="{w:.1f}" height="28" rx="14" fill="{self.t["card"]}"/>')
-        self.add(f'<rect x="{cx - w / 2:.1f}" y="{cy - 14}" width="{w:.1f}" height="28" rx="14" '
-                 f'fill="{c}{self.t["fill_alpha"]}" stroke="{c}" stroke-width="1.2"/>')
-        self.text(cx, cy + 4.5, s, size, 500, accent if not mono else "text", "middle", mono)
+    def pill(self, cx, cy, s, accent, size=12.5):
+        w = round(len(s) * size * 0.55 + 26, 1)
+        self.box(cx - w / 2, cy - 14, w, 28, accent, rx=14, stroke=1.2)
+        self.text(cx, cy + 4.5, s, size, 500, accent, "middle")
 
-    def arrow(self, d, color="line", dashed=False, label=None, lx=0, ly=0, anchor="middle"):
-        c = self.t.get(color, color)
+    def arrow(self, d, color="line", dashed=False):
+        assert color in MARKER_COLORS, f"no arrowhead marker for {color!r}"
         dash = ' stroke-dasharray="5 4"' if dashed else ""
-        mid = "m-" + color
-        self.add(f'<path d="{d}" fill="none" stroke="{c}" stroke-width="1.6"{dash} marker-end="url(#{mid})"/>')
-        if label:
-            self.text(lx, ly, label, 12, 500, "muted", anchor)
+        self.add(f'<path d="{d}" fill="none" stroke="{self.t[color]}" stroke-width="1.6"{dash} marker-end="url(#m-{color})"/>')
 
     def render(self, title, desc):
         markers = "".join(
             f'<marker id="m-{k}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">'
             f'<path d="M0,0 L10,5 L0,10 z" fill="{self.t[k]}"/></marker>'
-            for k in ("line", "purple", "green", "blue", "orange"))
+            for k in MARKER_COLORS)
         return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.w}" height="{self.h}" viewBox="0 0 {self.w} {self.h}" '
                 f'role="img" aria-labelledby="t d"><title id="t">{escape(title)}</title><desc id="d">{escape(desc)}</desc>'
                 f'<defs>{markers}</defs>{"".join(self.parts)}</svg>\n')
@@ -74,8 +75,8 @@ class Svg:
 
 def repo_model(t):
     s = Svg(880, 330, t)
-    s.card(20, 30, 210, 172, "purple", "learning-workflow", "this plugin · public",
-           ["skills/", "  init · plan · build · off", "  curriculum · teach", "  practice · quiz · reflect", "templates/ · docs/"])
+    s.card(20, 30, 210, 191, "purple", "learning-workflow", "this plugin · public",
+           ["skills/", "  init · plan · build · off", "  curriculum · teach", "  practice · quiz · reflect", "  init/templates/", "hooks/ · docs/"])
     s.card(330, 30, 240, 210, "green", "Your learning repo", "one per subject · private",
            ["LEARNING.md · PROGRESS.md", "curriculum/ · plans/", "lessons/", "  lesson · lab · exercises", "builds/ · reflections/", "flashcards/  scratch/"])
     s.card(670, 30, 190, 84, "orange", "Project A", "work", ["your employer's repo"])
@@ -84,15 +85,17 @@ def repo_model(t):
     s.text(278, 86, "/learn:init", 12, 500, "muted", "middle", True)
     s.arrow("M230,150 L326,150", "purple")
     s.text(278, 140, "reads · writes", 12, 500, "muted", "middle")
-    s.arrow("M570,96 L666,72", dashed=True)
-    s.arrow("M570,150 L666,176", dashed=True)
-    s.text(618, 118, "reads, cites", 12, 500, "muted", "middle")
-    s.text(618, 135, "path@sha", 12, 500, "muted", "middle", True)
+    s.arrow("M570,70 L666,64", dashed=True)
+    s.arrow("M570,200 L666,188", dashed=True)
+    s.text(618, 104, "study: reads,", 12, 500, "muted", "middle")
+    s.text(618, 121, "cites path@sha", 12, 500, "muted", "middle")
+    s.text(618, 141, "build mode:", 12, 500, "blue", "middle")
+    s.text(618, 158, "codes with you", 12, 500, "blue", "middle")
     s.text(765, 240, "Projects never point", 12, 400, "muted", "middle")
     s.text(765, 257, "back at the learning repo", 12, 400, "muted", "middle")
     s.pill(440, 294, "registry + learn-mode state: ~/.config/learning-workflow/ (outside every repo)", "line", size=12)
     return s.render("How the repos relate",
-                    "The plugin creates and works in a private learning repo per subject, which reads linked work and personal projects; projects never reference it.")
+                    "The plugin creates and works in a private learning repo per subject. Study skills read linked work and personal projects; in build mode Claude codes in the project with you. Projects never reference the learning repo.")
 
 
 def build_mode(t):
@@ -104,8 +107,7 @@ def build_mode(t):
     s.arrow("M440,78 L476,78")
     # the prompt loop
     x, y, w, h = 300, 168, 560, 170
-    c = t["blue"]
-    s.add(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="16" fill="{c}{t["fill_alpha"]}" stroke="{c}" stroke-width="1.5" stroke-dasharray="6 4"/>')
+    s.box(x, y, w, h, "blue", rx=16, dashed=True)
     s.text(x + 18, y + 28, "Every prompt, until the step is done", 14, 600)
     items = [("Code at your level", "claude · adaptive · you"),
              ("▸ Concept note", "only when a decision needs it"),
@@ -114,7 +116,7 @@ def build_mode(t):
     for i, (a, b) in enumerate(items):
         ix = x + 18 + (i % 2) * 272
         iy = y + 46 + (i // 2) * 56
-        s.add(f'<rect x="{ix}" y="{iy}" width="254" height="46" rx="10" fill="{t["card"]}" stroke="{t["border"]}"/>')
+        s.box(ix, iy, 254, 46, "border", rx=10, plain=True, stroke=1)
         s.text(ix + 14, iy + 20, a, 13, 600)
         s.text(ix + 14, iy + 37, b, 12, 400, "muted")
     s.pill(x + w - 128, y, "hook re-injects state", "purple", size=11.5)
@@ -125,7 +127,8 @@ def build_mode(t):
     s.card(20, 270, 240, 120, "green", "Done-check → wrap-up", "3–5 questions on your code",
            ["build log · flashcards · PROGRESS", "learn mode off", "then /learn:build <next step>"])
     s.arrow("M140,248 L140,266")
-    s.text(860, 362, "/learn:off pauses early and saves what you covered", 12, 400, "muted", "end")
+    s.text(860, 362, "Deep concepts are noted for /learn:teach later.", 12, 400, "muted", "end")
+    s.text(860, 381, "/learn:off pauses early and saves what you covered.", 12, 400, "muted", "end")
     return s.render("Build mode",
                     "A dev plan becomes a learning plan; /learn:build turns learn mode on for a step; every prompt codes at your level with concept notes, predictions and deep dives; when the step is done a done-check and wrap-up run and learn mode turns off.")
 
@@ -164,15 +167,12 @@ def study_loop(t):
 
 
 def statuses(t):
-    s = Svg(880, 350, t)
+    s = Svg(880, 368, t)
     w, y = 110, 150
     xs = dict(todo=20, learning=165, practised=310, ready=455, built=600, reflected=745)
     colors = dict(todo="line", learning="green", practised="green", ready="blue", built="purple", reflected="purple")
     def node(name, x, yy, c):
-        col = t[c]
-        fill = t["card"] if c == "line" else col + t["fill_alpha"]
-        s.add(f'<rect x="{x}" y="{yy}" width="{w}" height="40" rx="20" fill="{t["card"]}"/>')
-        s.add(f'<rect x="{x}" y="{yy}" width="{w}" height="40" rx="20" fill="{fill}" stroke="{col}" stroke-width="1.5"/>')
+        s.box(x, yy, w, 40, c, rx=20, plain=(c == "line"))
         s.text(x + w / 2, yy + 25, name, 13.5, 600, "text", "middle", True)
     for n, x in xs.items():
         node(n, x, y, colors[n])
@@ -188,17 +188,17 @@ def statuses(t):
     s.arrow(f"M475,146 C440,96 270,96 235,146", "orange", True)
     s.arrow(f"M330,146 C315,124 270,124 255,146", "orange", True)
     s.text(355, 92, "missed check", 11.5, 500, "muted", "middle")
-    c = t["blue"]
     for x in (60, 205, 350):
-        s.add(f'<path d="M{x},190 L{x},250" fill="none" stroke="{c}" stroke-width="1.6"/>')
+        s.add(f'<path d="M{x},190 L{x},250" fill="none" stroke="{t["blue"]}" stroke-width="1.6"/>')
     s.arrow(f"M60,250 L655,250 L655,194", "blue")
     s.text(360, 270, "build mode: done-check right → built", 12, 500, "blue", "middle")
-    s.text(20, 312, "Statuses move back only on evidence. Build mode can also take claimed → built (check right) or claimed → learning (missed);", 12, 400, "muted")
-    s.text(20, 331, "a failed first quiz changes nothing, and built or reflected keep their status.", 12, 400, "muted")
+    s.text(20, 312, "Missed check: a failed quiz re-check, or a missed build-mode done-check. Statuses move back only on evidence.", 12, 400, "muted")
+    s.text(20, 331, "Build mode also: a concept shown, or missed, goes todo → learning; claimed → built (right) or learning (missed).", 12, 400, "muted")
+    s.text(20, 350, "A failed first quiz changes nothing, and built or reflected keep their status.", 12, 400, "muted")
     return s.render("Topic and concept statuses",
                     "Main path todo, learning, practised, ready, built, reflected. Self-assessed claimed goes to ready on a passed quiz or back to todo on a failed one. A missed check sends practised or ready back to learning. In build mode a right done-check moves todo, learning or practised straight to built.")
 
 
 for name, fn in (("repo-model", repo_model), ("build-mode", build_mode), ("study-loop", study_loop), ("statuses", statuses)):
     for theme, t in THEMES.items():
-        (OUT / f"{name}-{theme}.svg").write_text(fn(t))
+        (OUT / f"{name}-{theme}.svg").write_text(fn(t), encoding="utf-8", newline="\n")
