@@ -16,7 +16,7 @@ Resolve the learning repo and the current project as `/learn:init` describes. If
 
 ## 2. Find the gaps
 
-Read `LEARNING.md` (profile) and `PROGRESS.md` (what's already `ready`). Ask a short self-assessment (one AskUserQuestion, multiSelect) listing the 6–10 load-bearing concepts the source depends on: "Which of these could you explain to a colleague today?" Ticked items are marked `known (self-assessed)` and get a quiz instead of a lesson.
+Read `LEARNING.md` (profile) and `PROGRESS.md` (what's already `ready`). Ask a short self-assessment (one AskUserQuestion, multiSelect) listing the 6–10 load-bearing concepts the source depends on: "Which of these could you explain to a colleague today?" Ticked items get status `claimed`: they count as met prerequisites, and get a quiz instead of a lesson (`claimed` → `ready` on a pass, → `todo` on a fail).
 
 ## 3. Write the track
 

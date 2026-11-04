@@ -5,7 +5,7 @@ argument-hint: "<track>/<topic-number> | <topic>"
 ---
 Teach a topic. Argument: $ARGUMENTS
 
-Resolve the learning repo and current project as `/learn:init` describes. Read `LEARNING.md` (profile, toolchain, data policy) and, if the topic is in a track, its entry in `curriculum/<track>.md` (why it matters, ready-when, touchpoint). With no argument, pick the first `todo` topic whose prerequisites are `ready`.
+Resolve the learning repo and current project as `/learn:init` describes. Read `LEARNING.md` (profile, toolchain, data policy) and, if the topic is in a track, its entry in `curriculum/<track>.md` (why it matters, ready-when, touchpoint). With no argument, pick the first `todo` topic whose prerequisites are all `ready`, `claimed`, `built` or `reflected`.
 
 ## How to teach
 
