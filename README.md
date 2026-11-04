@@ -83,6 +83,7 @@ flowchart LR
 - **This repo** is the method only: skills, templates, docs. No lessons, no learner data.
 - **A learning repo** is yours, private by default, one per subject. It holds everything you study and keeps a log of it in git.
 - **Projects** are never edited from a learning session and never point back at the learning repo. What you learn reaches them through their own normal workflow.
+- **There's no mode to switch on.** Linking a project writes nothing into it; learning starts when you run a `/learn:` command and ends with that session. See the [FAQ](docs/FAQ.md#is-there-a-learning-mode-i-turn-on-and-off).
 
 ### The loop
 

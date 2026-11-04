@@ -3,6 +3,9 @@
 **Is this for learning AI?**
 No. It's a learning workflow that uses an AI (Claude Code) as the tutor. The subject can be anything: a programming language, a framework, maths, system design, or something with no code at all.
 
+**Is there a learning mode I turn on and off?**
+No, there's nothing to toggle and nothing is set inside your projects. Installing the plugin only makes the `/learn:*` commands available. Linking a project only adds an entry to your local registry (`~/.config/learning-workflow/spaces.json`). Learning happens when you start it, by running a `/learn:` command or asking "teach me X properly" or "quiz me on Y". Otherwise you work as usual. To keep the skills from triggering on phrasing in one project, disable the plugin there in the project's local settings (`.claude/settings.local.json`: `"enabledPlugins": {"learn@learning-workflow": false}`). To turn it off everywhere, run `claude plugin disable learn@learning-workflow`. Claude Code's built-in *Learning* output style (`/output-style learning`) is a separate toggle that makes Claude explain while it codes; it pairs well with building a phase you just studied.
+
 **Do I need a project?**
 No. `/learn:init <subject>` with no paths creates a learning repo for the subject alone, and `/learn:curriculum` can build a track from a goal in plain words. Linking projects makes lessons concrete, but it's optional.
 
