@@ -10,7 +10,7 @@ flowchart TB
     end
     TOOLS --> REG["~/.config/learning-workflow/spaces.json<br/>(registry)"]
     TOOLS --> LR["Learning repo<br/>(git, private)"]
-    TOOLS -. read only .-> PR["Linked projects"]
+    TOOLS -. "study: read only · build mode: codes under project rules" .-> PR["Linked projects"]
     TOOLS --> TC["Local toolchain<br/>run + test commands"]
     TOOLS --> ACT["~/.config/learning-workflow/active/<br/>(learn-mode state)"]
     HK["UserPromptSubmit hook<br/>hooks/learn-mode.sh"] -->|reads| ACT
@@ -33,7 +33,7 @@ skills/
     SKILL.md              create/extend a learning repo; defines the shared contract
     toolchains.md         default run/test commands per subject
     templates/            copied into every new learning repo
-      LEARNING.md  PROGRESS.md  CLAUDE.md  gitignore  deck.md  tools/guard.sh
+      LEARNING.md  PROGRESS.md  CLAUDE.md  gitignore  deck.md  tools/guard.sh  tools/hooks/pre-commit
   plan/SKILL.md           dev plan → learning plan, by step ID
   build/SKILL.md          learn mode for a step
   off/SKILL.md            end learn mode early
@@ -69,9 +69,9 @@ Keeping these in one place means a change to resolution or policy can't silently
       "created": "2026-11-04",
       "projects": [
         {"slug": "billing-service", "path": "/home/me/work/billing-service",
-         "remote": "git@github.com:acme/billing-service.git", "sensitivity": "work"},
+         "remote": "git@github.com:acme/billing-service.git", "branch": "main", "sensitivity": "work"},
         {"slug": "ray-tracer", "path": "/home/me/code/ray-tracer",
-         "remote": null, "sensitivity": "personal"}
+         "remote": null, "branch": "main", "sensitivity": "personal"}
       ]
     }
   ]
@@ -83,6 +83,7 @@ Keeping these in one place means a change to resolution or policy can't silently
 | `slug` | Subject identifier, also the default directory name |
 | `path` | Absolute path of the learning repo |
 | `projects[].slug` | Short name used in citations (`<slug>:path@sha`) |
+| `projects[].path`, `remote`, `branch` | Where the project lives, its origin (or `null`) and default branch; kept only here, never in git |
 | `projects[].sensitivity` | `work` (paraphrase, quote sparingly, never data) or `personal` |
 
 Entries are only ever added or extended by the skills; removal needs your confirmation. The registry lives outside every repo, so neither the learning repo nor any project records the other's path in git.

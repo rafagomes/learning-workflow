@@ -44,7 +44,7 @@ Turns learn mode on for one step in the current project.
    - a one-line prediction before tests, evals or benchmarks;
    - during background waits, one offer of a 2–5 minute deep dive with 1–2 "is this clear?" questions.
 3. **Done-check** when you say the step is done or its PR opens: the step's questions, one at a time; misses become flashcards.
-4. **Wrap-up:** sweeps the project for `TODO(learner)` markers, writes `builds/<date>-<step>.md`, sets the step `done`, records each concept in `PROGRESS.md` → Concepts (`built` if answered correctly, `learning` if missed), commits in the learning repo, and deletes the state file.
+4. **Wrap-up:** sweeps the project for `TODO(learner)` markers, writes `builds/<date>-<step>.md`, sets the step `done`, records each concept in `PROGRESS.md` → Concepts (answered correctly → `built`; missed → back to `learning` with a flashcard, unless already `built`/`reflected`; shown but unchecked → `learning` if it was `todo`), commits in the learning repo, and deletes the state file.
 
 With no plan, it can create a one-step plan from your description.
 
@@ -75,7 +75,7 @@ Builds a track in `curriculum/<track>.md`.
 /learn:teach <track>/<topic-number> | <topic>
 ```
 
-With no argument, picks the first `todo` topic whose prerequisites are `ready`. Writes `lessons/<NNN>-<topic>/lesson.md` while teaching.
+With no argument, picks the first `todo` topic whose prerequisites are all `ready`, `claimed`, `built` or `reflected`. Writes `lessons/<NNN>-<topic>/lesson.md` while teaching.
 
 | Part | Content |
 |---|---|

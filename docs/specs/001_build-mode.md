@@ -19,7 +19,7 @@ Two pieces, linked by step ID:
 
 - `/learn:plan <spec | plan | artifact | goal>`: reads the dev plan (read-only), splits it into steps (keeping the plan's own IDs, or assigning `S1…`), and for each step lists the concepts it needs, marked `known` (already `ready`/`claimed` in PROGRESS, or self-assessed) or `new`, plus the hands-on level and 3–5 done-check questions. When you can't say what you need to learn, this is where it gets worked out.
 - `/learn:build <step>`: turns learn mode on for that step in the current project. Stays on across prompts until the step is done and checked, or `/learn:off`.
-- `/learn:off`: ends learn mode early; the wrap-up still runs.
+- `/learn:off [no-wrapup]`: ends learn mode early; the wrap-up still runs unless `no-wrapup` is given (the `TODO(learner)` sweep always runs).
 
 ### Behaviour while on
 
@@ -44,7 +44,7 @@ Skill instructions can be lost when the context is compacted, so the mode is bac
 - A plugin `UserPromptSubmit` hook (`hooks/learn-mode.sh`) prints that file as added context on every prompt in that project. No file → no output. A file untouched for 12 hours is treated as stale and ignored.
 - The skill rewrites the file as concepts are shown; `/learn:off` and the wrap-up delete it.
 
-Nothing is written to the project.
+No learn-mode state or learning artefact is written to the project; only the code you build together goes there, under the project's own rules.
 
 ## Verification
 

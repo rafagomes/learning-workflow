@@ -1,6 +1,6 @@
 # Examples
 
-Three walkthroughs, from no project at all to a work project. Output is abbreviated.
+Four walkthroughs: three for the study loop, from no project at all to a work project, and one for build mode. Output is abbreviated.
 
 ## 1. Learning Python from zero, no project
 
@@ -82,3 +82,42 @@ When `/learn:quiz` says the phase is ready, you build it in `~/work/payments` th
 ```
 
 The reflection records aggregate results only (for example "duplicate deliveries in staging: 0 over 3 days"), never records.
+
+## 4. Build mode: learn while building a feature
+
+You need to add search to a personal notes app, and you've never built full-text search.
+
+```
+/learn:init search ~/code/notes-app      # level default: adaptive
+/learn:plan "add full-text search to the notes app"
+```
+
+There's no written plan, so Claude asks two questions (what to search, how many notes) and proposes steps. It reads the code they'll touch and writes `plans/notes-search.md`:
+
+| Step | What gets built | Level | New concepts |
+|---|---|---|---|
+| S1 | Tokenizer and inverted index | adaptive | tokenization, inverted index |
+| S2 | Ranking | you | TF-IDF, BM25 (`deep`: worth a `/learn:teach` first) |
+| S3 | Wiring the search box | claude | debouncing |
+
+```
+/learn:build S1
+```
+
+Learn mode turns on for the project, and from here you just prompt:
+
+> **You:** let's add the index module
+> **Claude:** writes the module skeleton and storage plumbing, and leaves `build_index()` with a `TODO(learner)` body for you.
+> ▸ concept: **inverted index**: a map from each term to the notes that contain it, so a query reads a few short lists instead of scanning every note. That's why `build_index()` returns `dict[str, set[int]]`. Want a deeper dive?
+
+You write the function and Claude reviews it. Before running the tests:
+
+> **Claude:** What do you expect `search("Running")` to return for a note containing "run"?
+> **You:** nothing, we don't stem
+> **Claude:** runs the tests: right, no match. A stemming note goes to the step's follow-ups.
+
+While a slow indexing benchmark runs in the background, Claude offers a 3-minute look at why lowercasing happens at both index and query time, then asks one "is this clear?" question.
+
+> **You:** S1 is done
+
+Claude asks four questions about the code you built, one at a time. You miss one about memory growth, and it becomes a flashcard. Claude checks the project for leftover `TODO(learner)` markers (none), writes `builds/2026-11-06-S1.md`, marks the concepts `built` in `PROGRESS.md`, commits in the learning repo, and turns learn mode off. The notes app now has the index, and nothing in it mentions any of this.
