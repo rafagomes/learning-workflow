@@ -28,7 +28,7 @@ Asking an assistant to "explain X" gives you an answer you forget by next week. 
 - **Build mode** (learn while you code). You work on a real step of a real project and keep prompting as usual. Claude codes with you at the hands-on level you choose, stays quiet unless a decision depends on something you haven't learned yet, asks you to predict before running things, uses background waits for short deep dives, and checks what you learned when the step is done.
 - **Study loop** (learn before you code). A curriculum from your plan, interactive lessons with runnable labs, exercises with tests, and quizzes.
 
-Your lessons live in **your own learning repo**, which the plugin creates. You can link it to the projects you work on, at your job or on the side, so lessons use real situations from your code while those projects stay untouched.
+Your lessons live in **your own learning repo**, which the plugin creates. You can link it to the projects you work on, at your job or on the side, so lessons use real situations from your code while those projects stay free of learning material.
 
 ## Quick start
 
