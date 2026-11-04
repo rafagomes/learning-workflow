@@ -72,7 +72,7 @@ Sensitivity changes how much may be quoted (see the policy). When in doubt, use 
 
 ## Registry
 
-`~/.config/learning-workflow/spaces.json`:
+`${LEARNING_WORKFLOW_HOME:-~/.config/learning-workflow}/spaces.json` (the same root the learn-mode state uses):
 
 ```json
 {
@@ -100,7 +100,7 @@ Create the file if missing; add or extend entries; never remove anything without
 3. Else the only registered space.
 4. Else ask which one. If none is registered, offer `/learn:init`.
 
-The **current project** is the linked project containing the current directory, or the one the user names. Skills that cite code use it.
+The **current project** is the linked project whose path contains the current directory (compare whole path components, so `/x/app` doesn't match `/x/app2`), or, inside a git worktree, the project whose path is that repo's main worktree (the first entry of `git worktree list --porcelain`), or the one the user names. Skills that cite code use it.
 
 ## Finish
 

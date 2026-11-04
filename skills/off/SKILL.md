@@ -9,10 +9,15 @@ Turn learn mode off. Argument: $ARGUMENTS
 
 ```bash
 # state-path
-top=$(git rev-parse --show-toplevel 2>/dev/null || pwd); state="${LEARNING_WORKFLOW_HOME:-${HOME:-/nonexistent}/.config/learning-workflow}/active/${top//\//_}.md"
+top=$(git rev-parse --show-toplevel 2>/dev/null || pwd); key=${top//[%]/%25}; state="${LEARNING_WORKFLOW_HOME:-${HOME:-/nonexistent}/.config/learning-workflow}/active/${key//\//%2F}.md"
 echo "$state"
 ```
 
    If `"$state"` doesn't exist, say learn mode isn't on here and stop.
-2. Unless the argument is `no-wrapup`, run the wrap-up from `/learn:build` (section 4), including the `TODO(learner)` sweep (`git grep -n --untracked "TODO(learner)"`), with the step left `in progress` rather than `done`, and skip the done-check. With `no-wrapup`, still run the `TODO(learner)` sweep. Concepts shown so far and any predictions still go into `builds/<date>-<step>.md`.
-3. Delete the state file (`rm -f "$state"`) and confirm in one line. The next `/learn:build <step>` resumes the step.
+2. Sweep the project for `TODO(learner)` markers (`git grep -n --untracked "TODO(learner)"`) and resolve or report each one, with or without `no-wrapup`.
+3. Unless the argument is `no-wrapup`, save a partial wrap-up. This is not `/learn:build` section 4: there is no done-check, so nothing is promoted.
+   - Write `builds/<date>-<step>.md` with the concepts shown so far and any predictions, marked as paused.
+   - In the plan, the step **stays `in progress`**; add a Log line saying it was paused.
+   - In `PROGRESS.md`, concepts shown but still `todo` → `learning`; no other status changes.
+   - Commit in the learning repo: `docs: build log <step> (paused)`.
+4. Delete the state file (`rm -f "$state"`) and confirm in one line. The next `/learn:build <step>` resumes the step.

@@ -20,6 +20,6 @@ Read `flashcards/deck.md`, take every card whose `next` date is today or earlier
 
 **Score:** ready at ≥ 80% **and** all critical questions right. Otherwise list the gaps and point to the exact lesson part or exercise to revisit.
 
-Write `lessons/<NNN>-<topic>/quiz.md` (date, questions, learner's answers summarised, score, gaps). Add a flashcard per miss. Update `PROGRESS.md`: passed → `ready`; failed `claimed` → `todo`; failed `ready` (a re-check) → `learning`, log, commit `docs: quiz <topic>`.
+Write `lessons/<NNN>-<topic>/quiz.md` (date, questions, learner's answers summarised, score, gaps). Add a flashcard per miss. Update `PROGRESS.md`: passed → `ready`; failed `claimed` → `todo`; failed `ready` (a re-check) → `learning`; failed `built` or `reflected` → unchanged (the gaps become flashcards), log, commit `docs: quiz <topic>`.
 
 When a whole phase's topics are `ready`, say so: the learner can now build that phase in the project, through the project's own workflow. After building it, `/learn:reflect` records the result and moves those topics to `built` and `reflected`.

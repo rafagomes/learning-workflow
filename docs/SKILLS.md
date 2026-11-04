@@ -13,7 +13,7 @@ Creates a learning repo for a subject, or links another project to an existing o
 
 - **Asks** (only what's missing): subject slug, projects to link, location (default `~/Learning/<slug>`, never inside a project), level, depth, lesson language, toolchain (proposed from [toolchains.md](../skills/init/toolchains.md) or detected from a linked project's manifest).
 - **Creates**: `LEARNING.md` (including the default hands-on level for build mode), `PROGRESS.md`, `CLAUDE.md`, `.gitignore`, `flashcards/deck.md`, `tools/guard.sh` with `tools/hooks/pre-commit` (enabled via repo-local `core.hooksPath`), and empty `curriculum/`, `plans/`, `builds/`, `lessons/`, `reflections/`, `scratch/`.
-- **Registers** the repo in `~/.config/learning-workflow/spaces.json`.
+- **Registers** the repo in `spaces.json` under `$LEARNING_WORKFLOW_HOME` (default `~/.config/learning-workflow/`).
 - **Never** creates a remote unless you confirm; it offers a private GitHub repo.
 - Per linked project it records slug, path, remote, default branch and sensitivity (`work` by default for org-owned repos) in the registry; `LEARNING.md` gets only the slug, sensitivity and a neutral one-line description.
 
@@ -54,7 +54,7 @@ With no plan, it can create a one-step plan from your description.
 /learn:off [no-wrapup]
 ```
 
-Ends learn mode early: sweeps `TODO(learner)` markers, saves the wrap-up with the step left `in progress` (skips the done-check), then deletes the state file. `/learn:build <step>` resumes later.
+Ends learn mode early: sweeps `TODO(learner)` markers, saves a paused build log (no done-check, so nothing is promoted; shown `todo` concepts → `learning`; the step stays `in progress`), then deletes the state file. `/learn:build <step>` resumes later.
 
 ## `/learn:curriculum`
 
