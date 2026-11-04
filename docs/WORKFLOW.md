@@ -22,7 +22,39 @@ Learning material is personal, exploratory and full of half-right attempts. Proj
 
 The learning repo reads projects; nothing reads the learning repo. Anything you learn that should reach a project is rewritten there through that project's own workflow (spec, branch, PR, review).
 
-## The loop
+## Two ways to learn
+
+| | Build mode | Study loop |
+|---|---|---|
+| When | You have real work to do now | Before the work, or for a deep concept |
+| Where | In the project session | In the learning repo |
+| Driven by | A learning plan linked to the dev plan (`/learn:plan`) | A curriculum (`/learn:curriculum`) |
+| Teaching | Short concept notes only when a decision needs them; deep dives during background waits | Full lessons with labs |
+| Checking | Predictions before runs; done-check when the step is done | Exercises with tests; quizzes |
+| Shared | One learning repo, flashcard deck, `PROGRESS.md` | ← same |
+
+Verdict: start with build mode for most work; reach for the study loop when build mode flags a `deep` concept or you're new to the subject.
+
+### Build mode
+
+```mermaid
+flowchart TD
+    A["Dev plan in the project<br/>(spec, roadmap, issue, goal)"] --> B["/learn:plan<br/>per step: concepts (known/new),<br/>level, done-check"]
+    B --> C["/learn:build step<br/>due flashcards, mode on"]
+    C --> D["Keep prompting: code at your level<br/>▸ concept notes only when needed<br/>predict before runs · idle-time deep dives"]
+    D --> E{"Step done?<br/>(you say so / PR opens)"}
+    E -- no --> D
+    E -- yes --> F["Done-check: 3–5 questions<br/>on what you built"]
+    F --> G["Wrap-up: builds/ log, flashcards,<br/>plan + PROGRESS updated, mode off"]
+    G --> C
+    D -. "deep concept" .-> T["/learn:teach later"]
+```
+
+**Hands-on levels.** `claude` (Claude codes and explains the decisions that matter), `adaptive` (Claude writes the plumbing and leaves you the core with a marked gap), or `you` (you code, Claude coaches). There's a default per subject, and any step or prompt can override it.
+
+**Why it works.** Concepts arrive exactly when a decision depends on them (just in time). Predictions before runs exercise the generation effect. The done-check is retrieval practice on your own code. Misses feed the same spaced-repetition deck.
+
+## The study loop
 
 ```mermaid
 flowchart TD
@@ -47,7 +79,7 @@ flowchart TD
 
 | Principle | How the skills apply it | Why |
 |---|---|---|
-| **Learn just in time** | Topics come from the plan you're about to execute | Motivation and transfer are highest when the use is immediate |
+| **Learn just in time** | Topics come from the plan you're about to execute; in build mode, a concept appears when a decision needs it | Motivation and transfer are highest when the use is immediate |
 | **Predict, then run** | Every lab and many quiz items ask for a prediction first | Generating an answer before seeing it (the *generation effect*) and confronting a wrong prediction both improve retention |
 | **Retrieval over rereading** | Quizzes, flashcards, "check" questions | *Retrieval practice* (the testing effect) beats rereading for long-term retention |
 | **Spaced repetition** | Leitner boxes at 1, 2, 4, 8, 16 days | Spacing reviews out beats massing them (the *spacing effect*) |

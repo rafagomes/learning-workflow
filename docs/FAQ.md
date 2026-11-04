@@ -3,8 +3,19 @@
 **Is this for learning AI?**
 No. It's a learning workflow that uses an AI (Claude Code) as the tutor. The subject can be anything: a programming language, a framework, maths, system design, or something with no code at all.
 
-**Is there a learning mode I turn on and off?**
-No, there's nothing to toggle and nothing is set inside your projects. Installing the plugin only makes the `/learn:*` commands available. Linking a project only adds an entry to your local registry (`~/.config/learning-workflow/spaces.json`). Learning happens when you start it, by running a `/learn:` command or asking "teach me X properly" or "quiz me on Y". Otherwise you work as usual. To keep the skills from triggering on phrasing in one project, disable the plugin there in the project's local settings (`.claude/settings.local.json`: `"enabledPlugins": {"learn@learning-workflow": false}`). To turn it off everywhere, run `claude plugin disable learn@learning-workflow`. Claude Code's built-in *Learning* output style (`/output-style learning`) is a separate toggle that makes Claude explain while it codes; it pairs well with building a phase you just studied.
+**How do I turn learn mode on and off?**
+Learn mode is per step of a plan. `/learn:build <step>` turns it on for the project you're in, and it stays on across prompts (and survives context compaction) until you finish the step: you say it's done or its PR is opened, the done-check runs, the wrap-up is saved, and the mode turns off. `/learn:off` stops it early. Nothing is written to the project. The state is a small file in `~/.config/learning-workflow/active/` that a plugin hook reads on each prompt, and it's ignored after 12 hours without use. Without learn mode, the plugin does nothing until you run a `/learn:` command or ask something like "teach me X properly".
+
+To keep the skills from triggering at all in one project, set `"enabledPlugins": {"learn@learning-workflow": false}` in that project's `.claude/settings.local.json`. To turn the plugin off everywhere: `claude plugin disable learn@learning-workflow`.
+
+**Build mode or the study loop?**
+Use build mode when you have real work to do and want to learn what it needs as you go. Use the study loop for foundations you want before starting, or for a `deep` concept that build mode flagged. They share one learning repo, deck and progress file.
+
+**I don't know what I need to learn for this work.**
+That's what `/learn:plan` is for. Point it at the spec, plan or goal; it reads the code the steps will touch and lists, per step, the concepts a competent engineer would need. A quick self-check marks which ones are new to you. Gaps found while coding are added to the plan as you go.
+
+**Will learn mode slow down the work?**
+Rarely. It's silent by default: a concept note appears only when a decision depends on something new to you, and deeper dives are offers, not interruptions. Background waits are the natural time for them. At level `claude`, delivery speed is about the same as without the plugin.
 
 **Do I need a project?**
 No. `/learn:init <subject>` with no paths creates a learning repo for the subject alone, and `/learn:curriculum` can build a track from a goal in plain words. Linking projects makes lessons concrete, but it's optional.

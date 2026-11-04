@@ -8,6 +8,8 @@ This repo is the `learn` Claude Code plugin: the learning **workflow** only. It 
 - `skills/<name>/SKILL.md`: one skill per directory; frontmatter `name`, `description` with trigger phrases, `argument-hint`.
 - `skills/init/templates/`: files copied into a new learning repo. `skills/init/toolchains.md`: default run/test commands.
 - `docs/`: WORKFLOW, ARCHITECTURE, SKILLS, DATA-POLICY, EXAMPLES, FAQ.
+- `hooks/`: the learn-mode `UserPromptSubmit` hook. Keep it fast, silent when inactive, and always exit 0.
+- `docs/specs/`: feature designs.
 - `tests/`: shell checks run by CI.
 
 ## Rules

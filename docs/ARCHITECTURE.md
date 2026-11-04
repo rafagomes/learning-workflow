@@ -12,9 +12,12 @@ flowchart TB
     TOOLS --> LR["Learning repo<br/>(git, private)"]
     TOOLS -. read only .-> PR["Linked projects"]
     TOOLS --> TC["Local toolchain<br/>run + test commands"]
+    TOOLS --> ACT["~/.config/learning-workflow/active/<br/>(learn-mode state)"]
+    HK["UserPromptSubmit hook<br/>hooks/learn-mode.sh"] -->|reads| ACT
+    HK -->|adds reminder to context| SK
 ```
 
-The plugin is plain Markdown: each skill is a `SKILL.md` that Claude Code loads when you run the command. There is no server, daemon or database. State lives in two places: the **registry** (which learning repos exist and which projects they link) and each **learning repo** (everything you study).
+The plugin is plain Markdown plus one small shell hook: each skill is a `SKILL.md` that Claude Code loads when you run the command. There is no server, daemon or database. State lives in three places: the **registry** (which learning repos exist and which projects they link), the **learn-mode state** (which project has learn mode on, for which step), and each **learning repo** (everything you study).
 
 ## Plugin layout
 
@@ -22,18 +25,24 @@ The plugin is plain Markdown: each skill is a `SKILL.md` that Claude Code loads 
 .claude-plugin/
   plugin.json             plugin manifest (name: learn)
   marketplace.json        marketplace manifest (name: learning-workflow)
+hooks/
+  hooks.json              registers the UserPromptSubmit hook
+  learn-mode.sh           prints the active learn-mode reminder for this project, else nothing
 skills/
   init/
     SKILL.md              create/extend a learning repo; defines the shared contract
     toolchains.md         default run/test commands per subject
     templates/            copied into every new learning repo
       LEARNING.md  PROGRESS.md  CLAUDE.md  gitignore  deck.md  tools/guard.sh
+  plan/SKILL.md            dev plan → learning plan, by step ID
+  build/SKILL.md          learn mode for a step
+  off/SKILL.md            end learn mode early
   curriculum/SKILL.md
   teach/SKILL.md
   practice/SKILL.md
   quiz/SKILL.md
   reflect/SKILL.md
-docs/                     this documentation
+docs/                     this documentation (specs/ holds feature designs)
 tests/                    guard and manifest checks run by CI
 ```
 
@@ -78,6 +87,16 @@ Keeping these in one place means a change to resolution or policy can't silently
 
 Entries are only ever added or extended by the skills; removal needs your confirmation. The registry lives outside every repo, so neither the learning repo nor any project records the other's path in git.
 
+## Learn-mode state and hook
+
+A skill's instructions can drop out of context when a long session is compacted, so learn mode doesn't rely on them alone:
+
+1. `/learn:build` writes `~/.config/learning-workflow/active/<key>.md`, where `<key>` is the project's git top-level path with `/` replaced by `_` (worktrees are separate projects). The file is a 3-line reminder: step, plan, level, concepts shown and pending, and the condensed rules.
+2. On every prompt, `hooks/learn-mode.sh` resolves the session's project from the hook input's `cwd`. If that project's file exists and was touched in the last 12 hours, the hook prints it, and Claude Code adds it to the context. Otherwise it prints nothing.
+3. The skill rewrites the file as concepts are shown. The wrap-up and `/learn:off` delete it.
+
+The hook does no parsing beyond reading `cwd`, writes nothing and never fails a prompt (it always exits 0). `tests/hook_test.sh` covers no state, the active project, subdirectories, other projects, a missing `cwd` and stale files. Set `LEARNING_WORKFLOW_HOME` to relocate the state directory.
+
 ## Learning repo layout
 
 ```
@@ -85,6 +104,8 @@ LEARNING.md          identity: learner profile, toolchain, linked projects (slug
 PROGRESS.md          tracks, per-topic status, session log
 CLAUDE.md            rules for any Claude session opened inside the learning repo
 curriculum/<track>.md
+plans/<plan>.md      learning plan, linked by step ID to a project's dev plan
+builds/<date>-<step>.md   build-mode log: concepts met, predictions, done-check
 lessons/<NNN>-<topic>/
   lesson.md          written during /learn:teach
   lab.<ext>          runnable demonstration (toolchain), or a worked problem
@@ -105,6 +126,9 @@ tools/guard.sh       pre-commit guard; tools/hooks/pre-commit runs it
 | Skill | Reads | Writes | Commit |
 |---|---|---|---|
 | init | registry, project manifests | learning repo, registry | `chore: initialize <slug> learning repo`, `chore: link <project>` |
+| plan | dev plan + code it touches (read-only), `PROGRESS.md` | `plans/<plan>.md`, `PROGRESS.md` | `docs: learning plan <plan>` |
+| build | plan step, deck, project (works in it under its own rules) | active state file; `builds/`, plan, deck, `PROGRESS.md` | `docs: build log <step>` |
+| off | active state file | `builds/`, plan, `PROGRESS.md`; deletes state | `docs: build log <step>` |
 | curriculum | source (file, URL, spec, issue), `LEARNING.md`, `PROGRESS.md` | `curriculum/<track>.md`, `PROGRESS.md` | `docs: add <track> curriculum` |
 | teach | curriculum entry, linked project (read-only) | `lessons/<NNN>-<topic>/`, deck, `PROGRESS.md` | `docs: lesson <NNN> <topic>` |
 | practice | lesson | `exercises/`, deck, `PROGRESS.md` | `feat: exercises for <topic>` |
@@ -130,4 +154,6 @@ The guard is a seatbelt, not the policy: the skills also follow the policy when 
 | Registry outside git | Paths committed in the learning repo | Outside: `LEARNING.md` names projects by slug and sensitivity only, so no absolute paths or work remotes reach a repo you might publish |
 | Toolchain recorded per repo | Hard-coded language | Per repo: the same skills teach Python, Rust, SQL or music theory |
 | Plain Markdown state | A database or app | Markdown + git: diffable, portable, readable without the plugin |
+| Learn mode backed by a hook + state file | Rely on the skill staying in context | Hook: survives compaction and long sessions; silent everywhere else |
+| Learn mode keyed by project path | Keyed by session ID | Project path: the skill can compute it, worktrees isolate parallel sessions; a skill can't read its own session ID |
 | Leitner boxes | SM-2 / FSRS scheduling | Leitner: simple enough to keep in a Markdown file and reason about; good enough for a personal deck |
