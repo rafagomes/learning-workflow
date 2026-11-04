@@ -1,7 +1,7 @@
 ---
 name: quiz
 description: "Check readiness for a topic with an adaptive quiz, or run a spaced-repetition flashcard review. Use when the user says 'quiz me', 'test me on X', 'am I ready to build this', 'review my flashcards', or after practice. Marks a topic ready at ≥ 80% with every critical question right, and turns misses into flashcards."
-argument-hint: "<topic> | review"
+argument-hint: "<track>/<n> | <topic> | review"
 ---
 Quiz the learner. Argument: $ARGUMENTS
 
