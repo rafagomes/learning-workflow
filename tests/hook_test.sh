@@ -35,6 +35,13 @@ check "missing cwd: falls back to PWD" "[learn mode] A" "$(cd "$tmp/proj-a" && e
 ss=$(state_for "$tmp/with space/proj"); echo "[learn mode] S" > "$ss"
 check "path with spaces" "[learn mode] S" "$(run "$tmp/with space/proj")"
 
+mkdir -p "$tmp/c/a_b/c" "$tmp/c/a/b_c"; git -C "$tmp/c/a_b/c" init -q; git -C "$tmp/c/a/b_c" init -q
+sc=$(state_for "$tmp/c/a_b/c"); echo "[learn mode] C" > "$sc"
+check "underscore paths don't collide" "" "$(run "$tmp/c/a/b_c")"
+check "underscore path itself" "[learn mode] C" "$(run "$tmp/c/a_b/c")"
+mkdir -p "$tmp/q\"uote"; git -C "$tmp/q\"uote" init -q
+sq=$(state_for "$tmp/q\"uote"); echo "[learn mode] Q" > "$sq"
+check "cwd with an escaped quote" "[learn mode] Q" "$(python3 -c 'import json,sys; print(json.dumps({"cwd":sys.argv[1]}))' "$tmp/q\"uote" | (cd / && "$hook"))"
 sn=$(state_for "$tmp/nogit"); echo "[learn mode] N" > "$sn"
 check "non-git directory" "[learn mode] N" "$(run "$tmp/nogit")"
 check "non-git parent directory: silent" "" "$(run "$tmp")"

@@ -40,7 +40,7 @@ New concepts discovered while coding are added to the step in the plan. A concep
 
 Skill instructions can be lost when the context is compacted, so the mode is backed by state outside every repo:
 
-- `/learn:build` writes `~/.config/learning-workflow/active/<project-key>.md`: a short reminder with the step, level, learning repo, concepts shown and pending, and the condensed rules. `<project-key>` is the git top-level path with `/` replaced by `_`, so separate worktrees are separate.
+- `/learn:build` writes `$LEARNING_WORKFLOW_HOME/active/<project-key>.md` (default `~/.config/learning-workflow/`): a short reminder with the step, level, learning repo, concepts shown and pending, and the condensed rules. `<project-key>` is the git top-level path with `%` escaped as `%25` and `/` as `%2F`, so distinct paths never collide and separate worktrees are separate.
 - A plugin `UserPromptSubmit` hook (`hooks/learn-mode.sh`) prints that file as added context on every prompt in that project. No file → no output. A file untouched for 12 hours is treated as stale and ignored.
 - The skill rewrites the file as concepts are shown; `/learn:off` and the wrap-up delete it.
 

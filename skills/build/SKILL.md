@@ -9,12 +9,12 @@ Resolve the learning repo and the current project as `/learn:init` describes. Fi
 
 ## 1. Start
 
-0. **The project must be linked.** If the current project isn't linked to the resolved learning repo (no `projects[]` entry containing the current directory), offer `/learn:init add <project>` and stop until it is: the project's slug and sensitivity decide what the data policy allows.
+0. **The project must be linked.** If the current project isn't linked to the resolved learning repo (no current project, as `/learn:init` resolves it, including from a worktree), offer `/learn:init add <project>` and stop until it is: the project's slug and sensitivity decide what the data policy allows.
 1. **Find the state file** (run from the project; this exact line is also used by the hook, so keep it verbatim):
 
 ```bash
 # state-path
-top=$(git rev-parse --show-toplevel 2>/dev/null || pwd); state="${LEARNING_WORKFLOW_HOME:-${HOME:-/nonexistent}/.config/learning-workflow}/active/${top//\//_}.md"
+top=$(git rev-parse --show-toplevel 2>/dev/null || pwd); key=${top//[%]/%25}; state="${LEARNING_WORKFLOW_HOME:-${HOME:-/nonexistent}/.config/learning-workflow}/active/${key//\//%2F}.md"
 echo "$state"
 ```
 
