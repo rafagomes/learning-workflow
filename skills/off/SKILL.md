@@ -14,5 +14,5 @@ echo "$state"
 ```
 
    If `"$state"` doesn't exist, say learn mode isn't on here and stop.
-2. Unless the argument is `no-wrapup`, run the wrap-up from `/learn:build` (section 4), including the `TODO(learner)` sweep, with the step left `in progress` rather than `done`, and skip the done-check. With `no-wrapup`, still run the `TODO(learner)` sweep. Concepts shown so far and any predictions still go into `builds/<date>-<step>.md`.
+2. Unless the argument is `no-wrapup`, run the wrap-up from `/learn:build` (section 4), including the `TODO(learner)` sweep (`git grep -n --untracked "TODO(learner)"`), with the step left `in progress` rather than `done`, and skip the done-check. With `no-wrapup`, still run the `TODO(learner)` sweep. Concepts shown so far and any predictions still go into `builds/<date>-<step>.md`.
 3. Delete the state file (`rm -f "$state"`) and confirm in one line. The next `/learn:build <step>` resumes the step.

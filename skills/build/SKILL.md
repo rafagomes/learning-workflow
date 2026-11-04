@@ -63,12 +63,15 @@ When the learner says the step is done, or a PR for it is opened, ask the step's
 
 ## 4. Wrap-up
 
-1. **Sweep the project** for `TODO(learner)` markers left from this step (`git grep -n "TODO(learner)"`). Resolve each with the learner (they finish it, or you do) before anything else; never leave one behind.
+1. **Sweep the project** for `TODO(learner)` markers left from this step (`git grep -n --untracked "TODO(learner)"`, which also covers new files not yet added). Resolve each with the learner (they finish it, or you do) before anything else; never leave one behind.
 2. Write `builds/<date>-<step>.md` in the learning repo: link (`<project-slug>@<shortsha>`, or `<project-slug>#<PR number>`; no branch names, which can carry internal names), concepts shown, predictions vs results, done-check score and misses, follow-ups. Obey the data policy: aggregates, no data or internal names.
 3. Update the plan: the step's Status → `done` and its Log line.
 4. Update `PROGRESS.md`:
    - under **Plans**, the step's status;
-   - under **Concepts** (and the matching Tracks topic, if one exists, so the two never disagree), each concept the step covered, never moving a status backwards: answered correctly in the done-check → `built` unless already `built` or `reflected`; missed or shown but not checked → `learning` unless already further along (a miss still gets a flashcard).
+   - under **Concepts** (and the matching Tracks topic, if one exists, so the two never disagree), each concept the step covered. A done-check is evidence, like a quiz:
+     - answered correctly → `built` (unless already `built` or `reflected`);
+     - missed → `learning` from `todo`, `claimed`, `learning`, `practised` or `ready` (a disproven claim or a forgotten idea needs work again); a missed `built` or `reflected` concept keeps its status. Every miss gets a flashcard;
+     - shown but not checked → `learning` only if it was `todo`; otherwise unchanged.
    - the session log.
 5. Commit in the learning repo: `docs: build log <step>`.
 6. Delete the state file. Learn mode is off; say so in one line and suggest the next step.
