@@ -19,7 +19,7 @@ while IFS= read -r -d '' f; do
   if [ "$size" -gt "$max_bytes" ]; then
     echo "guard: file over 1 MB: $f ($size bytes)" >&2; fail=1
   fi
-done < <(git diff --cached --name-only --no-renames --diff-filter=ACM -z)
+done < <(git diff --cached --name-only --no-renames --diff-filter=ACMT -z)
 
 if command -v gitleaks >/dev/null 2>&1; then
   gitleaks protect --staged --no-banner --redact || fail=1

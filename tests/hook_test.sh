@@ -46,5 +46,8 @@ run "$tmp/proj-a" >/dev/null
 fresh=$(python3 -c 'import os,sys,time; print(int(time.time()-os.path.getmtime(sys.argv[1]) < 60))' "$sa")
 check "prompt refreshes the timestamp" "1" "$fresh"
 
+mkdir -p "$tmp/shim"; printf '#!/bin/sh\nexit 1\n' > "$tmp/shim/touch"; chmod +x "$tmp/shim/touch"
+check "failing touch still prints reminder" "[learn mode] A" "$(printf '{"cwd":"%s"}' "$tmp/proj-a" | PATH="$tmp/shim:$PATH" "$hook")"
+
 out=$(cd "$tmp/proj-a" && env -u HOME -u LEARNING_WORKFLOW_HOME "$hook" </dev/null; echo "rc=$?")
 check "HOME and LEARNING_WORKFLOW_HOME unset: exit 0" "rc=0" "$out"
