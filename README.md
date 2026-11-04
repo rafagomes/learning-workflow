@@ -1,4 +1,4 @@
-<h1 align="center">learning-workflow</h1>
+<h1 align="center">Learning workflow</h1>
 
 <p align="center">
   <strong>Learn any subject with <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a>, while you build or before you do.</strong><br/>
