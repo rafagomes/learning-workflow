@@ -1,0 +1,10 @@
+{
+  "name": "learn",
+  "version": "0.1.0",
+  "description": "Learn any subject with Claude Code as your tutor: a curriculum from your plan, interactive lessons with runnable labs, tested exercises, quizzes, spaced repetition, and reflection on what you built. Lessons live in your own learning repo per subject, linking your projects read-only.",
+  "author": { "name": "Rafa Gomes", "url": "https://github.com/rafagomes" },
+  "homepage": "https://github.com/rafagomes/learning-workflow",
+  "repository": "https://github.com/rafagomes/learning-workflow",
+  "license": "MIT",
+  "keywords": ["learning", "tutor", "education", "spaced-repetition", "curriculum", "quiz", "claude-code"]
+}
