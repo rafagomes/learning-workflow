@@ -27,20 +27,27 @@ if bash -n hooks/learn-mode.sh && bash tests/hook_test.sh; then ok "learn-mode h
 if python3 -c 'import json; json.load(open("hooks/hooks.json"))'; then ok "valid JSON: hooks/hooks.json"; else bad "invalid JSON: hooks/hooks.json"; fi
 
 # Skills and docs must stay project-agnostic: no real home paths or personal email addresses.
-if grep -rnE '/(home|Users)/[A-Za-z0-9._-]+/' --exclude-dir=.git --exclude-dir=tests . | grep -vE '/(home|Users)/me/'; then
+if grep -rnE '/(home|Users)/[A-Za-z0-9._-]+/' --exclude-dir=.git --exclude=.git --exclude-dir=tests . | grep -vE '/(home|Users)/me/'; then
   bad "real home path found (use /home/me/...)"
 else
   ok "no real home paths"
 fi
-if grep -rnoE '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' --exclude-dir=.git --exclude-dir=tests . | grep -vE '@(example\.(com|org)|anthropic\.com|github\.com)'; then
+if grep -rnoE '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' --exclude-dir=.git --exclude=.git --exclude-dir=tests . | grep -vE '@(example\.(com|org)|anthropic\.com|github\.com)'; then
   bad "email address found"
 else
   ok "no personal email addresses"
 fi
+gen=$(mktemp -d)
+if DIAGRAMS_OUT="$gen" python3 docs/diagrams/render.py && diff -rq --exclude=render.py "$gen" docs/diagrams >/dev/null; then
+  ok "diagram SVGs match docs/diagrams/render.py"
+else
+  bad "diagram SVGs are stale: run python3 docs/diagrams/render.py"
+fi
+rm -rf "$gen"
 # Optional private list, e.g. BANNED_TERMS='acme|globex' bash tests/run.sh
 if [ -z "${BANNED_TERMS:-}" ]; then
   echo "skip banned terms (set BANNED_TERMS to check)"
-elif grep -rniE "$BANNED_TERMS" --exclude-dir=.git --exclude-dir=tests .; then
+elif grep -rniE "$BANNED_TERMS" --exclude-dir=.git --exclude=.git --exclude-dir=tests .; then
   bad "banned term found"
 else
   ok "no banned terms"
