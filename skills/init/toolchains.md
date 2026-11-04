@@ -8,8 +8,10 @@
 | JavaScript / TypeScript | `lab.ts` | `bun lab.ts` | `bun test <dir>` | `node`/`npx tsx` and `vitest` also fine |
 | Rust | `src/bin/lab.rs` in a lesson crate | `cargo run --bin lab` | `cargo test` | One crate per lesson keeps builds small |
 | Go | `lab/main.go` in a lesson module | `go run ./lab` | `go test ./...` | Each lesson folder has its own `go.mod` (`go mod init lesson<NNN>`) |
+| Kotlin | `lab.main.kts` | `kotlin lab.main.kts` | `kotlinc solution.kt test.kt -include-runtime -d test.jar && java -ea -jar test.jar` | Script for labs; tests as a `main` with `check(...)` calls |
 | Java | `Lab.java` | `java Lab.java` | `javac -d out *.java && java -ea -cp out TestSolution` | Run from the exercise folder; assert-based tests, no build tool; works on JDK 17+ (`out/` is gitignored) |
-| C / C++ | `lab.c` | `cc -O2 lab.c -o lab.out && ./lab.out` | `cc test.c solution.c -o test.out && ./test.out` | Binaries land in the lesson folder and are gitignored (`*.out`) |
+| C | `lab.c` | `cc -O2 lab.c -o lab.out && ./lab.out` | `cc test.c solution.c -o test.out && ./test.out` | Binaries land in the lesson folder and are gitignored (`*.out`) |
+| C++ | `lab.cpp` | `c++ -std=c++20 -O2 lab.cpp -o lab.out && ./lab.out` | `c++ -std=c++20 test.cpp solution.cpp -o test.out && ./test.out` | Same; assert-based tests |
 | SQL | `lab.sql` | `duckdb < lab.sql` | expected-output diff | DuckDB needs no server |
 | Shell | `lab.sh` | `bash lab.sh` | `bats <dir>` | |
 | Maths, statistics | `lab.py` (as Python) or a notebook | as Python | as Python | Or `none` for pen-and-paper |
