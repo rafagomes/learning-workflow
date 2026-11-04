@@ -6,12 +6,13 @@ shopt -s nocasematch
 
 fail=0
 max_bytes=1048576
-data_ext='\.(csv|tsv|parquet|feather|arrow|json|jsonl|ndjson|geojson|xlsx|xls|sqlite|sqlite3|db|duckdb|dump|sql\.gz|shp|gpkg|pkl|pickle|pt|joblib|npy|npz|h5|hdf5)$'
+data_ext='\.(csv|tsv|parquet|feather|arrow|json|jsonl|ndjson|geojson|xlsx|xls|sqlite|sqlite3|db|duckdb|dump|bak|sql|sql\.gz|zip|gz|tgz|tar|7z|bz2|xz|avro|orc|shp|gpkg|pkl|pickle|pt|joblib|npy|npz|h5|hdf5)$'
 allowed_data='^lessons/[^/]+/exercises/[^/]+/data/'
-config_json='(^|/)(package\.json|package-lock\.json|tsconfig[^/]*\.json|jsconfig\.json|deno\.json|composer\.json|\.vscode/[^/]+\.json|\.claude/[^/]+\.json|\.devcontainer/[^/]+\.json)$'
+lesson_sql='^lessons/.+\.sql$'
+config_json='(^|/)(package\.json|package-lock\.json|tsconfig[^/]*\.json|jsconfig\.json|deno\.json|composer\.json|\.vscode/(settings|extensions|launch|tasks)\.json|\.claude/settings\.json|\.devcontainer/devcontainer\.json)$'
 
 while IFS= read -r -d '' f; do
-  if [[ "$f" =~ $data_ext ]] && ! [[ "$f" =~ $allowed_data ]] && ! [[ "$f" =~ $config_json ]]; then
+  if [[ "$f" =~ $data_ext ]] && ! [[ "$f" =~ $allowed_data ]] && ! [[ "$f" =~ $config_json ]] && ! [[ "$f" =~ $lesson_sql ]]; then
     echo "guard: data file outside an exercise data/ dir: $f" >&2; fail=1
   fi
   # Submodule entries (gitlinks) have no blob to size.
@@ -22,7 +23,11 @@ while IFS= read -r -d '' f; do
 done < <(git diff --cached --name-only --no-renames --diff-filter=ACMT -z)
 
 if command -v gitleaks >/dev/null 2>&1; then
-  gitleaks protect --staged --no-banner --redact || fail=1
+  if gitleaks git --help >/dev/null 2>&1; then
+    gitleaks git --staged --no-banner --redact || fail=1
+  else
+    gitleaks protect --staged --no-banner --redact || fail=1
+  fi
 fi
 
 if [ "$fail" -ne 0 ]; then

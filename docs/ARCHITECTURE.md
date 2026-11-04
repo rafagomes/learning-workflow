@@ -58,7 +58,7 @@ Keeping these in one place means a change to resolution or policy can't silently
 
 ## Registry
 
-`~/.config/learning-workflow/spaces.json`, created on first `/learn:init`:
+`$LEARNING_WORKFLOW_HOME/spaces.json` (default `~/.config/learning-workflow/spaces.json`), created on first `/learn:init`:
 
 ```json
 {
@@ -92,11 +92,11 @@ Entries are only ever added or extended by the skills; removal needs your confir
 
 A skill's instructions can drop out of context when a long session is compacted, so learn mode doesn't rely on them alone:
 
-1. `/learn:build` writes `$LEARNING_WORKFLOW_HOME/active/<key>.md` (default `~/.config/learning-workflow/active/`). `<key>` is the project's git top-level path, or the current directory outside git, with `/` replaced by `_`, so worktrees are separate projects. The hook and the `build`/`off` skills compute the path with one identical shell line (marked `# state-path`), and `tests/hook_test.sh` fails if they drift. The file is a 3-line reminder: step, plan, level, project and sensitivity, the state file's own path, concepts shown and pending, and the condensed rules (including the `TODO(learner)` sweep and the data boundary), so it's self-sufficient after compaction.
+1. `/learn:build` writes `$LEARNING_WORKFLOW_HOME/active/<key>.md` (default `~/.config/learning-workflow/active/`). `<key>` is the project's git top-level path, or the current directory outside git, with `%` escaped as `%25` and `/` as `%2F` (so distinct paths never share a file); worktrees get their own state. The hook and the `build`/`off` skills compute the path with one identical shell line (marked `# state-path`), and `tests/hook_test.sh` fails if they drift. The file is a 3-line reminder: step, plan, level, project and sensitivity, the state file's own path, concepts shown and pending, and the condensed rules (including the `TODO(learner)` sweep and the data boundary), so it's self-sufficient after compaction.
 2. On every prompt, `hooks/learn-mode.sh` resolves the session's project from the hook input's `cwd`. If that project's file exists and was touched in the last 12 hours, the hook refreshes its timestamp and prints it, and Claude Code adds it to the context. Otherwise it prints nothing.
 3. The skill rewrites the file as concepts are shown. The wrap-up and `/learn:off` delete it.
 
-The hook does no parsing beyond reading `cwd`, writes nothing except that timestamp, and never fails a prompt (it always exits 0). `tests/hook_test.sh` covers no state, the active project, subdirectories, other projects, paths with spaces, non-git directories, a missing `cwd`, an unset `HOME`, stale files, the timestamp refresh, and the skill/hook path snippet staying identical. Set `LEARNING_WORKFLOW_HOME` to relocate the state directory. (The `/nonexistent` fallback for an unset `HOME` applies in bash; zsh fills `HOME` from the passwd entry. `HOME` is set in any normal session.)
+The hook reads only `cwd` from its input (with `jq` or `python3`, falling back to `sed`), writes nothing except that timestamp, and never fails a prompt (it always exits 0). `tests/hook_test.sh` covers no state, the active project, subdirectories, other projects, paths with spaces, non-git directories, a missing `cwd`, an unset `HOME`, stale files, the timestamp refresh, and the skill/hook path snippet staying identical. Set `LEARNING_WORKFLOW_HOME` to relocate the registry and the state directory together. (The `/nonexistent` fallback for an unset `HOME` applies in bash; zsh fills `HOME` from the passwd entry. `HOME` is set in any normal session.)
 
 ## Learning repo layout
 
@@ -140,7 +140,7 @@ tools/guard.sh       pre-commit guard; tools/hooks/pre-commit runs it
 
 The pre-commit guard (`tools/guard.sh`, run by `tools/hooks/pre-commit`, which `/learn:init` enables with repo-local `git config core.hooksPath tools/hooks` so a global hooks path can't bypass it) checks the **staged** content of every commit, renames included, and blocks:
 
-- data-like files (`csv`, `parquet`, `json`, `sqlite`, `xlsx`, model artefacts, …, any case) outside `lessons/*/exercises/*/data/`, except common config files (`package.json`, `tsconfig*.json`, …);
+- data-like files (`csv`, `parquet`, `json`, `sqlite`, `xlsx`, model artefacts, …, any case) outside `lessons/*/exercises/*/data/`, except named config files (`package.json`, `tsconfig*.json`, `.vscode/settings.json`, …) and SQL scripts under `lessons/`; archives and dumps (`zip`, `gz`, `sql`, `bak`, …) count as data;
 - any file over 1 MB;
 - anything [gitleaks](https://github.com/gitleaks/gitleaks) flags, when it's installed.
 

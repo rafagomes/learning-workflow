@@ -31,5 +31,12 @@ expect block "staged blob over 1 MB, truncated on disk" true
 rm -f big.bin
 echo ok > after.md;                                      expect allow "clean commit after blocks" git add after.md
 echo '{}' > customers.config.json;                       expect block "arbitrary *.config.json at root" git add customers.config.json
+mkdir -p .vscode .claude; echo '{}' > .vscode/settings.json; echo '{}' > .claude/settings.json
+expect allow "named editor/agent config" git add .vscode/settings.json .claude/settings.json
+echo '[{"name":"x"}]' > .vscode/customers.json;          expect block "arbitrary json under .vscode/" git add .vscode/customers.json
+echo '{}' > .claude/export.json;                         expect block "arbitrary json under .claude/" git add .claude/export.json
+echo 'insert into t values (1);' > dump.sql;             expect block "sql dump at root" git add dump.sql
+echo 'select 1;' > lessons/001-x/lab.sql;                expect allow "sql lab in a lesson" git add lessons/001-x/lab.sql
+echo x > backup.zip;                                     expect block "archive" git add backup.zip
 mkdir -p vendor/lessons/x/exercises/y/data && echo a > vendor/lessons/x/exercises/y/data/d.csv
 expect block "nested lessons/ path is not an exercise data dir" git add vendor/lessons/x/exercises/y/data/d.csv

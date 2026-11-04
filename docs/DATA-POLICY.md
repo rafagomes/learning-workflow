@@ -33,7 +33,7 @@ Nothing flows back automatically. What you learn reaches a project when you writ
 
 The pre-commit guard installed by `/learn:init` blocks:
 
-- data-like files (any case) outside `lessons/*/exercises/*/data/`, except common config files such as `package.json`;
+- data-like files (any case) outside `lessons/*/exercises/*/data/`, except named config files (`package.json`, `tsconfig*.json`, `.vscode/settings.json`, …), and SQL scripts under `lessons/`; archives and dumps (`zip`, `gz`, `sql`, `bak`, …) are blocked too;
 - files over 1 MB;
 - secrets flagged by [gitleaks](https://github.com/gitleaks/gitleaks), when it's installed (recommended).
 
