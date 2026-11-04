@@ -34,7 +34,7 @@ Two pieces, linked by step ID:
 6. **Wrap-up.** Writes `builds/<date>-<step>.md` in the learning repo (concepts met, predictions vs results, check results, follow-ups), updates the plan and `PROGRESS.md`, commits, and turns the mode off.
 7. **Spaced review.** The next `/learn:build` starts with up to 3 due flashcards.
 
-New concepts discovered while coding are added to the step in the plan. A concept that needs more than a note becomes a curriculum topic for `/learn:teach` later.
+New concepts discovered while coding are added to the step in the plan. A concept that needs more than a note is recorded under the step's **Follow-ups** in the plan, with a suggested `/learn:teach`.
 
 ### Staying on across prompts
 
