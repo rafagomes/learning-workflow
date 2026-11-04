@@ -16,4 +16,4 @@ jobs:
       - name: Repo checks
         run: bash tests/run.sh
       - name: Shellcheck
-        run: shellcheck skills/init/templates/tools/guard.sh skills/init/templates/tools/hooks/pre-commit tests/*.sh
+        run: shellcheck skills/init/templates/tools/guard.sh skills/init/templates/tools/hooks/pre-commit hooks/learn-mode.sh tests/*.sh

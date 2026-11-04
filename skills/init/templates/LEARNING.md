@@ -9,6 +9,7 @@ Created {{DATE}} with the `learn` plugin (`/learn:init`). Private study space: l
 | Level | {{LEVEL}} |
 | Depth | {{DEPTH}} |
 | Language | {{LANGUAGE}} |
+| Hands-on level (build mode) | {{LEVEL_DEFAULT}} |
 
 ## Toolchain
 
@@ -43,6 +44,8 @@ None.
 | Path | Holds |
 |---|---|
 | `curriculum/<track>.md` | A track: phases → topics → prerequisites → "ready when" |
+| `plans/<plan>.md` | Learning plan linked by step ID to a project's dev plan |
+| `builds/<date>-<step>.md` | Build-mode logs: concepts met, predictions, done-check |
 | `lessons/<NNN>-<topic>/` | `lesson.md`, the lab (file per the toolchain), `exercises/`, `quiz.md` |
 | `flashcards/deck.md` | Leitner deck, reviewed by `/learn:quiz review` |
 | `reflections/<date>-<topic>.md` | Prediction vs result after building |

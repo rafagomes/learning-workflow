@@ -19,7 +19,7 @@ Use AskUserQuestion for anything the argument doesn't give:
 1. **Subject and slug** (e.g. `python`, `distributed-systems`).
 2. **Projects to link**: paths to git repos. Offer the current repo if the session is inside one. Zero is fine (a pure-subject repo); more can be added later with `add`.
 3. **Location.** Default `~/Learning/<slug>`. Never inside a linked project.
-4. **Learner profile**: current level (new / some experience / working knowledge), preferred depth (practical first / theory first / balanced), lesson language.
+4. **Learner profile**: current level (new / some experience / working knowledge), preferred depth (practical first / theory first / balanced), lesson language, and the default **hands-on level** for build mode: `claude` (Claude codes and explains), `adaptive` (Claude writes plumbing, the learner writes the core), or `you` (the learner codes, Claude coaches).
 5. **Toolchain** for labs and exercises: propose the default for the subject from this skill's `toolchains.md` (or detect it from a linked project's manifest: `pyproject.toml`, `package.json`, `Cargo.toml`, `go.mod`, …) and confirm. Record a run command and a test command. Use `none` for subjects without code; labs then become worked problems and exercises become problem sets checked in conversation.
 
 ## 3. Create it
@@ -35,7 +35,7 @@ Copy the templates from this skill's `templates/` directory, filling the placeho
 | `tools/guard.sh`, `tools/hooks/pre-commit` | the guard and the hook that runs it |
 | `deck.md` | `flashcards/deck.md` |
 
-Create the empty directories `curriculum/`, `lessons/`, `reflections/` and `scratch/`. Then:
+Create the empty directories `curriculum/`, `plans/`, `builds/`, `lessons/`, `reflections/` and `scratch/`. Then:
 
 ```bash
 git init -b main
