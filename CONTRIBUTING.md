@@ -42,6 +42,10 @@ claude plugin validate .
 
 A behaviour change updates `README.md` (skill table), `docs/SKILLS.md`, `docs/WORKFLOW.md` when the loop changes, and `CHANGELOG.md`.
 
+### Diagrams
+
+The README and WORKFLOW diagrams are SVGs generated in light and dark versions by `docs/diagrams/render.py` (no dependencies). Edit the script, run `python3 docs/diagrams/render.py`, and commit the script and the SVGs together; `tests/run.sh` fails if they drift. Other diagrams are Mermaid, styled with the same `classDef` palette.
+
 ### Commits and PRs
 
 [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`, `ci:`), split by concern, each leaving the plugin working. One concern per PR. The PR template asks for the why, the decisions and how to verify.

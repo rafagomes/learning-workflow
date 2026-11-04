@@ -5,16 +5,27 @@
 ```mermaid
 flowchart TB
     subgraph CC["Claude Code session"]
-        U["You"] -->|/learn:*| SK["Skill (SKILL.md instructions)"]
+        U(["You"]) -->|/learn:*| SK["Skill<br/>SKILL.md instructions"]
         SK --> TOOLS["Claude Code tools<br/>Read · Write · Bash · AskUserQuestion"]
+        HK["UserPromptSubmit hook<br/>hooks/learn-mode.sh"] -->|adds reminder to context| SK
     end
-    TOOLS --> REG["~/.config/learning-workflow/spaces.json<br/>(registry)"]
-    TOOLS --> LR["Learning repo<br/>(git, private)"]
-    TOOLS -. "study: read only · build mode: codes under project rules" .-> PR["Linked projects"]
+    TOOLS --> LR[("Learning repo<br/>git, private")]
+    TOOLS -. "study: read only<br/>build mode: codes under project rules" .-> PR["Linked projects"]
     TOOLS --> TC["Local toolchain<br/>run + test commands"]
-    TOOLS --> ACT["~/.config/learning-workflow/active/<br/>(learn-mode state)"]
-    HK["UserPromptSubmit hook<br/>hooks/learn-mode.sh"] -->|reads| ACT
-    HK -->|adds reminder to context| SK
+    TOOLS --> REG[("Registry<br/>~/.config/learning-workflow/spaces.json")]
+    TOOLS --> ACT[("Learn-mode state<br/>~/.config/learning-workflow/active/")]
+    HK -->|reads| ACT
+    classDef plugin fill:#8250df1a,stroke:#8250df,stroke-width:1.5px
+    classDef repo fill:#1a7f371a,stroke:#1a7f37,stroke-width:1.5px
+    classDef project fill:#bc4c001a,stroke:#bc4c00,stroke-width:1.5px
+    classDef local fill:#0969da1a,stroke:#0969da,stroke-width:1.5px
+    classDef person fill:transparent,stroke:#818b98,stroke-width:1.5px
+    class SK,TOOLS,HK plugin
+    class LR repo
+    class PR project
+    class REG,ACT,TC local
+    class U person
+    style CC fill:transparent,stroke:#818b98,stroke-dasharray:5 4
 ```
 
 The plugin is plain Markdown plus one small shell hook: each skill is a `SKILL.md` that Claude Code loads when you run the command. There is no server, daemon or database. State lives in three places: the **registry** (which learning repos exist and which projects they link), the **learn-mode state** (which project has learn mode on, for which step), and each **learning repo** (everything you study).
@@ -42,7 +53,7 @@ skills/
   practice/SKILL.md
   quiz/SKILL.md
   reflect/SKILL.md
-docs/                     this documentation (specs/ holds feature designs)
+docs/                     this documentation (specs/ holds feature designs; diagrams/ holds the SVGs and render.py)
 tests/                    guard and manifest checks run by CI
 ```
 

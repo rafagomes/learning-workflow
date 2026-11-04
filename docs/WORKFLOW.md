@@ -37,18 +37,10 @@ Verdict: start with build mode for most work; reach for the study loop when buil
 
 ### Build mode
 
-```mermaid
-flowchart TD
-    A["Dev plan in the project<br/>(spec, roadmap, issue, goal)"] --> B["/learn:plan<br/>per step: concepts (known/new),<br/>level, done-check"]
-    B --> C["/learn:build step<br/>due flashcards, mode on"]
-    C --> D["Keep prompting: code at your level<br/>▸ concept notes only when needed<br/>predict before runs · idle-time deep dives"]
-    D --> E{"Step done?<br/>(you say so / PR opens)"}
-    E -- no --> D
-    E -- yes --> F["Done-check: 3–5 questions<br/>on what you built"]
-    F --> G["Wrap-up: builds/ log, flashcards,<br/>plan + PROGRESS updated, mode off"]
-    G --> C
-    D -. "deep concept" .-> T["/learn:teach later"]
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="diagrams/build-mode-dark.svg">
+  <img alt="Build mode: dev plan to learning plan, learn mode on for a step, every prompt codes at your level, then a done-check and wrap-up." src="diagrams/build-mode-light.svg" width="880">
+</picture>
 
 **Hands-on levels.** `claude` (Claude codes and explains the decisions that matter), `adaptive` (Claude writes the plumbing and leaves you the core with a marked gap), or `you` (you code, Claude coaches). There's a default per subject, and any step or prompt can override it.
 
@@ -56,16 +48,10 @@ flowchart TD
 
 ## The study loop
 
-```mermaid
-flowchart TD
-    A["Source: plan, spec, design doc, or just a goal"] --> B["curriculum"]
-    B --> C["teach"] --> D["practice"] --> E{"quiz: ready?"}
-    E -- no --> C
-    E -- "yes, whole phase" --> F["build it, in the project"]
-    F --> G["reflect"] --> B
-    E -.-> H["review flashcards, most days"]
-    G -.-> H
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="diagrams/study-loop-dark.svg">
+  <img alt="Study loop: curriculum, teach, practice, quiz gate, build in your project, reflect; misses feed a flashcard deck." src="diagrams/study-loop-light.svg" width="880">
+</picture>
 
 1. **Curriculum.** The source is split into topics ordered by dependency, each tied to the phase that needs it, each with 2–3 observable "ready when" abilities. A short self-assessment skips what you already know (it gets a quiz instead of a lesson).
 2. **Teach.** One concept at a time, with a question after each step. Before every lab run you predict the result. The lesson file is written as you go, so it records the explanation that actually worked for you.
@@ -94,26 +80,10 @@ Further reading: Brown, Roediger & McDaniel, *Make It Stick* (2014); Dunlosky et
 
 Topics (study loop) and concepts (build mode) share one status set. Plan **steps** have their own: `todo` → `in progress` → `done`. Statuses move back only on evidence. A failed quiz on a `claimed` topic sends it to `todo`; a failed re-check of a `ready` topic sends it to `learning`; a failed first quiz leaves the topic where it is, with the gaps listed. A missed done-check question sends a concept to `learning`. Every miss becomes a flashcard. In build mode, a concept answered correctly in the done-check becomes `built`; one shown but not checked becomes at least `learning`; `built` and `reflected` concepts keep their status.
 
-```mermaid
-stateDiagram-v2
-    [*] --> todo
-    [*] --> claimed: self-assessed
-    claimed --> ready: quiz passed
-    claimed --> todo: quiz failed
-    todo --> learning: teach
-    learning --> practised: practice (all tests pass)
-    practised --> ready: quiz passed
-    ready --> built: shipped in a project
-    built --> reflected: reflect
-    todo --> built: build mode, done-check right
-    todo --> learning: build mode, shown or missed
-    learning --> built: build mode, done-check right
-    claimed --> built: build mode, done-check right
-    practised --> built: build mode, done-check right
-    claimed --> learning: build mode, done-check missed
-    practised --> learning: build mode, done-check missed
-    ready --> learning: quiz failed later or done-check missed
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="diagrams/statuses-dark.svg">
+  <img alt="Statuses: todo, learning, practised, ready, built, reflected; claimed goes to ready or back to todo by quiz; a missed check sends practised or ready back to learning; in build mode a right done-check moves todo, learning or practised to built." src="diagrams/statuses-light.svg" width="880">
+</picture>
 
 ## Reproducibility
 

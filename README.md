@@ -64,27 +64,10 @@ Or study first:
 
 Two kinds of repo, and one direction of reference:
 
-```mermaid
-flowchart LR
-    subgraph plugin["learning-workflow (this repo)"]
-        S["skills/<br/>init · plan · build · off<br/>curriculum · teach · practice<br/>quiz · reflect"]
-        T["skills/init/templates/"]
-    end
-    subgraph space["Your learning repo (one per subject)"]
-        L["LEARNING.md<br/>profile · toolchain · links · policy"]
-        C["curriculum/"]
-        LS["lessons/<br/>lesson · lab · exercises · quiz"]
-        F["flashcards/deck.md"]
-        R["reflections/"]
-        X["scratch/ (gitignored)"]
-    end
-    P1["Project A<br/>(work)"]
-    P2["Project B<br/>(personal)"]
-    T -- "/learn:init creates" --> space
-    S -- "reads and writes" --> space
-    space -. "study: reads, cites path@sha · build mode: codes with you" .-> P1
-    space -. "study: reads, cites path@sha · build mode: codes with you" .-> P2
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/repo-model-dark.svg">
+  <img alt="The plugin creates a private learning repo per subject, which reads your linked work and personal projects; projects never reference it." src="docs/diagrams/repo-model-light.svg" width="880">
+</picture>
 
 - **This repo** is the method only: skills, templates, docs. No lessons, no learner data.
 - **A learning repo** is yours, private by default, one per subject. It holds everything you study and keeps a log of it in git.
@@ -93,27 +76,10 @@ flowchart LR
 
 ### Build mode
 
-```mermaid
-sequenceDiagram
-    actor You
-    participant C as Claude (in your project)
-    participant H as learn-mode hook
-    participant L as Learning repo
-    You->>C: /learn:build P1
-    C->>L: read the step in plans/ (concepts, level, done-check)
-    C-->>You: due flashcards (≤3), then "learn mode on"
-    loop every prompt until the step is done
-        You->>C: "write the scorer" / "run the eval" / …
-        H->>C: reminder: step, level, concepts not yet shown
-        C-->>You: code at your level · ▸ concept note only if a decision needs it
-        C-->>You: "what do you expect?" before tests/evals
-        C-->>You: background task running? offer a 3-min deep dive
-    end
-    You->>C: "P1 is done" (or the PR opens)
-    C-->>You: done-check, one question at a time
-    C->>L: build log, flashcards, plan status, commit
-    C-->>You: learn mode off
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/build-mode-dark.svg">
+  <img alt="Build mode: dev plan to learning plan, learn mode on for a step, every prompt codes at your level, then a done-check and wrap-up." src="docs/diagrams/build-mode-light.svg" width="880">
+</picture>
 
 | Hands-on level | Claude | You |
 |---|---|---|
@@ -125,19 +91,10 @@ The default is set per subject; any step or prompt can override it ("I'll write 
 
 ### The study loop
 
-```mermaid
-flowchart TD
-    A["Plan, spec, doc or topic"] --> B["/learn:curriculum<br/>topics ordered by dependency,<br/>each with 'ready when'"]
-    B --> C["/learn:teach<br/>one concept at a time,<br/>predict → run → compare"]
-    C --> D["/learn:practice<br/>make failing tests pass,<br/>hint ladder"]
-    D --> E{"/learn:quiz<br/>≥ 80% and all<br/>critical right?"}
-    E -- "no: revisit the gap" --> C
-    E -- "yes, for a whole phase" --> F["Build it in your project<br/>(your normal workflow)"]
-    F --> G["/learn:reflect<br/>prediction vs result"]
-    G --> B
-    E -. "misses become flashcards" .-> H["/learn:quiz review<br/>Leitner boxes 1·2·4·8·16 days"]
-    G -.-> H
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/study-loop-dark.svg">
+  <img alt="Study loop: curriculum, teach, practice, quiz gate, build in your project, reflect; misses feed a flashcard deck." src="docs/diagrams/study-loop-light.svg" width="880">
+</picture>
 
 Each topic moves through `todo → learning → practised → ready → built → reflected` (self-assessed topics start as `claimed` and need a passed quiz), tracked in `PROGRESS.md`.
 
