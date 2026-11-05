@@ -1,11 +1,13 @@
 ---
 name: plan
-description: "Connect a development plan to a learning plan: split a project's spec, roadmap or goal into steps and, for each step, work out the concepts it needs, which are new to the learner, who writes the code, and the questions that check learning when the step is done. Use when the user says 'plan the learning for this spec', 'what do I need to learn to build X', 'I want to learn while building this', or before /learn:build. Writes plans/<plan>.md in the subject's folder of the learning repo; never edits the project."
-argument-hint: "<spec path | plan path | artifact URL | goal> [plan name]"
+description: "Connect a development plan to a learning plan: split a project's spec, roadmap or goal into steps and, for each step, work out the concepts it needs, which are new to the learner, who writes the code, and the questions that check learning when the step is done. Use when the user says 'plan the learning for this spec', 'what do I need to learn to build X', 'I want to learn while building this', or before /learn:build. Writes plans/<plan>.md in the subject's folder of the learning repo; never edits the project. With the name of an existing plan (or no argument), shows that plan's progress, item by item, and lets the learner continue, recheck an item or build a step."
+argument-hint: "<spec path | plan path | artifact URL | goal> [plan name] | <existing plan name>"
 ---
 Build a learning plan linked to a development plan. Argument: $ARGUMENTS
 
 Resolve the subject and the current project as `/learn:init` describes. If there's no subject, offer `/learn:init` and stop. If the dev plan belongs to a project not linked to that subject, offer `/learn:init add <project>` first.
+
+**Existing plan, or no argument: show it instead.** When the argument is the name of a file in `plans/` (with or without `.md`), or there's no argument and plans exist, don't build a plan: show one (see **Plan view** at the end). With no argument and several plans, ask which. Anything else builds a new plan as below.
 
 The **development plan stays where it is**: in the project's docs, specs or issues, owned by the team. This skill only reads it, and writes the learning side in the subject's folder of the learning repo. The two are linked by step ID.
 
@@ -59,4 +61,29 @@ Obey the data policy: for a `work` project, describe steps and concepts in gener
 
 ## Finish
 
-Update `PROGRESS.md` (under **Plans**: the plan and its steps, `todo`), commit `docs(<subject>): learning plan <plan>`, and say how to start: `/learn:build <first step>`; mention any `deep` concepts worth a `/learn:teach` first.
+Update `PROGRESS.md` (under **Plans**: the plan and its steps, `todo`), commit `docs(<subject>): learning plan <plan>`, and say how to start: `/learn:teach <plan>` to study its concepts in order, or `/learn:build <first step>` to learn while building; mention any `deep` concepts worth a lesson first.
+
+## Plan view
+
+Read-only: it changes no file. Read `plans/<plan>.md` and the subject's `PROGRESS.md`. Each concept listed under a step is an **item**; its status is its **Concepts** row with `Step` = `<plan>/<step>` (no row = `todo`; marked `known` in the plan = `claimed`). The step status is from the plan's table.
+
+Print it as a compact text block:
+
+```
+<Plan name> · <n> of <total> items taught · <n> ready · <next step to build, if any>
+Z0 · <step title>                                   <step status>
+  ✓ learning   zoning vs land use                   lesson 001
+  ✓ learning   precision vs recall           deep   lesson 002 · quiz 4/5
+  ·  todo      label definition
+Z1 · …
+Next: <first todo item> (<step>)
+```
+
+Marks: `✓` taught (`learning`, `practised`), `★` `ready`, `built` or `reflected`, `·` `todo`, `○` `known` / `claimed`. "Taught" counts items at `learning` or beyond. A step is **ready to build** when all its items are at `learning` or beyond. Show the step's done-check score from its **Log** if it was built.
+
+Then ask one question (AskUserQuestion) and act on the answer by invoking that skill with the Skill tool:
+
+- **Continue**: the next `todo` item → `/learn:teach <plan>`.
+- **Recheck an item**: ask which item (list the taught ones), then whether to **re-teach** it (`/learn:teach <plan>/<step>/<concept>`) or **quiz** it (`/learn:quiz <plan>/<step>/<concept>`). A whole step can be quizzed too (`/learn:quiz <step>`).
+- **Build a step**: say to run `/learn:build <step>` from a session in the project (build mode works in the project, not here).
+- **Done**: stop.

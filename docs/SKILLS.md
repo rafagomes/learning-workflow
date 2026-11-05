@@ -24,13 +24,25 @@ Adds a subject to the learning repo as its own folder (creating the repo the fir
 
 ```
 /learn:plan <spec path | plan path | artifact URL | goal> [plan name]
+/learn:plan [existing plan name]
 ```
 
-Links a project's development plan (read-only, stays in the project) to a learning plan in `plans/<plan>.md`, by step ID.
+Links a project's development plan (read-only, stays in the project) to a learning plan in `plans/<plan>.md`, by step ID. Given the name of an existing plan (or nothing, when plans exist), it shows that plan instead; see **Plan view** below.
 
 - Keeps the dev plan's step IDs, or assigns `S1…` for a plain goal (after 1–2 questions).
 - Reads the code each step will touch. For each step it lists 2–6 precise concepts, each marked `known` (from `PROGRESS.md` or a quick self-check) or `new`; `new` concepts too big for a note are flagged `deep`, with a `/learn:teach` suggestion.
 - Per step: hands-on level (subject default unless changed) and 3–5 done-check questions answerable from the built code.
+
+**Plan view** (read-only): every concept of every step is an item, shown in plan order with its status from `PROGRESS.md` → Concepts (`✓` taught, `★` ready or built, `·` todo, `○` known), its lesson and quiz score, which steps are ready to build, and the next item. Then one question: **continue** (`/learn:teach <plan>`), **recheck an item** (re-teach or quiz it), **build a step** (`/learn:build <step>` from the project) or **done**.
+
+```
+Zone classification · 2 of 30 items taught · 0 ready
+Z0 · Funnel + "Industrial" definition                todo
+  ✓ learning   zoning vs land use                   lesson 001
+  ✓ learning   precision vs recall           deep   lesson 002
+  ·  todo      label definition
+Next: label definition (Z0)
+```
 
 ## `/learn:build`
 
@@ -76,9 +88,21 @@ Builds a track in `curriculum/<track>.md`.
 
 ```
 /learn:teach <track>/<topic-number> | <topic>
+/learn:teach <step> | <plan> | <plan>/<step>/<concept>
+/learn:teach
 ```
 
-With no argument, picks the first `todo` topic whose prerequisites are all `ready`, `claimed`, `built` or `reflected`. Writes `lessons/<NNN>-<topic>/lesson.md` while teaching.
+Writes `lessons/<NNN>-<topic>/lesson.md` while teaching.
+
+| Argument | Teaches |
+|---|---|
+| `<track>/<n>`, `<topic>` | That curriculum topic or free topic |
+| `<step>` (e.g. `Z0`) | The step's concepts from its learning plan, in order, skipping those already taught |
+| `<plan>` | The whole plan in order, from the first untaught concept; stop any time and resume later |
+| `<plan>/<step>/<concept>` | That one concept, even if taught (a recheck) |
+| nothing | Asks which plan or track to continue (lists them with progress) |
+
+Plan concepts are taught **one per lesson**, then it offers the next one (continue, skip, stop). A `deep` concept gets the full lesson below. Others get a short lesson: problem, worked intuition, in the project, one pitfall, a 2-question check (a lab only if asked or if the check misses).
 
 | Part | Content |
 |---|---|
@@ -91,7 +115,7 @@ With no argument, picks the first `todo` topic whose prerequisites are all `read
 | 7. Vocabulary | Term → one-line definition |
 | 8. Check | 3 questions; results recorded |
 
-Adds 3–6 flashcards. Status `todo` → `learning`; other statuses stay.
+Adds 3–6 flashcards. Status `todo` → `learning`; other statuses stay. A plan concept's row in `PROGRESS.md` → Concepts records its lesson number.
 
 ## `/learn:practice`
 
@@ -112,8 +136,11 @@ Status `todo`/`learning` → `practised` when every exercise passes; other statu
 
 ```
 /learn:quiz <track>/<n> | <topic>
+/learn:quiz <step> | <plan> | <plan>/<step>/<concept>
 /learn:quiz review
 ```
+
+**Plan mode:** quizzes the taught concepts of a step or plan (3–5 questions each), or one concept (8–12). Ready-when comes from the concept's lesson check and its `why:` in the plan; critical questions are the ones the step's done-check depends on. Scores are recorded on each concept's row.
 
 **Topic mode:** 8–12 questions covering every "ready when" item, 2–3 marked critical, in mixed formats (explain, predict-the-output, spot-the-bug, choose-and-justify, calculate). Adaptive: two misses on a sub-idea bring an easier follow-up. **Ready** at ≥ 80% and all critical questions right; otherwise you get the exact lesson part or exercise to revisit. Misses become flashcards.
 

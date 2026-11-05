@@ -1,7 +1,7 @@
 ---
 name: quiz
-description: "Check readiness for a topic with an adaptive quiz, or run a spaced-repetition flashcard review. Use when the user says 'quiz me', 'test me on X', 'am I ready to build this', 'review my flashcards', or after practice. Marks a topic ready at ≥ 80% with every critical question right, and turns misses into flashcards."
-argument-hint: "<track>/<n> | <topic> | review"
+description: "Check readiness for a topic with an adaptive quiz, or run a spaced-repetition flashcard review. Also quizzes a learning plan's step, whole plan or single item ('/learn:quiz Z0'). Use when the user says 'quiz me', 'test me on X', 'am I ready to build this', 'recheck X', 'review my flashcards', or after practice. Marks a topic ready at ≥ 80% with every critical question right, and turns misses into flashcards."
+argument-hint: "<track>/<n> | <topic> | <plan step> | <plan> | <plan>/<step>/<concept> | review"
 ---
 Quiz the learner. Argument: $ARGUMENTS
 
@@ -10,6 +10,17 @@ Resolve the subject as `/learn:init` describes.
 ## Review mode (`review`)
 
 Read `flashcards/deck.md`, take every card whose `next` date is today or earlier (box 1 first), and ask them one at a time. The learner answers in their own words; judge the meaning, not the wording. Right → box +1 (max 5), next = today + interval for that box (1, 2, 4, 8, 16 days). Wrong → box 1, next = tomorrow, and explain briefly. Stop after 20 cards or when the learner says so. Update the deck, log, commit `docs(<subject>): flashcard review`.
+
+## Plan mode (a plan step, a plan, or a plan item)
+
+Match the argument as `/learn:teach` does (step ID, plan name, `<plan>/<step>/<concept>` or a concept name matching one item; ask when ambiguous). Quiz the **taught** items it covers (`learning` or beyond in `PROGRESS.md` → **Concepts**, `Step` = `<plan>/<step>`), in plan order; a single named item is quizzed whatever its status. If none are taught, say so and offer `/learn:teach` with the same argument.
+
+Run it like topic mode below, with these differences:
+
+- **Ready when** for an item comes from its lesson's **Check** and its `why:` line in the plan. **Critical** questions are the ones the step's **Done-check** depends on.
+- Plan 3–5 questions per item (8–12 for a single item), still asked one at a time.
+- Write `quiz.md` in each item's lesson folder. Update each item's Concepts row with the same rules as topics (passed → `ready`; failed `claimed` → `todo`; failed `ready` → `learning`; failed `built`/`reflected` unchanged), and append the score to its `Note` (`quiz 4/5`). Commit `docs(<subject>): quiz <plan or step>`.
+- When every item of a step is `ready` or beyond, say the step is ready to build: `/learn:build <step>`, from the project.
 
 ## Topic mode
 

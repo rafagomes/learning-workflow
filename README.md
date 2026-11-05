@@ -102,15 +102,17 @@ Each topic moves through `todo → learning → practised → ready → built �
 
 | Command | What it does | Writes |
 |---|---|---|
-| `/learn:init <subject> [project paths…]` | Create a learning repo; ask level, depth, language and toolchain; link projects | the repo, registry entry |
-| `/learn:init add <project path>` | Link another project to an existing learning repo | `LEARNING.md`, registry |
+| `/learn:init <subject> [project paths…]` | Add a subject folder to the learning repo (creating the repo the first time); ask level, depth, language and toolchain; link projects | `<subject>/`, registry entry |
+| `/learn:init add <project path>` | Link another project to a subject | `LEARNING.md`, registry |
 | `/learn:plan <spec \| plan \| URL \| goal>` | Link a project's dev plan to a learning plan: per step, the concepts needed (known/new), hands-on level, done-check | `plans/<plan>.md` |
+| `/learn:plan <plan>` | Show a plan as a checklist (taught, ready, todo per concept); continue, recheck a concept, or build a step | nothing (read-only) |
 | `/learn:build <step> [plan] [level]` | Learn mode on for a step: pair-program at your level, concept notes only when needed, predictions, idle-time deep dives, done-check and wrap-up | `builds/<date>-<step>.md`, flashcards |
 | `/learn:off [no-wrapup]` | End learn mode early; the wrap-up is saved unless `no-wrapup` | `builds/` |
 | `/learn:curriculum <plan \| spec \| URL \| topic>` | Turn a source into a track of 5–15 topics with prerequisites and checkable "ready when" criteria | `curriculum/<track>.md` |
 | `/learn:teach <track>/<n> \| <topic>` | Interactive lesson: problem, intuition, mechanism, lab, project touchpoint, pitfalls, vocabulary, check | `lessons/<NNN>-<topic>/lesson.md`, lab, flashcards |
+| `/learn:teach <step> \| <plan>` | Study a learning plan in order, one concept per lesson; resumes where you stopped | lessons, `PROGRESS.md` |
 | `/learn:practice <topic> [easy\|medium\|hard]` | 2–4 exercises with stubs and failing tests (verified against a hidden reference solution); hints one rung at a time | `exercises/` |
-| `/learn:quiz <track>/<n> \| <topic>` | 8–12 adaptive questions, one at a time; ready at ≥ 80% with every critical question right | `quiz.md`, flashcards |
+| `/learn:quiz <track>/<n> \| <topic> \| <step>` | 8–12 adaptive questions, one at a time; ready at ≥ 80% with every critical question right | `quiz.md`, flashcards |
 | `/learn:quiz review` | Spaced-repetition review of due flashcards | `flashcards/deck.md` |
 | `/learn:reflect <topic> [PR \| commit range]` | After building: prediction vs result, gaps, follow-ups | `reflections/<date>-<topic>.md` |
 
@@ -124,6 +126,7 @@ Full reference: [docs/SKILLS.md](docs/SKILLS.md).
 | Learn Rust while building a side project | `/learn:init rust ~/code/ray-tracer` → `/learn:curriculum ~/code/ray-tracer/PLAN.md` |
 | Learn a technique your team is about to adopt | `/learn:init distributed-systems ~/work/payments` → `/learn:curriculum ~/work/payments/docs/design/outbox.md` |
 | Build something you don't fully understand yet, and learn as you go | `/learn:plan <spec>` → `/learn:build <step>` |
+| Study a plan's concepts before building it | `/learn:plan <spec>` → `/learn:teach <plan>` → `/learn:plan <plan>` to see where you are |
 | Learn something with no code | `/learn:init music-theory` (toolchain `none`: worked problems instead of labs) |
 
 Walkthroughs: [docs/EXAMPLES.md](docs/EXAMPLES.md).

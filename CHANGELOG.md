@@ -13,6 +13,7 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ### Added
 
+- Study a learning plan in order: `/learn:teach <step>` teaches a plan step's concepts (`/learn:teach Z0`), `/learn:teach <plan>` walks the whole plan one concept per lesson and resumes where you stopped, `/learn:teach` alone asks which plan or track to continue. Non-`deep` concepts get a short lesson. `/learn:quiz` accepts steps, plans and single concepts. `/learn:plan <existing plan>` shows the plan as a checklist (taught, ready, todo) and offers continue, recheck a concept (re-teach or quiz) or build a step. Status lives in `PROGRESS.md` → Concepts; build mode recalls taught concepts in one line.
 - `/learn:init migrate [path]`: folds a v0.1.0 one-repo-per-subject learning repo into the learning repo as a subject folder, keeping its git history; the old repo is deleted only on confirmation. Standalone repos keep working until migrated.
 
 ## [0.1.0] - 2026-11-04
