@@ -27,7 +27,7 @@ Run it like topic mode below, with these differences:
 1. Read the topic's "ready when" from the curriculum and its lesson, if it has one. A `claimed` topic may have no lesson folder: create `lessons/<NNN>-<topic>/` (next free NNN) to hold `quiz.md`. Plan 8–12 questions covering every ready-when item; mark 2–3 as **critical** (the ideas the project phase depends on).
 2. Mix formats: explain-in-your-words, predict-the-output (run the snippet afterwards to confirm), spot-the-bug, choose-and-justify (a design decision from the project phase), and calculation with numbers you computed.
    Explain, choose-and-justify and critical questions need the right reason too (the "why?" follow-up in `/learn:init` → **Questions and examples**, scored with its question); **Partly correct** scores 0.5 and fails a critical question.
-3. Ask **one question at a time**. After each answer: the verdict first (**Correct.**, **Incorrect.** or **Partly correct.**, as `/learn:init` → **Questions and examples** says), then the one-sentence reason. A miss is an Incorrect or Partly correct answer. Adapt: two misses on a sub-idea → one easier follow-up on it.
+3. Ask **one question at a time**. After each answer (and its "why?", if any): the verdict first (**Correct.**, **Incorrect.** or **Partly correct.**, as `/learn:init` → **Questions and examples** says), then the one-sentence reason. A miss is an Incorrect or Partly correct answer. Adapt: two misses on a sub-idea → one easier follow-up on it.
 4. Do not reveal upcoming questions or hint at answers in the question wording.
 
 **Score:** ready at ≥ 80% **and** all critical questions right. Otherwise list the gaps and point to the exact lesson part or exercise to revisit.
