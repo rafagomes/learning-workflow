@@ -1,6 +1,6 @@
 ---
 name: teach
-description: "Teach one topic in depth as an interactive lesson: intuition, the mechanism, a runnable lab with real numbers, a short free video when one helps, how it shows up in the linked project, pitfalls, and a check for understanding. Also works through a learning plan in order: a step ID ('/learn:teach Z0') teaches that step's concepts, a plan name teaches the whole plan and resumes where the learner stopped. Use when the user says 'teach me X', 'explain X properly', 'deep dive on X', 'next lesson', 'teach me Z0', 'continue the plan', or names a curriculum topic, plan step or plan. Writes lessons/<NNN>-<topic>/ in the subject's folder of the learning repo."
+description: "Teach one topic in depth as an interactive lesson: intuition, the mechanism, a short free video when one helps, a runnable lab with real numbers, how it shows up in the linked project, pitfalls, and a check for understanding. Also works through a learning plan in order: a step ID ('/learn:teach Z0') teaches that step's concepts, a plan name teaches the whole plan and resumes where the learner stopped. Use when the user says 'teach me X', 'explain X properly', 'deep dive on X', 'next lesson', 'teach me Z0', 'continue the plan', or names a curriculum topic, plan step or plan. Writes lessons/<NNN>-<topic>/ in the subject's folder of the learning repo."
 argument-hint: "<track>/<topic-number> | <topic> | <plan step> | <plan> | <plan>/<step>/<concept>"
 ---
 Teach a topic. Argument: $ARGUMENTS
@@ -62,7 +62,7 @@ Same rules (one idea at a time, predict before running, never state an uncompute
 
 A **Watch** part appears only when a video would help: a visual or dynamic idea, a mechanism easier to see than to read, or a known explainer of exactly this concept. Otherwise leave it out entirely. Skip it too when `LEARNING.md` → Learner says `Videos in lessons: off` (a missing row means on).
 
-**Find them early.** Start the search when the lesson starts, with the searches sent in parallel, or hand it to a background agent if one is available, so the lesson doesn't stall at the Watch part. Offer the result ("watch now or after the lesson") and don't wait for the learner to watch.
+**Find them early.** Start the search when the lesson starts, with the searches sent in parallel, or hand it to a background agent if one is available (give it only the general field term and the checks below), so the lesson doesn't stall at the Watch part. Offer the result ("watch now or after the lesson") and don't wait for the learner to watch.
 
 **What qualifies.**
 - **Free**: no paywall, login or course sign-up.
