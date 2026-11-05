@@ -48,6 +48,7 @@ Trains: comparing floats with a tolerance.
    `cd python/lessons/001-values-and-types/exercises/01-close-enough`
 2. Run the tests once, before writing anything: `uv run --with pytest pytest -q`.
    Expect `4 failed`, each with `NotImplementedError` — expected, the functions are empty.
+   Wrong folder? If uv can't find `requirements.txt` or pytest stops with collection errors naming other exercises' files, check that your prompt (or `pwd`) ends in `01-close-enough`, then `cd` there.
 3. Open `solution.py`. In each function, replace the line marked `# TODO: replace with your code`.
    Keep the names and signatures. Don't edit `test_solution.py`: it's the answer checker.
 4. Start with `is_close`, then `average`. Re-run the tests after each.
