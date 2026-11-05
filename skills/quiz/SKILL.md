@@ -5,11 +5,11 @@ argument-hint: "<track>/<n> | <topic> | <plan step> | <plan> | <plan>/<step>/<co
 ---
 Quiz the learner. Argument: $ARGUMENTS
 
-Resolve the subject as `/learn:init` describes. Every question is asked and recorded as `/learn:init` → **Questions and examples** says; flashcards are the plain-text exception it names. Pull the learning repo before reading it, and push after each commit below, as `/learn:init` → **Sync** says.
+Resolve the subject as `/learn:init` describes. Every question is asked and recorded as `/learn:init` → **Questions and examples** says, flashcards included. Pull the learning repo before reading it, and push after each commit below, as `/learn:init` → **Sync** says.
 
 ## Review mode (`review`)
 
-Read `flashcards/deck.md`, take every card whose `next` date is today or earlier (box 1 first), say how many you'll ask (the due count, at most 20, and how many wait for next time), and ask them one at a time, in plain text, each starting `Card 3/12 · ` against that number. The learner answers in their own words; judge the meaning, not the wording, and open the reply with **Correct.** or **Incorrect.** Correct → box +1 (max 5), next = today + interval for that box (1, 2, 4, 8, 16 days). Incorrect → box 1, next = tomorrow, and explain briefly. Stop after 20 cards or when the learner says so. Update the deck, log, commit `docs(<subject>): flashcard review`.
+Read `flashcards/deck.md`, take every card whose `next` date is today or earlier (box 1 first), and ask them one at a time (at most 20; the rest wait for next time) as `/learn:init` → **Questions and examples** says for flashcards. Correct → box +1 (max 5), next = today + interval for that box (1, 2, 4, 8, 16 days). Incorrect → box 1, next = tomorrow, and explain briefly. Stop after 20 cards or when the learner says so. Update the deck, log (with each card's options, pick and verdict), commit `docs(<subject>): flashcard review`.
 
 ## Plan mode (a plan step, a plan, or a plan item)
 

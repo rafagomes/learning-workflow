@@ -67,7 +67,7 @@ Verdict: start with build mode for most work; reach for the study loop when buil
 |---|---|---|
 | **Learn just in time** | Topics come from the plan you're about to execute; in build mode, a concept appears when a decision needs it | Motivation and transfer are highest when the use is immediate |
 | **Predict, then run** | Every lab and many quiz items ask for a prediction first | Generating an answer before seeing it (the *generation effect*) and confronting a wrong prediction both improve retention |
-| **Retrieval over rereading** | Quizzes, flashcards, "check" questions | *Retrieval practice* (the testing effect) beats rereading for long-term retention |
+| **Retrieval over rereading** | Quizzes, flashcards, "check" questions; flashcards are picked from near-miss options, so you still have to recall which one is right | *Retrieval practice* (the testing effect) beats rereading for long-term retention |
 | **Spaced repetition** | Leitner boxes at 1, 2, 4, 8, 16 days | Spacing reviews out beats massing them (the *spacing effect*) |
 | **One concept at a time** | Socratic pacing, a check after each step | Limits cognitive load; misconceptions are caught early |
 | **Mastery gates** | "Ready when" + quiz threshold before building | Moving on with gaps compounds them |
