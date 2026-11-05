@@ -5,7 +5,7 @@ argument-hint: "<step ID> [plan name] [level: claude|adaptive|you]"
 ---
 Start learn mode for a step. Argument: $ARGUMENTS
 
-Resolve the subject and the current project as `/learn:init` describes. Find the step in `plans/*.md` (ask which plan if several have it). No plan, or the step isn't in one: offer `/learn:plan` first, or, if the learner just wants to start, create a one-step plan from their description (concepts, level, done-check) and continue.
+Resolve the subject and the current project as `/learn:init` describes; questions to the learner follow its **Questions and examples**. Find the step in `plans/*.md` (ask which plan if several have it). No plan, or the step isn't in one: offer `/learn:plan` first, or, if the learner just wants to start, create a one-step plan from their description (concepts, level, done-check) and continue.
 
 ## 1. Start
 
@@ -26,7 +26,7 @@ echo "$state"
 ```markdown
 [learn mode] step <ID> "<title>" · plan <subject folder>/plans/<plan>.md · level <level> · project <slug> (<sensitivity>) · state file <state path>
 New concepts not yet shown: <list> · taught in lessons: <concept (lesson NNN), …> · shown: <list>
-Rules: work in the project under its own rules; learning notes, logs and flashcards go only to the learning repo, never the project. Code at the level (adaptive: scaffold the core with a TODO(learner) gap for the learner to fill). Stay silent unless a decision in this reply depends on a new concept not yet shown; for a concept taught in a lesson, one "▸ recall:" line naming the lesson is enough; otherwise add a 2–4 line "▸ concept:" note, offer a deeper dive, and rewrite this state file moving the concept to "shown". Ask for a one-line prediction before tests/evals. When a background task runs and nothing else is pending, offer a 2–5 min deep dive + 1–2 "is this clear?" questions. Remove every TODO(learner) marker before anything is committed. When the learner says the step is done or its PR opens: done-check, then wrap-up (/learn:build), then delete this file.
+Rules: work in the project under its own rules; learning notes, logs and flashcards go only to the learning repo, never the project. Code at the level (adaptive: scaffold the core with a TODO(learner) gap for the learner to fill). Stay silent unless a decision in this reply depends on a new concept not yet shown; for a concept taught in a lesson, one "▸ recall:" line naming the lesson is enough; otherwise add a 2–4 line "▸ concept:" note, offer a deeper dive, and rewrite this state file moving the concept to "shown". Ask for a prediction before tests/evals. Ask every question with AskUserQuestion: one per call, 2–4 options none marked Recommended, data in the preview (see /learn:init → Questions and examples). When a background task runs and nothing else is pending, offer a 2–5 min deep dive + 1–2 "is this clear?" questions. Remove every TODO(learner) marker before anything is committed. When the learner says the step is done or its PR opens: done-check, then wrap-up (/learn:build), then delete this file.
 ```
 
 5. Mark the step `in progress` in the plan, then tell the learner in two lines: the step, the level, how many new concepts, and that they can just keep prompting. Then start on the work they ask for.
@@ -51,7 +51,7 @@ Remove every `TODO(learner)` marker before the work is committed (the learner's 
 
 Then rewrite the state file, moving the concept to "shown". A concept that needs more than that (math, mechanism, a lab) gets one line and a suggestion to `/learn:teach` it later; record it under the step's **Follow-ups** in the plan. If coding reveals a concept the plan missed, add it to the step in the plan.
 
-**Predict before running.** Before running tests, an eval, a benchmark or a script whose result teaches something, ask: "What do you expect?" (one line). Run, then compare in one or two sentences. Don't ask for routine runs (formatting, a re-run after a typo fix).
+**Predict before running.** Before running tests, an eval, a benchmark or a script whose result teaches something, ask "What do you expect?" with 2–4 plausible outcomes as options. Run, then compare in one or two sentences. Don't ask for routine runs (formatting, a re-run after a typo fix).
 
 **Idle time.** When you've started a background task and nothing else is pending in the main session, offer once per wait: "While that runs: a 3-minute look at <concept from this step>?" If accepted: a short deep dive grounded in the code just written, then 1–2 "is this clear?" questions. "skip" or no answer means continue normally.
 
@@ -59,12 +59,12 @@ Then rewrite the state file, moving the concept to "shown". A concept that needs
 
 ## 3. Done-check
 
-When the learner says the step is done, or a PR for it is opened, ask the step's done-check questions **one at a time**, grounded in the code actually written (adjust the planned questions to it). After each answer: right / partly / wrong and one sentence why. Each miss becomes a flashcard in `flashcards/deck.md` (box 1).
+When the learner says the step is done, or a PR for it is opened, ask the step's done-check questions **one at a time**, as `/learn:init` → **Questions and examples** says, grounded in the code actually written (adjust the planned questions to it; put the code or output a question needs in its preview). After each answer: right / partly / wrong and one sentence why. Each miss becomes a flashcard in `flashcards/deck.md` (box 1).
 
 ## 4. Wrap-up
 
 1. **Sweep the project** for `TODO(learner)` markers left from this step (`git grep -n --untracked "TODO(learner)"`, which also covers new files not yet added). Resolve each with the learner (they finish it, or you do) before anything else; never leave one behind.
-2. Write `builds/<date>-<step>.md` in the subject folder, the folder of the plan named in the state file (never the project): link (`<project-slug>@<shortsha>`, or `<project-slug>#<PR number>`; no branch names, which can carry internal names), concepts shown, predictions vs results, done-check score and misses, follow-ups. Obey the data policy: aggregates, no data or internal names.
+2. Write `builds/<date>-<step>.md` in the subject folder, the folder of the plan named in the state file (never the project): link (`<project-slug>@<shortsha>`, or `<project-slug>#<PR number>`; no branch names, which can carry internal names), concepts shown, predictions vs results, done-check questions with the pick and verdict for each, score and misses, follow-ups. Obey the data policy: aggregates, no data or internal names.
 3. Update the plan: the step's Status → `done` and its Log line.
 4. Update `PROGRESS.md`:
    - under **Plans**, the step's status;

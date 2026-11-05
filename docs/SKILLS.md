@@ -1,6 +1,6 @@
 # Skills reference
 
-All skills resolve the learning repo the same way ([ARCHITECTURE.md](ARCHITECTURE.md#the-shared-contract)) and end by updating `PROGRESS.md` and committing. Questions are asked one at a time; decisions use Claude Code's question prompt.
+All skills resolve the learning repo the same way ([ARCHITECTURE.md](ARCHITECTURE.md#the-shared-contract)) and end by updating `PROGRESS.md` and committing. Questions are asked one at a time with Claude Code's question prompt: you pick one of 2–4 options (none marked recommended) or type your own answer or a "why…?" via Other, and any table or snippet the question needs is shown beside the options. Examples always show all their data where they're used: re-shown in full when a lesson builds on them, or a fresh small example (≤ 6 rows) for a new concept. Without the prompt (headless), questions are plain text.
 
 ## `/learn:init`
 
@@ -56,7 +56,7 @@ Turns learn mode on for one step in the current project.
 2. **While on:** normal pair programming under the project's own rules, plus:
    - code at the hands-on level (overridable per prompt);
    - a `▸ concept:` note (2–4 lines) only when a decision depends on a `new` concept not yet shown;
-   - a one-line prediction before tests, evals or benchmarks;
+   - a prediction (pick an outcome) before tests, evals or benchmarks;
    - during background waits, one offer of a 2–5 minute deep dive with 1–2 "is this clear?" questions.
 3. **Done-check** when you say the step is done or its PR opens: the step's questions, one at a time; misses become flashcards.
 4. **Wrap-up:** sweeps the project for `TODO(learner)` markers, writes `builds/<date>-<step>.md`, sets the step `done`, records each concept in `PROGRESS.md` → Concepts (answered correctly → `built`; missed → a flashcard, and back to `learning` unless already `built`/`reflected`; shown but unchecked → `learning` if it was `todo`), commits in the learning repo, and deletes the state file.

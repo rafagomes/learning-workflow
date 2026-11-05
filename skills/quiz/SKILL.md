@@ -5,11 +5,11 @@ argument-hint: "<track>/<n> | <topic> | <plan step> | <plan> | <plan>/<step>/<co
 ---
 Quiz the learner. Argument: $ARGUMENTS
 
-Resolve the subject as `/learn:init` describes.
+Resolve the subject as `/learn:init` describes. Every question, card included, is asked and recorded as `/learn:init` → **Questions and examples** says: one AskUserQuestion with 2–4 options, its data in the preview, Other for a typed answer.
 
 ## Review mode (`review`)
 
-Read `flashcards/deck.md`, take every card whose `next` date is today or earlier (box 1 first), and ask them one at a time. The learner answers in their own words; judge the meaning, not the wording. Right → box +1 (max 5), next = today + interval for that box (1, 2, 4, 8, 16 days). Wrong → box 1, next = tomorrow, and explain briefly. Stop after 20 cards or when the learner says so. Update the deck, log, commit `docs(<subject>): flashcard review`.
+Read `flashcards/deck.md`, take every card whose `next` date is today or earlier (box 1 first), and ask them one at a time, with the card's answer among options drawn from its likely confusions. A typed answer (Other) is judged on its meaning, not the wording. Right → box +1 (max 5), next = today + interval for that box (1, 2, 4, 8, 16 days). Wrong → box 1, next = tomorrow, and explain briefly. Stop after 20 cards or when the learner says so. Update the deck, log, commit `docs(<subject>): flashcard review`.
 
 ## Plan mode (a plan step, a plan, or a plan item)
 
@@ -25,12 +25,12 @@ Run it like topic mode below, with these differences:
 ## Topic mode
 
 1. Read the topic's "ready when" from the curriculum and its lesson, if it has one. A `claimed` topic may have no lesson folder: create `lessons/<NNN>-<topic>/` (next free NNN) to hold `quiz.md`. Plan 8–12 questions covering every ready-when item; mark 2–3 as **critical** (the ideas the project phase depends on).
-2. Mix formats: explain-in-your-words, predict-the-output (show a short snippet; run it afterwards to confirm), spot-the-bug, choose-and-justify (a design decision from the project phase), and calculation with numbers you computed.
+2. Mix formats: explain-in-your-words (options are approaches or partial claims; say a typed explanation is welcome), predict-the-output (the snippet in the preview; run it afterwards to confirm), spot-the-bug, choose-and-justify (a design decision from the project phase), and calculation with numbers you computed. Each question shows all the data it needs, never "the table from the lesson".
 3. Ask **one question at a time**. After each answer: right/partly/wrong, and the one-sentence reason. Adapt: two misses on a sub-idea → one easier follow-up on it.
 4. Do not reveal upcoming questions or hint at answers in the question wording.
 
 **Score:** ready at ≥ 80% **and** all critical questions right. Otherwise list the gaps and point to the exact lesson part or exercise to revisit.
 
-Write `lessons/<NNN>-<topic>/quiz.md` (date, questions, learner's answers summarised, score, gaps). Add a flashcard per miss. Update `PROGRESS.md`: passed → `ready`, except a `built` or `reflected` topic, which keeps its status (the score is still recorded); failed `claimed` → `todo`; failed `ready` (a re-check) → `learning`; failed `built` or `reflected` → unchanged (the gaps become flashcards), log, commit `docs(<subject>): quiz <topic>`. Plan mode uses the same rules.
+Write `lessons/<NNN>-<topic>/quiz.md` (date; per question its data, options, the learner's pick or typed answer summarised, and the verdict; score; gaps). Add a flashcard per miss. Update `PROGRESS.md`: passed → `ready`, except a `built` or `reflected` topic, which keeps its status (the score is still recorded); failed `claimed` → `todo`; failed `ready` (a re-check) → `learning`; failed `built` or `reflected` → unchanged (the gaps become flashcards), log, commit `docs(<subject>): quiz <topic>`. Plan mode uses the same rules.
 
 When a whole phase's topics are `ready`, say so: the learner can now build that phase in the project, through the project's own workflow. After building it, `/learn:reflect` records the result and moves those topics to `built` and `reflected`.

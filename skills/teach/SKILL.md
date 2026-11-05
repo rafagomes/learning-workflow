@@ -32,9 +32,10 @@ Teach **one item per lesson**. After each, offer the next item by name and ask: 
 
 ## How to teach
 
-This is a conversation, not a document dump.
+This is a conversation, not a document dump. Questions and examples follow `/learn:init` → **Questions and examples**: every question is one AskUserQuestion with 2–4 options and its data in the preview, and every example shows all its data where it's used.
 
 - **One concept at a time.** Explain a step, then ask one question (prediction, or "what would happen if…"), and wait for the answer before continuing. Correct misconceptions directly and say why the wrong idea was tempting.
+- **Examples stand alone.** Open each lesson with its own small example (≤ 6 rows). Building on it, re-show the whole table with the new columns; a concept that doesn't need it gets a fresh one. Never "the rows from our earlier table" without the table.
 - **Predict before running.** Before every lab run, ask the learner to predict the result. Compare afterwards.
 - **Never state a number you haven't computed.** Run the lab or a snippet and quote its output.
 - Match the profile's depth and language. Define every term the first time it appears.
@@ -46,7 +47,7 @@ The conversation only teaches: it explains, asks, reacts to answers and runs the
 
 **Research at lesson start.** Launch in parallel: the video search (see **Videos**) and, when the lesson has an **In the project** part, a code reader. Give the code reader the project's path, the concept in general terms and the data policy; it returns only `path:start-end@shortsha` ranges with one line each on what they show, never data, secrets or hostnames. Teach the problem and intuition meanwhile. Re-read every cited range yourself before teaching it: a header comment can contradict the code below it.
 
-**The writer.** One background agent writes everything in the learning repo: `lesson.md` part by part, flashcards, `PROGRESS.md` and the commits. Start it at the first lesson with the brief below and reuse it for the session: it handles messages in order and commits a lesson before acting on anything about the next, so two commits never overlap and the next lesson starts without waiting. After each part, send it that part as taught (explanation, worked example, quoted lab output, questions, the learner's answers and how they did) and keep teaching; send a skip the same way. Track what this session taught and skipped yourself to pick the next item and lesson number, since `PROGRESS.md` may lag. When it reports a sha, say so in one line (`Lesson 012 saved · a1b2c3d`).
+**The writer.** One background agent writes everything in the learning repo: `lesson.md` part by part, flashcards, `PROGRESS.md` and the commits. Start it at the first lesson with the brief below and reuse it for the session: it handles messages in order and commits a lesson before acting on anything about the next, so two commits never overlap and the next lesson starts without waiting. After each part, send it that part as taught (explanation, worked example, quoted lab output, and per question: its data, the options, the learner's pick or typed answer, and right / partly / wrong) and keep teaching; send a skip the same way. Track what this session taught and skipped yourself to pick the next item and lesson number, since `PROGRESS.md` may lag. When it reports a sha, say so in one line (`Lesson 012 saved · a1b2c3d`).
 
 Until its last sha is in, nothing else touches the learning repo's files or git (the lab file excepted, below): wait for it before another `/learn` skill runs, before ending the session, and before starting a replacement writer (say, when `/compact` lost its ID). If it reports an error, it has stopped: send it nothing more, fix the error inline and write inline for the rest of the session.
 
@@ -54,7 +55,7 @@ The writer has a fresh context, so its brief carries everything:
 - the subject folder's absolute path; per lesson (in the first message about it): its number, slug, and parts in order (**Lesson structure** or **Short lesson**), each written as `## <part>` with the content sent;
 - the data policy as `LEARNING.md` records it, with each linked project's slug and sensitivity;
 - the **Finish** rules below and the **Plan items** rules they use (every item with the concept name, `<plan>/<step>`, skip notes), the card format in `flashcards/deck.md`, and the commit messages (the lesson's, and a skip's, see **Skipping**);
-- **it never invents content**: it writes only what it was sent, reworded at most, with no number it wasn't given; what's missing it leaves out;
+- **it never invents content**: it writes only what it was sent, reworded at most, with no number it wasn't given; what's missing it leaves out. Each question is written with the data it showed, its options, the pick and the verdict, so the lesson reads on its own;
 - it commits as `/learn:init` says, staging only that commit's paths (`lessons/<NNN>-<slug>/` without run artefacts such as caches or output files, `flashcards/deck.md`, `PROGRESS.md`); it leaves other changes unstaged and reports them; after each commit it reports the short sha in one line; on any error it reports it and stops.
 
 **The lab.** Write the lab file yourself in the lesson folder, so what runs is exactly what you wrote, and run it live (predict, then run). The writer commits it with the lesson.
@@ -73,11 +74,11 @@ Work through these parts; the writer records each in `lessons/<NNN>-<topic-slug>
 6. **In the project**: how a linked project uses (or should use) this, and what to look for when reading its code. Read-only. Skip when no project is linked.
 7. **Pitfalls**: the 3–5 mistakes practitioners actually make, each with a symptom to recognise it.
 8. **Vocabulary**: a term → one-line definition table.
-9. **Check**: 3 short questions answered in the conversation; record which ones the learner got right.
+9. **Check**: 3 short questions, each asked as `/learn:init` → **Questions** says; record the picks and which ones the learner got right.
 
 ### Short lesson (plan items not flagged `deep`)
 
-Same rules (one idea at a time, predict before running, never state an uncomputed number). `lessons/<NNN>-<concept-slug>/lesson.md` has: **The problem** (from the item's `why:`), **Intuition** with a tiny worked example by hand, **Watch** (optional, see **Videos**), **In the project**, **One pitfall** with its symptom, and a **Check** of 2 questions. There's no lab unless the learner asks for one or the check shows the idea didn't land; then add one and treat it as a full lesson. A lesson has at most one **Watch** part: when a short lesson grows, it stays where it is (before the lab).
+Same rules (one idea at a time, questions with options, examples that stand alone, predict before running, never state an uncomputed number). `lessons/<NNN>-<concept-slug>/lesson.md` has: **The problem** (from the item's `why:`), **Intuition** with a tiny worked example by hand, **Watch** (optional, see **Videos**), **In the project**, **One pitfall** with its symptom, and a **Check** of 2 questions. There's no lab unless the learner asks for one or the check shows the idea didn't land; then add one and treat it as a full lesson. A lesson has at most one **Watch** part: when a short lesson grows, it stays where it is (before the lab).
 
 ### Videos
 
