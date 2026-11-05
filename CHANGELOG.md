@@ -4,6 +4,10 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Added
+
+- Lessons can include a **Watch** part: one or two free videos of about 15 minutes or less (or a timestamped segment of a longer one) on the concept and a bit more. Claude finds them with web search, checks the title, channel and length before showing them, never invents a link, and skips the part when nothing qualifies.
+
 ## [0.3.0] - 2026-11-04
 
 ### Added

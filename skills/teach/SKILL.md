@@ -49,13 +49,27 @@ Work through these parts, writing `lessons/<NNN>-<topic-slug>/lesson.md` as you 
 3. **Mechanism**: how it actually works, step by step: the algorithm, the math, the language rule, the runtime behaviour. Explain notation; derive what is short enough to derive.
 4. **Lab**: a self-contained program in the repo's toolchain (`LEARNING.md` → Toolchain), with pinned dependencies and seeded synthetic data, run with the recorded run command. It demonstrates the mechanism and one way it fails. Keep it under ~120 lines and print labelled results. With toolchain `none`, the lab is a worked problem the learner solves step by step, and you check each step.
 5. **In the project**: how a linked project uses (or should use) this, and what to look for when reading its code. Read-only. Skip when no project is linked.
-6. **Pitfalls**: the 3–5 mistakes practitioners actually make, each with a symptom to recognise it.
-7. **Vocabulary**: a term → one-line definition table.
-8. **Check**: 3 short questions answered in the conversation; record which ones the learner got right.
+6. **Watch** (optional): one or two free, short videos on this concept. See **Videos** below.
+7. **Pitfalls**: the 3–5 mistakes practitioners actually make, each with a symptom to recognise it.
+8. **Vocabulary**: a term → one-line definition table.
+9. **Check**: 3 short questions answered in the conversation; record which ones the learner got right.
 
 ### Short lesson (plan items not flagged `deep`)
 
-Same rules (one idea at a time, predict before running, never state an uncomputed number). Write `lessons/<NNN>-<concept-slug>/lesson.md` with: **The problem** (from the item's `why:`), **Intuition** with a tiny worked example by hand, **In the project**, **One pitfall** with its symptom, and a **Check** of 2 questions. There's no lab unless the learner asks for one or the check shows the idea didn't land; then add one and treat it as a full lesson.
+Same rules (one idea at a time, predict before running, never state an uncomputed number). Write `lessons/<NNN>-<concept-slug>/lesson.md` with: **The problem** (from the item's `why:`), **Intuition** with a tiny worked example by hand, **Watch** (optional, see **Videos**), **In the project**, **One pitfall** with its symptom, and a **Check** of 2 questions. There's no lab unless the learner asks for one or the check shows the idea didn't land; then add one and treat it as a full lesson.
+
+### Videos
+
+Add a **Watch** part only when a video would help: a visual or dynamic idea, a mechanism easier to see than to read, or a known explainer of exactly this concept. Offer it ("watch now or after the lesson"); don't wait for it.
+
+- **Free**: no paywall, login or course sign-up.
+- **Short**: about 15 minutes or less, or a timestamped segment of 15 minutes or less of a longer video (a `t=` link, with the end time written).
+- **On this concept, and a bit more**: it covers what the lesson covered plus one adjacent idea, angle or worked example. Say what that extra is.
+- In the lesson's language when one exists, else English (say so).
+- **Never invent a link.** Find videos with web search now, never from memory, and check each one before showing it: the page resolves, and the title, channel and length match what you write. If the length can't be confirmed, don't list it. With no web tools, or nothing that passes, write one line ("No video: none found that's short, free and on this concept") and go on.
+- Search with the general concept only, never a linked project's name, internal terms or data.
+
+Write each as: `- [<title>](<url>) · <channel> · <length or segment>. Shows: <what>. Adds: <the extra>.` A recheck may reuse an earlier lesson's video if it still passes the check.
 
 ## Finish
 

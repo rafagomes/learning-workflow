@@ -102,7 +102,7 @@ Writes `lessons/<NNN>-<topic>/lesson.md` while teaching.
 | `<plan>/<step>/<concept>`, or a concept name | That one concept, even if taught or skipped (a recheck); one lesson updates every step that lists it |
 | nothing | Asks which plan or track to continue (lists them with progress) |
 
-Plan concepts are taught **one per lesson**, then it offers the next one (continue, skip, stop). A `deep` concept gets the full lesson below. Others get a short lesson: problem, worked intuition, in the project, one pitfall, a 2-question check (a lab only if asked or if the check misses).
+Plan concepts are taught **one per lesson**, then it offers the next one (continue, skip, stop). A `deep` concept gets the full lesson below. Others get a short lesson: problem, worked intuition, an optional video, in the project, one pitfall, a 2-question check (a lab only if asked or if the check misses).
 
 | Part | Content |
 |---|---|
@@ -111,9 +111,10 @@ Plan concepts are taught **one per lesson**, then it offers the next one (contin
 | 3. Mechanism | How it actually works, step by step |
 | 4. Lab | Runnable demonstration in your toolchain, including one failure mode; you predict first |
 | 5. In the project | Where a linked project uses it, cited `slug:path@sha` |
-| 6. Pitfalls | 3–5 real mistakes with symptoms |
-| 7. Vocabulary | Term → one-line definition |
-| 8. Check | 3 questions; results recorded |
+| 6. Watch (optional) | 1–2 free videos of ≤ 15 min (or a ≤ 15-min segment) on this concept and a bit more, found by web search and checked; never invented |
+| 7. Pitfalls | 3–5 real mistakes with symptoms |
+| 8. Vocabulary | Term → one-line definition |
+| 9. Check | 3 questions; results recorded |
 
 Adds 3–6 flashcards. Status `todo` → `learning`; other statuses stay. A plan concept's row in `PROGRESS.md` → Concepts records its lesson number.
 
