@@ -26,7 +26,7 @@ An **item** is one concept listed under a step's **Concepts** in `plans/<plan>.m
 
 **Same concept, several items.** Teaching a concept updates the row of **every** item with that concept name in the subject's plans, creating the rows that don't exist yet, and the **Tracks** topic with the same name if there is one, so `PROGRESS.md` never contradicts itself. A concept already covered elsewhere is not taught again when the plan reaches it; say so in one line and move on.
 
-**Skipping.** A skipped item gets a row with status `todo` and `Note` = `skipped <date>`. Resuming takes the first `todo` item that isn't skipped. When nothing else is left, list the skipped items and offer them. Naming a skipped item (rule 4) teaches it and clears the skip. Status wins over the skip mark: an item counts as skipped only while its status is `todo`; any skill that moves it past `todo` drops `skipped <date>` from its `Note`.
+**Skipping.** A skipped item gets a row with status `todo` and `Note` = `skipped <date>`, committed on its own: `docs(<subject>): skip <concept>`. Resuming takes the first `todo` item that isn't skipped. When nothing else is left, list the skipped items and offer them. Naming a skipped item (rule 4) teaches it and clears the skip. Status wins over the skip mark: an item counts as skipped only while its status is `todo`; any skill that moves it past `todo` drops `skipped <date>` from its `Note`.
 
 Teach **one item per lesson**. After each, offer the next item by name and ask: continue, skip it, or stop. Stopping is always fine: `/learn:teach <plan>` (or `/learn:plan <plan>` to see where you are) resumes at the first `todo` item. A `deep` item gets the full **Lesson structure** below. Any other item gets a **short lesson** (see below). Start the lesson's problem and "in the project" parts from the item's `why:` line and the step's **Builds** line, so it's about what the learner will build. **Ready to build** has one meaning everywhere: every item of the step is covered. Then say so: `/learn:build <step>`, from the project.
 
@@ -40,9 +40,30 @@ This is a conversation, not a document dump.
 - Match the profile's depth and language. Define every term the first time it appears.
 - If the learner already knows a part, skip it after one check question.
 
+## Teaching and writing in parallel
+
+The conversation only teaches: it explains, asks, reacts to answers and runs the lab with the learner. It never stops between questions to write files: background agents (the Agent tool, `run_in_background`, continued with SendMessage) research and write. Without both tools, or once a background agent can't write or run git (a denied permission), do everything inline, in the same order.
+
+**Research at lesson start.** Launch in parallel: the video search (see **Videos**) and, when the lesson has an **In the project** part, a code reader. Give the code reader the project's path, the concept in general terms and the data policy; it returns only `path:start-end@shortsha` ranges with one line each on what they show, never data, secrets or hostnames. Teach the problem and intuition meanwhile. Re-read every cited range yourself before teaching it: a header comment can contradict the code below it.
+
+**The writer.** One background agent writes everything in the learning repo: `lesson.md` part by part, flashcards, `PROGRESS.md` and the commits. Start it at the first lesson with the brief below and reuse it for the session: it handles messages in order and commits a lesson before acting on anything about the next, so two commits never overlap and the next lesson starts without waiting. After each part, send it that part as taught (explanation, worked example, quoted lab output, questions, the learner's answers and how they did) and keep teaching; send a skip the same way. Track what this session taught and skipped yourself to pick the next item and lesson number, since `PROGRESS.md` may lag. When it reports a sha, say so in one line (`Lesson 012 saved · a1b2c3d`).
+
+Until its last sha is in, nothing else touches the learning repo's files or git (the lab file excepted, below): wait for it before another `/learn` skill runs, before ending the session, and before starting a replacement writer (say, when `/compact` lost its ID). If it reports an error, it has stopped: send it nothing more, fix the error inline and write inline for the rest of the session.
+
+The writer has a fresh context, so its brief carries everything:
+- the subject folder's absolute path; per lesson (in the first message about it): its number, slug, and parts in order (**Lesson structure** or **Short lesson**), each written as `## <part>` with the content sent;
+- the data policy as `LEARNING.md` records it, with each linked project's slug and sensitivity;
+- the **Finish** rules below and the **Plan items** rules they use (every item with the concept name, `<plan>/<step>`, skip notes), the card format in `flashcards/deck.md`, and the commit messages (the lesson's, and a skip's, see **Skipping**);
+- **it never invents content**: it writes only what it was sent, reworded at most, with no number it wasn't given; what's missing it leaves out;
+- it commits as `/learn:init` says, staging only that commit's paths (`lessons/<NNN>-<slug>/` without run artefacts such as caches or output files, `flashcards/deck.md`, `PROGRESS.md`); it leaves other changes unstaged and reports them; after each commit it reports the short sha in one line; on any error it reports it and stops.
+
+**The lab.** Write the lab file yourself in the lesson folder, so what runs is exactly what you wrote, and run it live (predict, then run). The writer commits it with the lesson.
+
+**Between lessons.** A skill can't run `/compact` or `/clear`, but all the state is in the repo, so the learner can. After a lesson's sha is confirmed, when the conversation is long (several lessons in, or after a lab with long output), say in one line that everything is saved and suggest `/compact`, or `/clear` then `/learn:teach <plan>` to resume at the next item. At most once per lesson, never mid-lesson.
+
 ## Lesson structure
 
-Work through these parts, writing `lessons/<NNN>-<topic-slug>/lesson.md` as you go (NNN = next free number):
+Work through these parts; the writer records each in `lessons/<NNN>-<topic-slug>/lesson.md` as you go (NNN = next free number, counting lessons the writer hasn't committed yet):
 
 1. **The problem**: the concrete situation in the linked project, or the learner's goal, that needs this. Cite `<project-slug>:path@shortsha` when relevant; obey the data policy.
 2. **Intuition**: a plain-language picture or analogy, and a tiny worked example by hand.
@@ -56,13 +77,13 @@ Work through these parts, writing `lessons/<NNN>-<topic-slug>/lesson.md` as you 
 
 ### Short lesson (plan items not flagged `deep`)
 
-Same rules (one idea at a time, predict before running, never state an uncomputed number). Write `lessons/<NNN>-<concept-slug>/lesson.md` with: **The problem** (from the item's `why:`), **Intuition** with a tiny worked example by hand, **Watch** (optional, see **Videos**), **In the project**, **One pitfall** with its symptom, and a **Check** of 2 questions. There's no lab unless the learner asks for one or the check shows the idea didn't land; then add one and treat it as a full lesson. A lesson has at most one **Watch** part: when a short lesson grows, it stays where it is (before the lab).
+Same rules (one idea at a time, predict before running, never state an uncomputed number). `lessons/<NNN>-<concept-slug>/lesson.md` has: **The problem** (from the item's `why:`), **Intuition** with a tiny worked example by hand, **Watch** (optional, see **Videos**), **In the project**, **One pitfall** with its symptom, and a **Check** of 2 questions. There's no lab unless the learner asks for one or the check shows the idea didn't land; then add one and treat it as a full lesson. A lesson has at most one **Watch** part: when a short lesson grows, it stays where it is (before the lab).
 
 ### Videos
 
 A **Watch** part appears only when a video would help: a visual or dynamic idea, a mechanism easier to see than to read, or a known explainer of exactly this concept. Otherwise leave it out entirely. Skip it too when `LEARNING.md` → Learner says `Videos in lessons: off` (a missing row means on).
 
-**Find them early.** Start the search when the lesson starts, with the searches sent in parallel, or hand it to a background agent if one is available (give it only the general field term and the checks below), so the lesson doesn't stall at the Watch part. Offer the result ("watch now or after the lesson") and don't wait for the learner to watch.
+**Find them early.** Start the search when the lesson starts, in a background agent (give it only the general field term and the checks below), or with parallel searches when there is none, so the lesson doesn't stall at the Watch part. Offer the result ("watch now or after the lesson") and don't wait for the learner to watch.
 
 **What qualifies.**
 - **Free**: no paywall, login or course sign-up.
@@ -81,7 +102,9 @@ With web tools unavailable or nothing passing, a lesson where a video would have
 
 ## Finish
 
+Send the writer the check results, 3–6 flashcards and the log line; it does the rest (inline without one):
+
 - Add 3–6 flashcards for the core ideas to `flashcards/deck.md` (box 1, next = today).
 - Update `PROGRESS.md`: a `todo` topic → `learning` (any other status stays, since teaching isn't evidence of a gap). For a plan item, update (or add) the **Concepts** row of every item with that concept name (see **Plan items**): `Concept` = the concept name as written in the plan, `Step` = `<plan>/<step>`, status `todo` → `learning` (others stay), `Note` = `lesson <NNN>` (a recheck appends it: `lesson 002, 011`; a cleared skip drops `skipped`). Update the same-named Tracks topic the same way. Log the session with one line on what clicked and what didn't.
 - Commit `docs(<subject>): lesson <NNN> <topic>`, one commit per lesson, so stopping between items loses nothing.
-- Suggest the next step: `/learn:practice <topic>`, or `/learn:quiz <topic>` if the check went perfectly. When working through a plan, offer the next item first (continue, skip, stop).
+- Without waiting for the sha, suggest the next step (another skill starts only once the sha is in): `/learn:practice <topic>`, or `/learn:quiz <topic>` if the check went perfectly. When working through a plan, offer the next item first (continue, skip, stop).
