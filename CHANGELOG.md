@@ -6,6 +6,7 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ### Changed
 
+- Build mode writes docs, and picks the next piece of work. The hands-on levels now apply to code only: a decision record, definition, spec, README or runbook a step produces is written complete by Claude at every level, with its reasoning, options and worked examples, and marked proposed for you to approve. You learn from it through questions on the finished doc instead of filling `TODO(learner)` blanks in prose. When you don't say what to work on, Claude chooses the next piece itself, project value first and learning order second, and says why in one line instead of asking.
 - Flashcards are picked, not typed. `/learn:quiz review` and build mode's spaced review ask each card as a question prompt like every other study question, numbered `Card 3/12`, with near-miss distractors so you still have to recall the answer rather than spot it. Type your own answer via Other and it's judged on its meaning. Hints and reflect's open questions stay plain text.
 
 ### Fixed

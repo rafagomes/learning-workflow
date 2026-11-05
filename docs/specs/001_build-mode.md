@@ -27,6 +27,8 @@ Two pieces, linked by step ID:
    - `claude`: Claude writes the code and explains decisions that touch a `new` concept.
    - `adaptive`: Claude writes plumbing; for code that embodies a `new` concept it writes a scaffold with a clearly marked gap and asks you to fill it, then reviews.
    - `you`: you write; Claude plans the next small step, reviews and hints.
+   - The levels apply to code only. Docs the step produces (a decision record, a definition, a spec, a README, a runbook) are written complete by Claude at every level, with the reasoning, options and worked examples to learn from, and go in as proposed for you to approve. You learn from a doc through "is this clear?" questions on the finished doc and the done-check.
+   - **Choosing the next piece.** When you don't name what to work on next, Claude picks it (project value first, learning order second) and says why in one line, instead of asking which to start.
 2. **Silent by default.** A concept note (2–4 lines, marked `▸ concept:`) appears only when a decision in the current response depends on a `new` concept not yet shown in this step. It offers a deeper dive; nothing more unless accepted.
 3. **Predict before running.** Before running tests, evals or a script whose outcome teaches something, Claude asks for a one-line prediction, then compares.
 4. **Idle time.** When Claude has started a background task and has nothing else to do in the main session, it offers a 2–5 minute deep dive on a concept from the step plus 1–2 "is this clear?" questions. One word ("skip") declines.
@@ -52,6 +54,7 @@ No learn-mode state or learning artefact is written to the project; only the cod
 - With an active file for the current project, the hook prints it; for another project it prints nothing; a file older than 12 h prints nothing.
 - `claude plugin validate .` accepts `hooks/hooks.json`.
 - Skills `plan`, `build`, `off` have valid frontmatter (tests/run.sh).
+- Manual: a docs-only step (e.g. a decision record) is written complete by Claude with no `TODO(learner)` gap, and followed by "is this clear?" questions; with no piece named, Claude picks the next one and says why.
 - Manual: `/learn:plan` on a small spec, `/learn:build S1`, a few prompts (silent unless a `new` concept is involved), "done" → done-check → `builds/` file written, active file removed.
 
 ## Out of scope

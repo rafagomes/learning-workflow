@@ -33,7 +33,7 @@ Links a project's development plan (read-only, stays in the project) to a learni
 
 - Keeps the dev plan's step IDs, or assigns `S1…` for a plain goal (after 1–2 questions).
 - Reads the code each step will touch. For each step it lists 2–6 precise concepts, each marked `known` (from `PROGRESS.md` or a quick self-check) or `new`; `new` concepts too big for a note are flagged `deep`, with a `/learn:teach` suggestion.
-- Per step: hands-on level (subject default unless changed) and 3–5 done-check questions answerable from the built code.
+- Per step: hands-on level (subject default unless changed) and 3–5 done-check questions answerable from the built code or written doc.
 
 **Plan view** (read-only): every concept of every step is an item, shown in plan order with its status from `PROGRESS.md` → Concepts (`✓` taught, `★` ready or built, `·` todo, `–` skipped, `○` known), its lesson and quiz score, which steps are ready to build (every item taught or known), and the next item. Then one question: **continue** (`/learn:teach <plan>`), **recheck an item** (re-teach or quiz it), **build a step** (`/learn:build <step>` from the project) or **done**.
 
@@ -56,7 +56,8 @@ Turns learn mode on for one step in the current project.
 
 1. **Start:** requires the project to be linked (offers `/learn:init add`), checks for an already-active step (offers `/learn:off` for it), asks up to 3 due flashcards, sets the level, marks the step `in progress`, and writes the state file (the plugin's `UserPromptSubmit` hook re-injects it on every prompt in that project).
 2. **While on:** normal pair programming under the project's own rules, plus:
-   - code at the hands-on level (overridable per prompt);
+   - code at the hands-on level (overridable per prompt); docs are written complete by Claude at every level, marked proposed, never gapped;
+   - when you don't name the next piece of work, Claude picks it (project value first, learning order second) and says why;
    - a `▸ concept:` note (2–4 lines) only when a decision depends on a `new` concept not yet shown;
    - a prediction (pick an outcome) before tests, evals or benchmarks;
    - during background waits, one offer of a 2–5 minute deep dive with 1–2 "is this clear?" questions.

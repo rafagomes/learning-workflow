@@ -42,7 +42,7 @@ Verdict: start with build mode for most work; reach for the study loop when buil
   <img alt="Build mode: dev plan to learning plan, learn mode on for a step, every prompt codes at your level, then a done-check and wrap-up." src="diagrams/build-mode-light.svg" width="880">
 </picture>
 
-**Hands-on levels.** `claude` (Claude codes and explains the decisions that matter), `adaptive` (Claude writes the plumbing and leaves you the core with a marked gap), or `you` (you code, Claude coaches). There's a default per subject, and any step or prompt can override it.
+**Hands-on levels.** `claude` (Claude codes and explains the decisions that matter), `adaptive` (Claude writes the plumbing and leaves you the core with a marked gap), or `you` (you code, Claude coaches). There's a default per subject, and any step or prompt can override it. The levels apply to code only: Claude writes a step's docs (decisions, definitions, specs, runbooks) complete at every level, marked proposed, so you learn by reading them and answering questions on them, not by filling blanks in prose.
 
 **Why it works.** Concepts arrive exactly when a decision depends on them (just in time). Predictions before runs exercise the generation effect. The done-check is retrieval practice on your own code. Misses feed the same spaced-repetition deck.
 

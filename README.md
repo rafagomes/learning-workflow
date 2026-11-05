@@ -87,7 +87,7 @@ Two kinds of repo, and one direction of reference:
 | `adaptive` | Writes plumbing; scaffolds the core with a marked gap for you | Write the core |
 | `you` | Plans the next small step, reviews, hints | Write the code |
 
-The default is set per subject; any step or prompt can override it ("I'll write this one").
+The default is set per subject; any step or prompt can override it ("I'll write this one"). The levels apply to code: docs a step produces (decisions, definitions, specs, runbooks) are written complete by Claude at every level, marked proposed, with the reasoning and examples to learn from. When you don't say what to work on next, Claude picks it (project value first, learning order second) and says why.
 
 ### The study loop
 
