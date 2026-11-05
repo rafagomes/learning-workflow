@@ -56,7 +56,8 @@ Turns learn mode on for one step in the current project.
 
 1. **Start:** requires the project to be linked (offers `/learn:init add`), checks for an already-active step (offers `/learn:off` for it), asks up to 3 due flashcards, sets the level, marks the step `in progress`, and writes the state file (the plugin's `UserPromptSubmit` hook re-injects it on every prompt in that project).
 2. **While on:** normal pair programming under the project's own rules, plus:
-   - code at the hands-on level (overridable per prompt);
+   - code at the hands-on level (overridable per prompt); docs are written complete by Claude at every level, marked proposed, never gapped;
+   - when you don't name the next piece of work, Claude picks it (project value first, learning order second) and says why;
    - a `▸ concept:` note (2–4 lines) only when a decision depends on a `new` concept not yet shown;
    - a prediction (pick an outcome) before tests, evals or benchmarks;
    - during background waits, one offer of a 2–5 minute deep dive with 1–2 "is this clear?" questions.
