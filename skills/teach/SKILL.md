@@ -1,11 +1,34 @@
 ---
 name: teach
-description: "Teach one topic in depth as an interactive lesson: intuition, the mechanism, a runnable lab with real numbers, how it shows up in the linked project, pitfalls, and a check for understanding. Use when the user says 'teach me X', 'explain X properly', 'deep dive on X', 'next lesson', or names a curriculum topic. Writes lessons/<NNN>-<topic>/ in the subject's folder of the learning repo."
-argument-hint: "<track>/<topic-number> | <topic>"
+description: "Teach one topic in depth as an interactive lesson: intuition, the mechanism, a runnable lab with real numbers, how it shows up in the linked project, pitfalls, and a check for understanding. Also works through a learning plan in order: a step ID ('/learn:teach Z0') teaches that step's concepts, a plan name teaches the whole plan and resumes where the learner stopped. Use when the user says 'teach me X', 'explain X properly', 'deep dive on X', 'next lesson', 'teach me Z0', 'continue the plan', or names a curriculum topic, plan step or plan. Writes lessons/<NNN>-<topic>/ in the subject's folder of the learning repo."
+argument-hint: "<track>/<topic-number> | <topic> | <plan step> | <plan> | <plan>/<step>/<concept>"
 ---
 Teach a topic. Argument: $ARGUMENTS
 
-Resolve the subject and current project as `/learn:init` describes. Read `LEARNING.md` (profile, toolchain, data policy) and, if the topic is in a track, its entry in `curriculum/<track>.md` (why it matters, ready-when, touchpoint). With no argument, pick the first `todo` topic whose prerequisites are all `ready`, `claimed`, `built` or `reflected`.
+Resolve the subject and current project as `/learn:init` describes. Read `LEARNING.md` (profile, toolchain, data policy) and, if the topic is in a track, its entry in `curriculum/<track>.md` (why it matters, ready-when, touchpoint).
+
+## What to teach
+
+Match the argument in this order:
+
+1. `<track>/<n>`: that curriculum topic.
+2. **A plan step ID** (`Z0`, `P1`, `S2`) found in `plans/*.md`: that step's items, in plan order (see **Plan items**), passing over items that are covered or skipped, as a plan walk does; the step's skipped items are offered at the end. If several plans have that step, ask which one.
+3. **A plan name** (a file `plans/<plan>.md`): the whole plan, from the first `todo` item, step by step. Say so when it moves into the next step.
+4. `<plan>/<step>/<concept>`, or a concept name that matches one or more plan items: that concept, **even if it's already taught**, or skipped. A taught one is a recheck: teach it again from a new angle and record the new lesson. A concept listed under several steps is still one lesson; it updates every matching item (see **Plan items**).
+5. Anything else: a free topic, as before.
+6. **No argument:** gather what can be continued: plans with `todo` items (with their counts, e.g. "zone-classification · 3 of 30 taught · next: label definition (Z0)") and tracks with `todo` topics whose prerequisites are `ready`, `claimed`, `built` or `reflected`. With several, ask which one (one question). With one, say which and continue it. With none, suggest `/learn:plan` or `/learn:curriculum`.
+
+### Plan items
+
+An **item** is one concept listed under a step's **Concepts** in `plans/<plan>.md`, addressed as `<plan>/<step>/<concept>`. Its **concept name** is the bullet's text after the `new` / `known` / `deep` marks and before `: why:`; two items are the same concept when their names match, ignoring case. **Plan order** means the steps in the order of the plan's table, then the concepts in the order they're listed under each step.
+
+**Status.** An item's status is its row in `PROGRESS.md` → **Concepts**, where `Step` is `<plan>/<step>`. **A row always wins over the plan's mark.** With no row, an item marked `known` in the plan counts as `claimed` and any other item as `todo`. A `known` item is passed over only while it is `claimed`: once a failed quiz turns it `todo`, it is taught like any other item. A row from before plans were studied may have a bare step ID in `Step` (`Z0`): it counts for the one plan that has that step, and is rewritten as `<plan>/<step>` the next time it's updated. If several plans have that step ID, ask the learner which plan the old rows belong to (once per step ID), then rewrite them. An item is **covered** when it is `claimed`, or at `learning` or beyond.
+
+**Same concept, several items.** Teaching a concept updates the row of **every** item with that concept name in the subject's plans, creating the rows that don't exist yet, and the **Tracks** topic with the same name if there is one, so `PROGRESS.md` never contradicts itself. A concept already covered elsewhere is not taught again when the plan reaches it; say so in one line and move on.
+
+**Skipping.** A skipped item gets a row with status `todo` and `Note` = `skipped <date>`. Resuming takes the first `todo` item that isn't skipped. When nothing else is left, list the skipped items and offer them. Naming a skipped item (rule 4) teaches it and clears the skip. Status wins over the skip mark: an item counts as skipped only while its status is `todo`; any skill that moves it past `todo` drops `skipped <date>` from its `Note`.
+
+Teach **one item per lesson**. After each, offer the next item by name and ask: continue, skip it, or stop. Stopping is always fine: `/learn:teach <plan>` (or `/learn:plan <plan>` to see where you are) resumes at the first `todo` item. A `deep` item gets the full **Lesson structure** below. Any other item gets a **short lesson** (see below). Start the lesson's problem and "in the project" parts from the item's `why:` line and the step's **Builds** line, so it's about what the learner will build. **Ready to build** has one meaning everywhere: every item of the step is covered. Then say so: `/learn:build <step>`, from the project.
 
 ## How to teach
 
@@ -30,9 +53,13 @@ Work through these parts, writing `lessons/<NNN>-<topic-slug>/lesson.md` as you 
 7. **Vocabulary**: a term → one-line definition table.
 8. **Check**: 3 short questions answered in the conversation; record which ones the learner got right.
 
+### Short lesson (plan items not flagged `deep`)
+
+Same rules (one idea at a time, predict before running, never state an uncomputed number). Write `lessons/<NNN>-<concept-slug>/lesson.md` with: **The problem** (from the item's `why:`), **Intuition** with a tiny worked example by hand, **In the project**, **One pitfall** with its symptom, and a **Check** of 2 questions. There's no lab unless the learner asks for one or the check shows the idea didn't land; then add one and treat it as a full lesson.
+
 ## Finish
 
 - Add 3–6 flashcards for the core ideas to `flashcards/deck.md` (box 1, next = today).
-- Update `PROGRESS.md`: a `todo` topic → `learning` (any other status stays, since teaching isn't evidence of a gap); log the session with one line on what clicked and what didn't.
-- Commit `docs(<subject>): lesson <NNN> <topic>`.
-- Suggest the next step: `/learn:practice <topic>`, or `/learn:quiz <topic>` if the check went perfectly.
+- Update `PROGRESS.md`: a `todo` topic → `learning` (any other status stays, since teaching isn't evidence of a gap). For a plan item, update (or add) the **Concepts** row of every item with that concept name (see **Plan items**): `Concept` = the concept name as written in the plan, `Step` = `<plan>/<step>`, status `todo` → `learning` (others stay), `Note` = `lesson <NNN>` (a recheck appends it: `lesson 002, 011`; a cleared skip drops `skipped`). Update the same-named Tracks topic the same way. Log the session with one line on what clicked and what didn't.
+- Commit `docs(<subject>): lesson <NNN> <topic>`, one commit per lesson, so stopping between items loses nothing.
+- Suggest the next step: `/learn:practice <topic>`, or `/learn:quiz <topic>` if the check went perfectly. When working through a plan, offer the next item first (continue, skip, stop).

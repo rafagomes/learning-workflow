@@ -135,7 +135,7 @@ def build_mode(t):
 
 def study_loop(t):
     s = Svg(880, 400, t)
-    nodes = [("/learn:curriculum", "topics by dependency", "green"), ("/learn:teach", "one concept at a time", "green"),
+    nodes = [("/learn:curriculum", "or a plan, in order", "green"), ("/learn:teach", "one concept at a time", "green"),
              ("/learn:practice", "make failing tests pass", "green")]
     xs = [20, 230, 440]
     for (a, b, c), x in zip(nodes, xs):
@@ -163,7 +163,7 @@ def study_loop(t):
     s.text(463, 302, "lessons learned", 12, 500, "muted")
     s.text(864, 340, "quiz misses", 12, 500, "muted", "end")
     return s.render("The study loop",
-                    "Curriculum, teach and practice lead to a quiz gate; failing sends you back to the gap, passing a whole phase means you build it in your project, then reflect; misses and reflections feed a spaced-repetition flashcard deck.")
+                    "A curriculum, or a learning plan studied in order, then teach and practice lead to a quiz gate; failing sends you back to the gap, passing a whole phase means you build it in your project, then reflect; misses and reflections feed a spaced-repetition flashcard deck.")
 
 
 def statuses(t):

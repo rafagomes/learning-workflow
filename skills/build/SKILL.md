@@ -25,8 +25,8 @@ echo "$state"
 
 ```markdown
 [learn mode] step <ID> "<title>" · plan <subject folder>/plans/<plan>.md · level <level> · project <slug> (<sensitivity>) · state file <state path>
-New concepts not yet shown: <list> · shown: <list>
-Rules: work in the project under its own rules; learning notes, logs and flashcards go only to the learning repo, never the project. Code at the level (adaptive: scaffold the core with a TODO(learner) gap for the learner to fill). Stay silent unless a decision in this reply depends on a new concept not yet shown; then add a 2–4 line "▸ concept:" note, offer a deeper dive, and rewrite this state file moving the concept to "shown". Ask for a one-line prediction before tests/evals. When a background task runs and nothing else is pending, offer a 2–5 min deep dive + 1–2 "is this clear?" questions. Remove every TODO(learner) marker before anything is committed. When the learner says the step is done or its PR opens: done-check, then wrap-up (/learn:build), then delete this file.
+New concepts not yet shown: <list> · taught in lessons: <concept (lesson NNN), …> · shown: <list>
+Rules: work in the project under its own rules; learning notes, logs and flashcards go only to the learning repo, never the project. Code at the level (adaptive: scaffold the core with a TODO(learner) gap for the learner to fill). Stay silent unless a decision in this reply depends on a new concept not yet shown; for a concept taught in a lesson, one "▸ recall:" line naming the lesson is enough; otherwise add a 2–4 line "▸ concept:" note, offer a deeper dive, and rewrite this state file moving the concept to "shown". Ask for a one-line prediction before tests/evals. When a background task runs and nothing else is pending, offer a 2–5 min deep dive + 1–2 "is this clear?" questions. Remove every TODO(learner) marker before anything is committed. When the learner says the step is done or its PR opens: done-check, then wrap-up (/learn:build), then delete this file.
 ```
 
 5. Mark the step `in progress` in the plan, then tell the learner in two lines: the step, the level, how many new concepts, and that they can just keep prompting. Then start on the work they ask for.
@@ -45,7 +45,7 @@ You are pair-programming in the **project**, at the learner's request, following
 
 Remove every `TODO(learner)` marker before the work is committed (the learner's code replaces it, or you fill it if they hand it back).
 
-**Concept notes.** Silent by default: most replies have none. Add a note only when a decision in this reply depends on a `new` concept not yet shown in this step:
+**Concept notes.** Silent by default: most replies have none. A concept the learner already studied with `/learn:teach` (its **Concepts** row for this step is at `learning` or beyond when learn mode starts) goes in the state file under "taught in lessons": when a decision depends on it, add one line, `▸ recall: <concept> (lesson <NNN>): <how it applies here>`, not a full note. Add a full note only when a decision in this reply depends on a `new` concept not yet shown in this step:
 
 > ▸ concept: **<name>**: 2–4 lines on what it is and why it decides this choice here. Want a deeper dive?
 
@@ -68,7 +68,7 @@ When the learner says the step is done, or a PR for it is opened, ask the step's
 3. Update the plan: the step's Status → `done` and its Log line.
 4. Update `PROGRESS.md`:
    - under **Plans**, the step's status;
-   - under **Concepts** (and the matching Tracks topic, if one exists, so the two never disagree), each concept the step covered. A done-check is evidence, like a quiz:
+   - under **Concepts** (and the matching Tracks topic, if one exists, so the two never disagree), each concept the step covered, in the row with `Step` = `<plan>/<step>` (rewrite an old bare `<step>` row to that form), and the rows of the same concept in other steps (see `/learn:teach` → **Plan items**). A done-check is evidence, like a quiz:
      - answered correctly → `built` (unless already `built` or `reflected`);
      - missed → `learning` from `todo`, `claimed`, `learning`, `practised` or `ready` (a disproven claim or a forgotten idea needs work again); a missed `built` or `reflected` concept keeps its status. Every miss gets a flashcard;
      - shown but not checked → `learning` only if it was `todo`; otherwise unchanged.

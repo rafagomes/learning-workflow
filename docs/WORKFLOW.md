@@ -28,12 +28,12 @@ The learning repo reads projects; nothing reads the learning repo. Anything you 
 |---|---|---|
 | When | You have real work to do now | Before the work, or for a deep concept |
 | Where | In the project session | In the subject's folder of the learning repo |
-| Driven by | A learning plan linked to the dev plan (`/learn:plan`) | A curriculum (`/learn:curriculum`) |
+| Driven by | A learning plan linked to the dev plan (`/learn:plan`) | A curriculum (`/learn:curriculum`), or the same learning plan studied in order (`/learn:teach <plan>`) |
 | Teaching | Short concept notes only when a decision needs them; deep dives during background waits | Full lessons with labs |
 | Checking | Predictions before runs; done-check when the step is done | Exercises with tests; quizzes |
 | Shared | The subject's folder, flashcard deck, `PROGRESS.md` | ← same |
 
-Verdict: start with build mode for most work; reach for the study loop when build mode flags a `deep` concept or you're new to the subject.
+Verdict: start with build mode for most work; reach for the study loop when build mode flags a `deep` concept or you're new to the subject. The two meet in the plan: `/learn:teach <plan>` studies its concepts in order, `/learn:plan <plan>` shows which are taught, ready or still to do, and `/learn:build <step>` then only recalls what you already studied.
 
 ### Build mode
 

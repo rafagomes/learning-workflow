@@ -130,7 +130,7 @@ The hook reads only `cwd` from its input (with `jq` or `python3`, falling back t
 
 ```
 LEARNING.md          identity: learner profile, toolchain, linked projects (slug + sensitivity only), data policy + exceptions
-PROGRESS.md          tracks, per-topic status, session log
+PROGRESS.md          tracks, per-topic status, plan items (Concepts), session log
 CLAUDE.md            rules for any Claude session opened inside the learning repo
 curriculum/<track>.md
 plans/<plan>.md      learning plan, linked by step ID to a project's dev plan
@@ -156,12 +156,13 @@ tools/guard.sh       pre-commit guard; tools/hooks/pre-commit runs it
 |---|---|---|---|
 | init | registry, project manifests | learning repo, registry | `chore: initialize <slug> learning repo`, `chore: link <project>` |
 | plan | dev plan + code it touches (read-only), `PROGRESS.md` | `plans/<plan>.md`, `PROGRESS.md` | `docs: learning plan <plan>` |
+| plan (view) | `plans/<plan>.md`, `PROGRESS.md` | nothing (read-only); hands over to teach, quiz or build | none |
 | build | plan step, deck, project (works in it under its own rules) | active state file; `builds/`, plan, deck, `PROGRESS.md` | `docs: build log <step>` |
 | off | active state file | `builds/`, plan, `PROGRESS.md`; deletes state | `docs: build log <step>` |
 | curriculum | source (file, URL, spec, issue), `LEARNING.md`, `PROGRESS.md` | `curriculum/<track>.md`, `PROGRESS.md` | `docs: add <track> curriculum` |
-| teach | curriculum entry, linked project (read-only) | `lessons/<NNN>-<topic>/`, deck, `PROGRESS.md` | `docs: lesson <NNN> <topic>` |
+| teach | curriculum entry or plan item(s), linked project (read-only) | `lessons/<NNN>-<topic>/`, deck, `PROGRESS.md` (Tracks and Concepts) | `docs: lesson <NNN> <topic>`, one per lesson |
 | practice | lesson | `exercises/`, deck, `PROGRESS.md` | `feat: exercises for <topic>` |
-| quiz | curriculum, lesson, deck | `quiz.md`, deck, `PROGRESS.md` | `docs: quiz <topic>` / `docs: flashcard review` |
+| quiz | curriculum or plan item(s), lesson, deck | `quiz.md`, deck, `PROGRESS.md` (Tracks and Concepts) | `docs: quiz <topic>`, one per item in plan mode / `docs: flashcard review` |
 | reflect | PR or commit range (read-only), lesson, quiz | `reflections/`, curriculum, deck, `PROGRESS.md` | `docs: reflect on <topic>` |
 
 ## Enforcement

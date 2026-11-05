@@ -1,6 +1,6 @@
 {
   "name": "learn",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Learn any subject with Claude Code, while you build or before you do. Build mode pair-programs with you in your real project at your hands-on level, teaches a concept only when a decision needs it, and checks what you learned when the step is done. The study loop adds curricula, lessons with labs, exercises and quizzes. Spaced repetition and reflection throughout; everything lives in your own learning repo.",
   "author": { "name": "Rafa Gomes", "url": "https://github.com/rafagomes" },
   "homepage": "https://github.com/rafagomes/learning-workflow",

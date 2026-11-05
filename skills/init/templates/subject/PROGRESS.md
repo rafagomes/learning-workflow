@@ -8,9 +8,9 @@ Step status: `todo` → `in progress` → `done`.
 
 _None yet. Run `/learn:plan <spec, plan or goal>`._
 
-## Concepts (build mode)
+## Concepts (plan items)
 
-Concepts met while building, with the same statuses as topics (`learning`, `built`, …).
+The concepts listed in `plans/`, one row per `<plan>/<step>`, with the same statuses as topics (`learning`, `built`, …). `/learn:teach` and `/learn:quiz` update them when you study a plan, `/learn:build` when you build a step; `/learn:plan <plan>` shows them as a checklist. No row means `todo`.
 
 | Concept | Status | Step | Note |
 |---|---|---|---|

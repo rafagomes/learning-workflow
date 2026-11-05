@@ -4,6 +4,12 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-04
+
+### Added
+
+- Study a learning plan in order: `/learn:teach <step>` teaches a plan step's concepts (`/learn:teach Z0`), `/learn:teach <plan>` walks the whole plan one concept per lesson and resumes where you stopped, `/learn:teach` alone asks which plan or track to continue. Non-`deep` concepts get a short lesson. `/learn:quiz` accepts steps, plans and single concepts. `/learn:plan <existing plan>` shows the plan as a checklist (taught, ready, todo) and offers continue, recheck a concept (re-teach or quiz) or build a step. Status lives in `PROGRESS.md` → Concepts; build mode recalls taught concepts in one line.
+
 ## [0.2.0] - 2026-11-04
 
 ### Changed
