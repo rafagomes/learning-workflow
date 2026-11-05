@@ -6,7 +6,7 @@ This repo is the `learn` Claude Code plugin: the learning **workflow** only. It 
 
 - `.claude-plugin/`: `plugin.json` (plugin `learn`) and `marketplace.json` (marketplace `learning-workflow`).
 - `skills/<name>/SKILL.md`: one skill per directory; frontmatter `name`, `description` with trigger phrases, `argument-hint`.
-- `skills/init/templates/`: files copied into a new learning repo. `skills/init/toolchains.md`: default run/test commands.
+- `skills/init/templates/`: `repo/` is copied into a new learning repo, `subject/` into each subject folder; `v0.1.0/` is only read by migrate. `skills/init/toolchains.md`: default run/test commands.
 - `docs/`: WORKFLOW, ARCHITECTURE, SKILLS, DATA-POLICY, EXAMPLES, FAQ.
 - `hooks/`: the learn-mode `UserPromptSubmit` hook. Keep it fast, silent when inactive, and always exit 0.
 - `docs/specs/`: feature designs.

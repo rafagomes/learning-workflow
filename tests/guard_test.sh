@@ -55,3 +55,7 @@ expect block "embedded git repo" git add old-repo
 rm -rf old-repo
 msg=$(echo "a,b" > python/leak.csv && git add python/leak.csv && git commit -qm leak 2>&1 || true); git reset -q --hard HEAD; rm -f python/leak.csv
 if [[ "$msg" == *"<subject>/scratch/"* ]]; then echo "  ok   message points to <subject>/scratch/"; else echo "  FAIL message: $msg" >&2; exit 1; fi
+# "?sub" read as a glob would match the gitlink "0sub", which sorts first: the gitlink check must read the path literally.
+mkdir -p 0sub && git -C 0sub init -qb main && git -C 0sub -c user.email=t@example.com -c user.name=t commit -q --allow-empty -m x
+git -c core.hooksPath=/dev/null add 0sub && git -c core.hooksPath=/dev/null commit -qm "gitlink present (bypassing guard)"
+echo x > "?sub";                                          expect allow "glob characters in a filename next to a gitlink" git add "?sub"
