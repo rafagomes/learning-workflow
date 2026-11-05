@@ -19,7 +19,7 @@ echo "$state"
 ```
 
    If `"$state"` already exists for **another** step, offer `/learn:off` for that step first (its wrap-up would be lost otherwise). If it exists for **this** step but is older than 12 hours, tell the learner learn mode lapsed and is resuming.
-2. **Spaced review.** If `flashcards/deck.md` has due cards, ask up to 3, one at a time, with AskUserQuestion as `/learn:quiz review` does, and update their boxes. Skip if the learner says so.
+2. **Spaced review.** If `flashcards/deck.md` has due cards, ask up to 3, one at a time, with AskUserQuestion as `/learn:quiz review` does, and update their boxes. Skip if the learner says so (asking to skip via Other ends the review without scoring that card).
 3. **Set the level**: argument > step > `LEARNING.md` default.
 4. **Turn the mode on** by writing the reminder to `"$state"` (quote the path; create its directory with `mkdir -p "$(dirname "$state")"`). Use this shape, filling the brackets:
 

@@ -9,7 +9,7 @@ Resolve the subject as `/learn:init` describes. Every question is asked and reco
 
 ## Review mode (`review`)
 
-Read `flashcards/deck.md`, take every card whose `next` date is today or earlier (box 1 first), say how many you'll ask (the due count, at most 20, and how many wait for next time), and ask them one at a time, each one AskUserQuestion call starting `Card 3/12 · ` against that number, as `/learn:init` → **Questions and examples** says for flashcards. A typed Other is judged on its meaning, not its wording. Open the reply (or the next card's question text) with **Correct.** or **Incorrect.** Correct → box +1 (max 5), next = today + interval for that box (1, 2, 4, 8, 16 days). Incorrect → box 1, next = tomorrow, and explain briefly. Stop after 20 cards or when the learner says so. Update the deck, log, commit `docs(<subject>): flashcard review`.
+Read `flashcards/deck.md`, take every card whose `next` date is today or earlier (box 1 first), and ask them one at a time (at most 20; the rest wait for next time) as `/learn:init` → **Questions and examples** says for flashcards. Correct → box +1 (max 5), next = today + interval for that box (1, 2, 4, 8, 16 days). Incorrect → box 1, next = tomorrow, and explain briefly. Stop after 20 cards or when the learner says so. Update the deck, log (with each card's options, pick and verdict), commit `docs(<subject>): flashcard review`.
 
 ## Plan mode (a plan step, a plan, or a plan item)
 

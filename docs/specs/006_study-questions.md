@@ -21,7 +21,7 @@ Two kinds stay in plain text, because options would defeat them:
 - **Hints** (practice's first rung, a question pointing at the concept): options would name the approach that rung 2 is meant to hold back.
 - **Open questions** that ask for the learner's account (reflect's talk-through questions).
 
-**Flashcards** (quiz review mode, build's spaced review) first stayed plain text too, to train recall rather than recognition. In use, the learner preferred picking, so they are now AskUserQuestion calls like the rest. To keep them closer to recall, the distractors are near misses (the same idea swapped, a near-miss formula, the confusion the card exists to fix), and a typed Other is judged on its meaning.
+**Flashcards** (quiz review mode, build's spaced review) first stayed plain text too, to train recall rather than recognition. In use, the learner preferred picking, so they are now AskUserQuestion calls like the rest. To keep them closer to recall, the distractors are near misses (the same idea swapped, a near-miss formula, the confusion the card exists to fix), and a typed Other is judged on its meaning. Headless, cards stay plain text without options, so recall is kept where there is no dialog.
 
 - **One question per call**, so it stays one question at a time.
 - **2–4 options, none marked "(Recommended)"**, and no order or wording that gives the right one away (the right answer's position varies; options are similar in length and tone).
@@ -52,8 +52,8 @@ The writer records only what it is sent. Each part sent to it now carries, per q
 - `skills/init/SKILL.md`: new **Questions and examples** section in the shared contract.
 - `CLAUDE.md`: the contract's list.
 - `skills/teach/SKILL.md`: How to teach, the writer's message and brief, Short lesson, Check.
-- `skills/quiz/SKILL.md`: the reference, review mode stays plain text, the "why?" rule, recording in `quiz.md`.
-- `skills/build/SKILL.md`: spaced review stays plain text, state-file rule line, predictions, done-check, build log.
+- `skills/quiz/SKILL.md`: the reference, review mode asks cards with AskUserQuestion, the "why?" rule, recording in `quiz.md`.
+- `skills/build/SKILL.md`: spaced review asks cards with AskUserQuestion, state-file rule line, predictions, done-check, build log.
 - `skills/practice/SKILL.md`: the first hint rung stays plain text; exercise READMEs carry their own data.
 - `docs/ARCHITECTURE.md`, `docs/SKILLS.md`, `docs/WORKFLOW.md`, `README.md`: the new rule where questions are described.
 - `CHANGELOG.md`: Unreleased → Changed.
