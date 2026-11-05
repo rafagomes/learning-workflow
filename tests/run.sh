@@ -56,6 +56,9 @@ check skills/practice/SKILL.md '^## Hand over$'
 check skills/practice/SKILL.md '\*\*wrong folder\?\*\* line'
 check skills/practice/SKILL.md 'First check the folder'
 check skills/init/toolchains.md '^\| Subject .*\| Run from the wrong folder \|$'
+# Every toolchains.md table row has as many cells as its header (catches a cell added to the wrong table).
+bad_rows=$(awk '/^\|/ { if ($0 ~ /^\|---/) next; line = $0; gsub(/\\\|/, "", line); n = gsub(/\|/, "", line); if (hdr == "") { hdr = n; next } if (n != hdr) print NR } !/^\|/ { hdr = "" }' skills/init/toolchains.md | tr '\n' ' ')
+[ -z "$bad_rows" ] || missing="$missing toolchains.md:cell-count-rows($bad_rows)"
 check docs/specs/009_practice-start-here.md 'wrong folder'
 check docs/SKILLS.md 'wrong folder'
 check docs/EXAMPLES.md '^   Wrong folder\?'
