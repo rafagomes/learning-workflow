@@ -10,6 +10,7 @@ Subject folder in the learning repo, created {{DATE}} with the `learn` plugin (`
 | Depth | {{DEPTH}} |
 | Language | {{LANGUAGE}} |
 | Hands-on level (build mode) | {{LEVEL_DEFAULT}} |
+| Videos in lessons | on |
 
 ## Toolchain
 
@@ -33,6 +34,7 @@ Read-only references. Cite code as `<slug>:path@shortsha`. Paths and remotes liv
 - Build mode (`/learn:build`, started from a project) is the one exception: it codes in that project at the learner's request under the project's own rules, and never leaves learning artefacts, learn-mode state, `TODO(learner)` scaffolds or references to this repo there.
 - `work` projects: cite and paraphrase, quote only a few lines; never commit their data, real schema values, secrets, personal or customer data, or internal hostnames.
 - `personal` projects: code may be quoted; data stays out unless marked public below.
+- Web searches (short videos for lessons) use only general field terms, never project names, internal terms or data. Set Videos in lessons to `off` above to stop them.
 - Real data samples go only in `scratch/` (gitignored). Exercises generate seeded synthetic data.
 - What should reach a project is rewritten there through its own workflow (spec, branch, PR).
 
