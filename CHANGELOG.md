@@ -4,6 +4,8 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-04
+
 ### Changed
 
 - `/learn:teach` keeps the conversation on teaching. A background writer agent, reused for the session, records each lesson part as it's taught, then adds the flashcards, updates `PROGRESS.md` and makes the one commit per lesson; Claude shows its sha in one line and moves to the next item without waiting. It writes only what it was sent, stages only that commit's paths, commits skips on their own, and nothing else writes to the learning repo until its last sha is in (another `/learn` skill waits for it). It falls back to inline writing if it can't write. Video search and reading the linked project's code run in background agents at lesson start; Claude re-reads every cited line before teaching it. Without the Agent tool, lessons are written inline as before.
