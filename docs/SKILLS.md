@@ -33,7 +33,7 @@ Links a project's development plan (read-only, stays in the project) to a learni
 
 - Keeps the dev plan's step IDs, or assigns `S1…` for a plain goal (after 1–2 questions).
 - Reads the code each step will touch. For each step it lists 2–6 precise concepts, each marked `known` (from `PROGRESS.md` or a quick self-check) or `new`; `new` concepts too big for a note are flagged `deep`, with a `/learn:teach` suggestion.
-- Per step: hands-on level (subject default unless changed) and 3–5 done-check questions answerable from the built code.
+- Per step: hands-on level (subject default unless changed) and 3–5 done-check questions answerable from the built code or written doc.
 
 **Plan view** (read-only): every concept of every step is an item, shown in plan order with its status from `PROGRESS.md` → Concepts (`✓` taught, `★` ready or built, `·` todo, `–` skipped, `○` known), its lesson and quiz score, which steps are ready to build (every item taught or known), and the next item. Then one question: **continue** (`/learn:teach <plan>`), **recheck an item** (re-teach or quiz it), **build a step** (`/learn:build <step>` from the project) or **done**.
 

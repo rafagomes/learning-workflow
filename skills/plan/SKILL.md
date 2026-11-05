@@ -28,7 +28,7 @@ A `new` concept that is too big for a 2–4 line note while coding (it needs a m
 
 ## 3. Level and checks per step
 
-- **Level**: the subject default from `LEARNING.md` (`claude`, `adaptive` or `you`) unless the learner wants a different one for this step. Suggest `you` or `adaptive` for steps rich in `new` concepts the learner wants to own.
+- **Level**: the subject default from `LEARNING.md` (`claude`, `adaptive` or `you`) unless the learner wants a different one for this step. Suggest `you` or `adaptive` for steps rich in `new` concepts the learner wants to own. Levels apply to code only: a docs-only step (a decision record, a definition) is written by Claude whatever the level.
 - **Done-check**: 3–5 questions about what this step will produce (why this design, what breaks if…, explain this part, what would you change for 10× data). They must be answerable from the built code, not trivia.
 
 ## 4. Write `plans/<plan>.md`
