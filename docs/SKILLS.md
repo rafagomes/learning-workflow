@@ -109,9 +109,9 @@ Plan concepts are taught **one per lesson**, then it offers the next one (contin
 | 1. The problem | The situation in your project, or your goal, that needs this |
 | 2. Intuition | Plain-language picture and a tiny worked example |
 | 3. Mechanism | How it actually works, step by step |
-| 4. Lab | Runnable demonstration in your toolchain, including one failure mode; you predict first |
-| 5. In the project | Where a linked project uses it, cited `slug:path@sha` |
-| 6. Watch (optional) | 1–2 free videos of ≤ 15 min (or a ≤ 15-min segment) on this concept and a bit more, found by web search and checked; never invented |
+| 4. Watch (optional) | 1–2 free videos of ≤ 15 min (or a ≤ 15-min segment from its chapters) on this concept and a bit more, found by web search and checked; never invented. Off with `Videos in lessons: off` in `LEARNING.md` |
+| 5. Lab | Runnable demonstration in your toolchain, including one failure mode; you predict first |
+| 6. In the project | Where a linked project uses it, cited `slug:path@sha` |
 | 7. Pitfalls | 3–5 real mistakes with symptoms |
 | 8. Vocabulary | Term → one-line definition |
 | 9. Check | 3 questions; results recorded |

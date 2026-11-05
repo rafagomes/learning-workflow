@@ -1,6 +1,6 @@
 ---
 name: teach
-description: "Teach one topic in depth as an interactive lesson: intuition, the mechanism, a runnable lab with real numbers, how it shows up in the linked project, pitfalls, and a check for understanding. Also works through a learning plan in order: a step ID ('/learn:teach Z0') teaches that step's concepts, a plan name teaches the whole plan and resumes where the learner stopped. Use when the user says 'teach me X', 'explain X properly', 'deep dive on X', 'next lesson', 'teach me Z0', 'continue the plan', or names a curriculum topic, plan step or plan. Writes lessons/<NNN>-<topic>/ in the subject's folder of the learning repo."
+description: "Teach one topic in depth as an interactive lesson: intuition, the mechanism, a runnable lab with real numbers, a short free video when one helps, how it shows up in the linked project, pitfalls, and a check for understanding. Also works through a learning plan in order: a step ID ('/learn:teach Z0') teaches that step's concepts, a plan name teaches the whole plan and resumes where the learner stopped. Use when the user says 'teach me X', 'explain X properly', 'deep dive on X', 'next lesson', 'teach me Z0', 'continue the plan', or names a curriculum topic, plan step or plan. Writes lessons/<NNN>-<topic>/ in the subject's folder of the learning repo."
 argument-hint: "<track>/<topic-number> | <topic> | <plan step> | <plan> | <plan>/<step>/<concept>"
 ---
 Teach a topic. Argument: $ARGUMENTS
@@ -47,29 +47,37 @@ Work through these parts, writing `lessons/<NNN>-<topic-slug>/lesson.md` as you 
 1. **The problem**: the concrete situation in the linked project, or the learner's goal, that needs this. Cite `<project-slug>:path@shortsha` when relevant; obey the data policy.
 2. **Intuition**: a plain-language picture or analogy, and a tiny worked example by hand.
 3. **Mechanism**: how it actually works, step by step: the algorithm, the math, the language rule, the runtime behaviour. Explain notation; derive what is short enough to derive.
-4. **Lab**: a self-contained program in the repo's toolchain (`LEARNING.md` → Toolchain), with pinned dependencies and seeded synthetic data, run with the recorded run command. It demonstrates the mechanism and one way it fails. Keep it under ~120 lines and print labelled results. With toolchain `none`, the lab is a worked problem the learner solves step by step, and you check each step.
-5. **In the project**: how a linked project uses (or should use) this, and what to look for when reading its code. Read-only. Skip when no project is linked.
-6. **Watch** (optional): one or two free, short videos on this concept. See **Videos** below.
+4. **Watch** (optional): one or two free, short videos on this concept, right after the mechanism so the learner can see it before the lab. See **Videos** below.
+5. **Lab**: a self-contained program in the repo's toolchain (`LEARNING.md` → Toolchain), with pinned dependencies and seeded synthetic data, run with the recorded run command. It demonstrates the mechanism and one way it fails. Keep it under ~120 lines and print labelled results. With toolchain `none`, the lab is a worked problem the learner solves step by step, and you check each step.
+6. **In the project**: how a linked project uses (or should use) this, and what to look for when reading its code. Read-only. Skip when no project is linked.
 7. **Pitfalls**: the 3–5 mistakes practitioners actually make, each with a symptom to recognise it.
 8. **Vocabulary**: a term → one-line definition table.
 9. **Check**: 3 short questions answered in the conversation; record which ones the learner got right.
 
 ### Short lesson (plan items not flagged `deep`)
 
-Same rules (one idea at a time, predict before running, never state an uncomputed number). Write `lessons/<NNN>-<concept-slug>/lesson.md` with: **The problem** (from the item's `why:`), **Intuition** with a tiny worked example by hand, **Watch** (optional, see **Videos**), **In the project**, **One pitfall** with its symptom, and a **Check** of 2 questions. There's no lab unless the learner asks for one or the check shows the idea didn't land; then add one and treat it as a full lesson.
+Same rules (one idea at a time, predict before running, never state an uncomputed number). Write `lessons/<NNN>-<concept-slug>/lesson.md` with: **The problem** (from the item's `why:`), **Intuition** with a tiny worked example by hand, **Watch** (optional, see **Videos**), **In the project**, **One pitfall** with its symptom, and a **Check** of 2 questions. There's no lab unless the learner asks for one or the check shows the idea didn't land; then add one and treat it as a full lesson. A lesson has at most one **Watch** part: when a short lesson grows, it stays where it is (before the lab).
 
 ### Videos
 
-Add a **Watch** part only when a video would help: a visual or dynamic idea, a mechanism easier to see than to read, or a known explainer of exactly this concept. Offer it ("watch now or after the lesson"); don't wait for it.
+A **Watch** part appears only when a video would help: a visual or dynamic idea, a mechanism easier to see than to read, or a known explainer of exactly this concept. Otherwise leave it out entirely. Skip it too when `LEARNING.md` → Learner says `Videos in lessons: off` (a missing row means on).
 
+**Find them early.** Start the search when the lesson starts, with the searches sent in parallel, or hand it to a background agent if one is available, so the lesson doesn't stall at the Watch part. Offer the result ("watch now or after the lesson") and don't wait for the learner to watch.
+
+**What qualifies.**
 - **Free**: no paywall, login or course sign-up.
-- **Short**: about 15 minutes or less, or a timestamped segment of 15 minutes or less of a longer video (a `t=` link, with the end time written).
-- **On this concept, and a bit more**: it covers what the lesson covered plus one adjacent idea, angle or worked example. Say what that extra is.
+- **Short**: about 15 minutes or less. A longer video qualifies only as a segment of 15 minutes or less whose start and end come from its chapter list, description timestamps or transcript, seen in a fetched page. Never guess timestamps.
+- **On this concept, and a bit more**: it covers what the lesson covered plus one adjacent idea, angle or worked example. "Shows" and "Adds" describe what the title, description, chapters or transcript actually say.
 - In the lesson's language when one exists, else English (say so).
-- **Never invent a link.** Find videos with web search now, never from memory, and check each one before showing it: the page resolves, and the title, channel and length match what you write. If the length can't be confirmed, don't list it. With no web tools, or nothing that passes, write one line ("No video: none found that's short, free and on this concept") and go on.
-- Search with the general concept only, never a linked project's name, internal terms or data.
 
-Write each as: `- [<title>](<url>) · <channel> · <length or segment>. Shows: <what>. Adds: <the extra>.` A recheck may reuse an earlier lesson's video if it still passes the check.
+**Never invent a link or a fact about it.** Find videos with web search now, never from memory. Before showing one, check it:
+- It's available: for YouTube, fetch `https://www.youtube.com/oembed?url=<video url>&format=json`; it returns the title and channel (`author_name`) for a public video and an error for a removed or private one. A watch page that loads with "Video unavailable" doesn't count. Elsewhere, the fetched page shows the video and its title.
+- The title and channel you write are the ones returned.
+- The length comes from a fetched source (the search result, the page or its metadata), never from memory. If no source gives it, don't list the video.
+
+**Data policy.** Web searches leave the machine: build the query from the general field term ("precision recall tradeoff"), never a linked project's name, codenames, internal terms or data. If a plan concept's name is internal, rephrase it in general terms first, or skip the video.
+
+With web tools unavailable or nothing passing, a lesson where a video would have helped gets one line: "No video: none found that's short, free and on this concept." Write each video as: `- [<title>](<url>) · <channel> · <length or start–end>. Shows: <what>. Adds: <the extra>.` A recheck may reuse an earlier lesson's video after checking it again.
 
 ## Finish
 

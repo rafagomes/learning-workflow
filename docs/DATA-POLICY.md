@@ -12,6 +12,7 @@ A learning repo often sits next to code you don't own: your employer's, a client
 | Commit project data (rows, dumps, exports, real schema values) | **Never** | Only data you mark public in `LEARNING.md` |
 | Secrets, credentials, personal or customer data | **Never** | **Never** |
 | Internal hostnames, URLs, ticket contents | **Never** | Your call |
+| Project names or internal terms in web searches (lesson videos) | **Never**: general field terms only | Never the project name; general terms only |
 | Real samples for a lab | The subject's `scratch/` only (gitignored) | The subject's `scratch/` only |
 | Edit, commit, branch or open PRs in the project | Study skills: **never**. Build mode: yes, at your request, under the project's own rules | Same |
 | Write learning artefacts (plans, logs, notes, flashcards) or mention the learning repo in the project | **Never**, including in build mode | **Never** |

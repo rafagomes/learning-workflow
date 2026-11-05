@@ -109,7 +109,7 @@ Each topic moves through `todo → learning → practised → ready → built �
 | `/learn:build <step> [plan] [level]` | Learn mode on for a step: pair-program at your level, concept notes only when needed, predictions, idle-time deep dives, done-check and wrap-up | `builds/<date>-<step>.md`, flashcards |
 | `/learn:off [no-wrapup]` | End learn mode early; the wrap-up is saved unless `no-wrapup` | `builds/` |
 | `/learn:curriculum <plan \| spec \| URL \| topic>` | Turn a source into a track of 5–15 topics with prerequisites and checkable "ready when" criteria | `curriculum/<track>.md` |
-| `/learn:teach <track>/<n> \| <topic>` | Interactive lesson: problem, intuition, mechanism, lab, project touchpoint, a short free video when one helps, pitfalls, vocabulary, check | `lessons/<NNN>-<topic>/lesson.md`, lab, flashcards |
+| `/learn:teach <track>/<n> \| <topic>` | Interactive lesson: problem, intuition, mechanism, a short free video when one helps, lab, project touchpoint, pitfalls, vocabulary, check | `lessons/<NNN>-<topic>/lesson.md`, lab, flashcards |
 | `/learn:teach <step> \| <plan>` | Study a learning plan in order, one concept per lesson; resumes where you stopped | lessons, `PROGRESS.md` |
 | `/learn:practice <topic> [easy\|medium\|hard]` | 2–4 exercises with stubs and failing tests (verified against a hidden reference solution); hints one rung at a time | `exercises/` |
 | `/learn:quiz <track>/<n> \| <topic> \| <step> \| <plan> \| <concept>` | 8–12 adaptive questions, one at a time; ready at ≥ 80% with every critical question right | `quiz.md`, flashcards |

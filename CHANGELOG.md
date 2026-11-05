@@ -6,7 +6,7 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ### Added
 
-- Lessons can include a **Watch** part: one or two free videos of about 15 minutes or less (or a timestamped segment of a longer one) on the concept and a bit more. Claude finds them with web search, checks the title, channel and length before showing them, never invents a link, and skips the part when nothing qualifies.
+- Lessons can include a **Watch** part: one or two free videos of about 15 minutes or less (or a timestamped segment of a longer one) on the concept and a bit more. Claude finds them with web search, checks the title, channel and length before showing them, never invents a link, and skips the part when nothing qualifies. Searches use general terms only, never project names; turn videos off per subject with `Videos in lessons: off` in `LEARNING.md`.
 
 ## [0.3.0] - 2026-11-04
 
