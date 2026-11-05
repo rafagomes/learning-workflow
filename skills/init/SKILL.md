@@ -202,7 +202,9 @@ The learning repo is edited from several machines and sessions, so it syncs like
 - Record, per question, the data shown, the options, the pick (or the typed text) and the verdict word (Correct / Partly correct / Incorrect): it's the evidence a check, quiz score or done-check counts. Synthetic or lesson data is recorded in full; a linked project's code or output only as its `<slug>:path@sha` citation and a paraphrase, never pasted.
 - Without AskUserQuestion (headless, or denied), ask in plain text with the data above the question and the options listed.
 
-Three kinds stay in plain text: flashcards (they train recall, so the learner answers in their own words before seeing anything; the reply still opens with **Correct.** or **Incorrect.**), hints (practice's pointing question must not hand over the approach as an option), and open questions that ask for the learner's account (reflect's talk-through questions).
+Flashcards are questions too: each card is one AskUserQuestion call as above, starting `Card n/N · `, with the card's answer condensed into one option and distractors that are close enough to make the learner recall rather than recognise (the same idea swapped, a near-miss formula, the confusion the card exists to fix). A typed Other is judged on meaning. The verdict is **Correct.** or **Incorrect.** only (a card has one part), and moves the card's box.
+
+Two kinds stay in plain text: hints (practice's pointing question must not hand over the approach as an option), and open questions that ask for the learner's account (reflect's talk-through questions).
 
 Two kinds that sound alike follow different rules. A **comprehension check** (build mode's "is this clear?": a question on a concept, with a right option and distractors) is a question like any other above: verdict, record. A **feedback question** asks about the materials, not the concept (practice's handover question "are these instructions clear?", on the exercise's instructions and setup): it has no right answer, so it uses the format above, its prefix (`Practice · feedback · `) and **Content before the dialog**, but gets no verdict and is never recorded as evidence.
 
