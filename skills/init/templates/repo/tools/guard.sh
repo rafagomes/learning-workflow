@@ -19,7 +19,7 @@ while IFS= read -r -d '' f; do
     echo "guard: data file outside an exercise data/ dir: $f" >&2; fail=1
   fi
   # An embedded git repo (gitlink) means a folder with its own .git was added, e.g. a standalone learning repo.
-  if [[ "$(git ls-files -s -- "$f")" == 160000* ]]; then
+  if [[ "$(git ls-files -s -- ":(literal)$f")" == 160000* ]]; then
     echo "guard: embedded git repo: $f (move it out, or migrate it with /learn:init migrate)" >&2; fail=1; continue
   fi
   size=$(git cat-file -s ":$f" 2>/dev/null) || continue

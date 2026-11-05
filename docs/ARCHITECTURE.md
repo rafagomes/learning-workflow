@@ -48,6 +48,7 @@ skills/
         README.md  CLAUDE.md  gitignore  tools/guard.sh  tools/hooks/pre-commit
       subject/            copied into each new <subject>/ folder
         LEARNING.md  PROGRESS.md  deck.md
+      v0.1.0/             old CLAUDE.md and gitignore, read only by migrate to find learner additions
   plan/SKILL.md           dev plan → learning plan, by step ID
   build/SKILL.md          learn mode for a step
   off/SKILL.md            end learn mode early
@@ -167,8 +168,8 @@ tools/guard.sh       pre-commit guard; tools/hooks/pre-commit runs it
 
 The pre-commit guard (`tools/guard.sh`, run by `tools/hooks/pre-commit`, which `/learn:init` enables with repo-local `git config core.hooksPath tools/hooks` so a global hooks path can't bypass it) checks the **staged** content of every commit, renames included, and blocks:
 
-- data-like files (`csv`, `parquet`, `json`, `sqlite`, `xlsx`, model artefacts, …, any case) outside `<subject>/lessons/*/exercises/*/data/`, except named config files (`package.json`, `tsconfig*.json`, `.vscode/settings.json`, …) and SQL scripts under `<subject>/lessons/`, where a subject is a top-level folder with a `LEARNING.md` in the index;
-- an embedded git repo (a folder with its own `.git`, such as a standalone learning repo left inside the new one); archives and dumps (`zip`, `gz`, `sql`, `bak`, …) count as data;
+- data-like files (`csv`, `parquet`, `json`, `sqlite`, `xlsx`, model artefacts, …, any case) outside `<subject>/lessons/*/exercises/*/data/`, except named config files (`package.json`, `tsconfig*.json`, `.vscode/settings.json`, …) and SQL scripts under `<subject>/lessons/`, where a subject is a top-level folder with a `LEARNING.md` in the index; archives and dumps (`zip`, `gz`, `sql`, `bak`, …) count as data;
+- an embedded git repo (a folder with its own `.git`, such as a standalone learning repo left inside the new one);
 - any file over 1 MB;
 - anything [gitleaks](https://github.com/gitleaks/gitleaks) flags, when it's installed.
 
