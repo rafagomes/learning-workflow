@@ -64,7 +64,7 @@ When the learner says the step is done, or a PR for it is opened, ask the step's
 ## 4. Wrap-up
 
 1. **Sweep the project** for `TODO(learner)` markers left from this step (`git grep -n --untracked "TODO(learner)"`, which also covers new files not yet added). Resolve each with the learner (they finish it, or you do) before anything else; never leave one behind.
-2. Write `builds/<date>-<step>.md` in the subject folder: link (`<project-slug>@<shortsha>`, or `<project-slug>#<PR number>`; no branch names, which can carry internal names), concepts shown, predictions vs results, done-check score and misses, follow-ups. Obey the data policy: aggregates, no data or internal names.
+2. Write `builds/<date>-<step>.md` in the subject folder, the folder of the plan named in the state file (never the project): link (`<project-slug>@<shortsha>`, or `<project-slug>#<PR number>`; no branch names, which can carry internal names), concepts shown, predictions vs results, done-check score and misses, follow-ups. Obey the data policy: aggregates, no data or internal names.
 3. Update the plan: the step's Status → `done` and its Log line.
 4. Update `PROGRESS.md`:
    - under **Plans**, the step's status;

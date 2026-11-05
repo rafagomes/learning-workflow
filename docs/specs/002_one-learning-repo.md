@@ -37,21 +37,25 @@ Unchanged in shape, now resolving the **subject**: nearest `LEARNING.md` in the 
 
 ### Registry
 
-`spaces.json` gains a top-level `"repo"` (absolute path of the learning repo). Each entry in `spaces` is a subject; its `path` is the subject folder. An entry whose `path` is not inside `repo` is a **standalone** repo from v0.1.0; skills keep working with it (its `LEARNING.md` resolves the same way) and `/learn:init` offers to migrate it.
+`spaces.json` gains a top-level `"repo"` (absolute path of the learning repo). Each entry in `spaces` is a subject; its `path` is the subject folder. An entry whose folder is its own git root is a **standalone** repo from v0.1.0, wherever it sits; skills keep working with it (its `LEARNING.md` resolves the same way) and `/learn:init` offers to migrate it.
 
 ### `/learn:init`
 
-- `/learn:init <subject> [projects…]`: if the registry has no `repo`, ask where to create it (default `~/Learning`, never inside a project), create the root files, `git init`, enable the hook. Then add `<subject>/` from the subject templates, add a row to `README.md`, register the subject, commit `chore(<subject>): add subject`. A subject folder that already exists is never overwritten.
+- `/learn:init <subject> [projects…]`: if the registry has no `repo`, ask where to create it (default `~/Learning`, never inside a project). The location must be missing or empty; v0.1.0 repos inside it (the old default was `~/Learning/<slug>`) are first moved to `<location>.v0/`, and anything else stops for another location. Then create the root files, `git init`, enable the hook. Slugs are `^[a-z0-9][a-z0-9-]*$`, not `tools`, and not ignored by the root `.gitignore`. Then add `<subject>/` from the subject templates, add a row to `README.md`, register the subject, commit `chore(<subject>): add subject`. A subject folder that already exists is never overwritten.
 - `/learn:init add <project>`: unchanged, against the resolved subject.
-- `/learn:init migrate [<path>]`: fold a standalone v0.1.0 repo into the learning repo as `<slug>/`, **keeping its history**, with a subtree merge (fetch into a temporary ref, `merge -s ours --allow-unrelated-histories --no-commit`, `read-tree --prefix=<slug>/ -u`), drop its own `tools/`, `.gitignore` and `CLAUDE.md` (the root ones apply), copy its `scratch/` across, update the registry entry's `path`, and add the README row. The standalone repo is left untouched; deleting it is offered, never done without confirmation. Refuses if the standalone repo has uncommitted changes, or `<slug>/` exists and is not the standalone repo itself. When the standalone repo sits inside the chosen learning repo location (e.g. at `<repo>/<slug>`), it is first moved aside to `<old>.v0`, so creating the learning repo doesn't commit it as an embedded repo.
+- `/learn:init migrate [<path>]`: fold a standalone v0.1.0 repo into the learning repo as `<slug>/`, **keeping its history**, with a subtree merge (fetch into a temporary ref, `merge -s ours --allow-unrelated-histories --no-commit`, `read-tree --prefix=<slug>/ -u`), drop its own `tools/`, `.gitignore` and `CLAUDE.md` (the root ones apply) but keep the learner's additions to them as slimmed `<slug>/.gitignore` / `<slug>/CLAUDE.md`, repoint active learn-mode state files, copy its `scratch/` across, update the registry entry's `path`, and add the README row. The standalone repo is left untouched; deleting it is offered, never done without confirmation. Refuses if either repo has uncommitted changes, or if the old repo has other branches or stashes the learner hasn't agreed to leave behind, or `<slug>/` exists and is not the standalone repo itself. When the standalone repo sits inside the chosen learning repo location (e.g. at `<repo>/<slug>`), it is first moved aside to `<old>.v0`, so creating the learning repo doesn't commit it as an embedded repo.
 
 ### Guard
 
-Exercise data and lesson SQL are allowed only one level down: `^[^/]+/lessons/[^/]+/exercises/[^/]+/data/` and `^[^/]+/lessons/.+\.sql$`. Everything else is unchanged.
+Exercise data and lesson SQL are allowed only in a subject: `^[^/]+/lessons/[^/]+/exercises/[^/]+/data/` and `^[^/]+/lessons/.+\.sql$`, where the top-level folder has a `LEARNING.md` in the index. Embedded git repos are blocked. The block message points to `<subject>/scratch/`.
 
 ### Templates
 
 `templates/` splits into `templates/repo/` (`README.md`, `CLAUDE.md`, `gitignore`, `tools/`) and `templates/subject/` (`LEARNING.md`, `PROGRESS.md`, `deck.md`). The subject no longer gets its own `CLAUDE.md`; Claude Code loads the root one from any subfolder.
+
+### Build mode
+
+From a project, the subject is fixed when learn mode starts: the folder of the plan named in the state file. `/learn:build`'s wrap-up and `/learn:off` write there, never relative to the project.
 
 ### Other skills
 
@@ -67,7 +71,7 @@ Each says "resolve the subject" instead of "the learning repo" where it means th
 
 | Check | Expected |
 |---|---|
-| `bash tests/guard_test.sh` | Allows `python/lessons/001-x/exercises/01-a/data/d.csv` and `python/lessons/001-x/lab.sql`; blocks `lessons/001-x/exercises/01-a/data/d.csv` (no subject), `a/b/lessons/x/exercises/y/data/d.csv` (too deep), `python/lessons/001-x/dump.json` and every case it blocked before |
+| `bash tests/guard_test.sh` | Allows `python/lessons/001-x/exercises/01-a/data/d.csv` and `python/lessons/001-x/lab.sql` (with `python/LEARNING.md`); blocks `lessons/001-x/exercises/01-a/data/d.csv` (no subject), `a/b/lessons/x/exercises/y/data/d.csv` (too deep), `tools/lessons/…/data/d.csv` and `.vscode/lessons/a/dump.sql` (no `LEARNING.md`), an embedded git repo, `python/lessons/001-x/dump.json` and every case it blocked before |
 | `bash tests/run.sh`, `claude plugin validate .` | Pass |
 | Templates | `templates/repo/` and `templates/subject/` exist; no `{{…}}` placeholder is left unexplained in `skills/init/SKILL.md` |
 | Contract | `skills/init/SKILL.md`, every other `SKILL.md`, `docs/ARCHITECTURE.md`, `README.md`, `docs/SKILLS.md`, `docs/WORKFLOW.md`, `docs/FAQ.md`, `docs/EXAMPLES.md` and the repo-model diagram describe one repo with subject folders; none says "one repo per subject" |

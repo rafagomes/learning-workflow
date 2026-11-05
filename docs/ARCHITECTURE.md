@@ -98,7 +98,7 @@ Keeping these in one place means a change to resolution or policy can't silently
 | `repo` | Absolute path of the learning repo |
 | `spaces[]` | One entry per subject |
 | `slug` | Subject identifier, also its folder name |
-| `path` | Absolute path of the subject folder (`<repo>/<slug>`); outside `repo` means a standalone v0.1.0 repo, which still works and which `/learn:init migrate` folds in |
+| `path` | Absolute path of the subject folder (`<repo>/<slug>`). A folder that is its own git root is a standalone v0.1.0 repo, which still works and which `/learn:init migrate` folds in |
 | `projects[].slug` | Short name used in citations (`<slug>:path@sha`) |
 | `projects[].path`, `remote`, `branch` | Where the project lives, its origin (or `null`) and default branch; kept only here, never in git |
 | `projects[].sensitivity` | `work` (paraphrase, quote sparingly, never data) or `personal` |
@@ -167,7 +167,8 @@ tools/guard.sh       pre-commit guard; tools/hooks/pre-commit runs it
 
 The pre-commit guard (`tools/guard.sh`, run by `tools/hooks/pre-commit`, which `/learn:init` enables with repo-local `git config core.hooksPath tools/hooks` so a global hooks path can't bypass it) checks the **staged** content of every commit, renames included, and blocks:
 
-- data-like files (`csv`, `parquet`, `json`, `sqlite`, `xlsx`, model artefacts, …, any case) outside `<subject>/lessons/*/exercises/*/data/`, except named config files (`package.json`, `tsconfig*.json`, `.vscode/settings.json`, …) and SQL scripts under `<subject>/lessons/`; archives and dumps (`zip`, `gz`, `sql`, `bak`, …) count as data;
+- data-like files (`csv`, `parquet`, `json`, `sqlite`, `xlsx`, model artefacts, …, any case) outside `<subject>/lessons/*/exercises/*/data/`, except named config files (`package.json`, `tsconfig*.json`, `.vscode/settings.json`, …) and SQL scripts under `<subject>/lessons/`, where a subject is a top-level folder with a `LEARNING.md` in the index;
+- an embedded git repo (a folder with its own `.git`, such as a standalone learning repo left inside the new one); archives and dumps (`zip`, `gz`, `sql`, `bak`, …) count as data;
 - any file over 1 MB;
 - anything [gitleaks](https://github.com/gitleaks/gitleaks) flags, when it's installed.
 

@@ -8,8 +8,9 @@ cd "$tmp"
 git init -qb main
 git config user.email test@example.com; git config user.name test; git config commit.gpgsign false
 cp -R "$root/skills/init/templates/repo/tools" tools
-git config core.hooksPath tools/hooks
-git add tools && git commit -qm "tools"
+git config core.hooksPath tools/hooks; git config advice.addEmbeddedRepo false
+mkdir -p python && echo "# python" > python/LEARNING.md
+git add tools python && git commit -qm "tools and a subject"
 
 expect() { # expect <allow|block> <description> <git args...>
   local want=$1 desc=$2; shift 2
@@ -43,3 +44,14 @@ expect block "lessons/ deeper than a subject folder" git add a/b/lessons/x/exerc
 mkdir -p lessons/001-x/exercises/01-a/data && echo a > lessons/001-x/exercises/01-a/data/d.csv
 expect block "exercise data outside a subject folder" git add lessons/001-x/exercises/01-a/data/d.csv
 mkdir -p lessons/001-x && echo 'select 1;' > lessons/001-x/lab.sql;               expect block "lesson sql outside a subject folder" git add lessons/001-x/lab.sql
+mkdir -p tools/lessons/x/exercises/y/data && echo a > tools/lessons/x/exercises/y/data/d.csv
+expect block "exercise data under a folder with no LEARNING.md" git add tools/lessons/x/exercises/y/data/d.csv
+mkdir -p .vscode/lessons/a && echo 'select 1;' > .vscode/lessons/a/dump.sql
+expect block "lesson sql under a folder with no LEARNING.md" git add .vscode/lessons/a/dump.sql
+mkdir -p rust/lessons/001-x/exercises/01-a/data && echo "# rust" > rust/LEARNING.md && echo a > rust/lessons/001-x/exercises/01-a/data/d.csv
+expect allow "exercise data in a subject added in the same commit" git add rust
+mkdir -p old-repo && git -C old-repo init -qb main && git -C old-repo -c user.email=t@example.com -c user.name=t commit -q --allow-empty -m x
+expect block "embedded git repo" git add old-repo
+rm -rf old-repo
+msg=$(echo "a,b" > python/leak.csv && git add python/leak.csv && git commit -qm leak 2>&1 || true); git reset -q --hard HEAD; rm -f python/leak.csv
+if [[ "$msg" == *"<subject>/scratch/"* ]]; then echo "  ok   message points to <subject>/scratch/"; else echo "  FAIL message: $msg" >&2; exit 1; fi

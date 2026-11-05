@@ -25,14 +25,14 @@ The **learning repo** is one private git repo per learner. It holds every subjec
 - `migrate [path]` or "migrate my learning repo": **fold a standalone repo** from v0.1.0 (one git repo per subject) into the learning repo. Skip to step 6.
 - Otherwise: **add a subject**. Check the registry first:
   - The subject is already registered inside the learning repo: offer to link the new projects to it instead.
-  - It is registered as a **standalone** repo (its `path` is not inside the registry's `repo`): offer `migrate` instead of creating a second one.
+  - It is registered as a **standalone** repo (see Registry: its folder is its own git root): offer `migrate` instead of creating a second one.
   - The registry has no `repo` but has standalone entries: create the learning repo (step 3), then offer to migrate each standalone entry.
 
 ## 2. Ask only what is missing
 
 Use AskUserQuestion for anything the argument doesn't give:
 
-1. **Subject and slug** (e.g. `python`, `distributed-systems`). The slug is the folder name.
+1. **Subject and slug** (e.g. `python`, `distributed-systems`). The slug is the folder name: lowercase letters, digits and hyphens (`^[a-z0-9][a-z0-9-]*$`), not `tools`, and not ignored by the root `.gitignore` (`git check-ignore -q <slug>/LEARNING.md` must fail, which rules out `build`, `out`, `target`, `scratch`, `node_modules`, …). Propose a variant (`build-systems`) if it clashes.
 2. **Projects to link**: paths to git repos. Offer the current repo if the session is inside one. Zero is fine (a pure-subject folder); more can be added later with `add`.
 3. **Location of the learning repo**, only when the registry has no `repo` yet. Default `~/Learning`. Never inside a project.
 4. **Learner profile** for this subject: current level (new / some experience / working knowledge), preferred depth (practical first / theory first / balanced), lesson language, and the default **hands-on level** for build mode: `claude` (Claude codes and explains), `adaptive` (Claude writes plumbing, the learner writes the core), or `you` (the learner codes, Claude coaches). When another subject exists, offer its language and hands-on level as the default.
@@ -40,7 +40,11 @@ Use AskUserQuestion for anything the argument doesn't give:
 
 ## 3. Create the learning repo (first time only)
 
-Skip when the registry already has a `repo` that exists on disk. Otherwise copy this skill's `templates/repo/`:
+Skip when the registry already has a `repo` that exists on disk.
+
+**Check the location first.** It must not exist, or be an empty directory. v0.1.0 put standalone repos at `~/Learning/<slug>`, which is inside the new default, so if the location holds folders that are their own git repo (`<dir>/.git` exists), `git add -A` would commit them as broken embedded repos. Move each one aside before anything else: `mv <location>/<name> <location>.v0/<name>` (create `<location>.v0/` beside the location), update its registry `path` to the new place, tell the learner, and offer `migrate` for each after the learning repo exists. If the location holds anything else, stop and ask for another location.
+
+Then copy this skill's `templates/repo/`:
 
 | Template | Becomes |
 |---|---|
@@ -70,7 +74,7 @@ Never overwrite: if `<slug>/` already exists, stop and ask. Copy this skill's `t
 | `PROGRESS.md` | `<slug>/PROGRESS.md` |
 | `deck.md` | `<slug>/flashcards/deck.md` |
 
-Create the empty directories `curriculum/`, `plans/`, `builds/`, `lessons/` and `reflections/` (each with a `.gitkeep`) and `scratch/` inside `<slug>/`. Add a row to the root `README.md` subjects table: `| <Subject> | [<slug>/](<slug>/LEARNING.md) | <date> |`, keeping rows sorted by slug. Register the subject (see Registry) and commit: `chore(<slug>): add subject`.
+Create the empty directories `curriculum/`, `plans/`, `builds/`, `lessons/` and `reflections/` (each with a `.gitkeep`) and `scratch/` inside `<slug>/`. Add a row to the root `README.md` subjects table: `| <Subject> | [<slug>/](<slug>/LEARNING.md) | <date> |`, keeping rows sorted by slug. Register the subject (see Registry) and commit only the subject and the index (`git add <slug> README.md`): `chore(<slug>): add subject`.
 
 ## 5. Link a project
 
@@ -84,30 +88,39 @@ A project may be linked to several subjects; each subject records it separately.
 
 ## 6. Migrate a standalone repo
 
-For a v0.1.0 learning repo that is its own git repo (a `LEARNING.md` at its root, `path` outside the registry's `repo`). Resolve it from the argument, the current directory, or the registry's standalone entries (ask which if several). Create the learning repo first (steps 2.3 and 3) if there is none.
+For a v0.1.0 learning repo that is its own git repo (a `LEARNING.md` at its root, which is its git top level). Resolve it from the argument, the current directory, or the registry's standalone entries (ask which if several). Create the learning repo first (steps 2.3 and 3) if there is none; step 3 moves standalone repos that sit inside its location aside to `<location>.v0/`.
 
-Refuse and explain if the standalone repo has uncommitted changes (`git -C <old> status --porcelain` not empty), or if `<slug>/` already exists in the learning repo and is not the standalone repo itself.
+Check before touching anything, and refuse and explain on any failure:
 
-**The standalone repo is in the way** when it sits at `<learning repo>/<slug>` (or anywhere inside the chosen learning repo location). Move it aside **before** step 3 creates the learning repo, or `git add -A` there would commit it as an embedded repo: `mv <old> <old>.v0` (beside it, outside the learning repo), tell the learner, and use `<old>.v0` as `<old path>` below. The registry entry's `path` ends up where it was.
+- The standalone repo is clean: `git -C <old> status --porcelain` prints nothing.
+- The learning repo is clean: `git status --porcelain` prints nothing (otherwise the migration commit would sweep in unrelated changes).
+- `<slug>/` doesn't exist in the learning repo, unless it is the standalone repo itself (below).
+- Only the current branch (`git -C <old> branch --show-current`) is migrated. List anything else that would be left behind: other local branches (`git -C <old> branch --format='%(refname:short)'`), stashes (`git -C <old> stash list`) and commits not on any remote (`git -C <old> log --branches --not --remotes --oneline`, when it has a remote). If there are other branches or stashes, show them and continue only when the learner says to leave them behind or has merged them into the current branch.
+
+**The standalone repo is in the way** when it sits at `<learning repo>/<slug>` (or anywhere inside the chosen learning repo location). Move it aside **before** step 3 creates the learning repo, or `git add -A` there would commit it as an embedded repo: `mv <old> <old>.v0` (beside it, outside the learning repo), tell the learner, and use `<old>.v0` as `<old path>` below. The registry entry's `path` ends up where it was. (Step 3 already does this for every standalone repo inside the location.)
 
 Then, from the learning repo, keeping the standalone repo's history:
 
 ```bash
-git fetch <old path> <its branch>:refs/learn-migrate/<slug>
+git fetch <old path> <current branch>:refs/learn-migrate/<slug>
 git merge -s ours --no-commit --allow-unrelated-histories refs/learn-migrate/<slug>
 git read-tree --prefix=<slug>/ -u refs/learn-migrate/<slug>
+# before the rm: keep customisations (see below)
 git rm -rqf --ignore-unmatch <slug>/tools <slug>/.gitignore <slug>/CLAUDE.md   # the root ones apply
 git commit -m "chore(<slug>): migrate subject from its standalone repo"
 git update-ref -d refs/learn-migrate/<slug>
 ```
+
+Keep the learner's customisations before that `git rm`: compare `<slug>/.gitignore` with the root `.gitignore` and `<slug>/CLAUDE.md` with the root `CLAUDE.md`. Lines the learner added to `.gitignore` stay in a slimmed `<slug>/.gitignore` holding only those lines (a nested `.gitignore` applies to its folder, so their meaning is unchanged): drop it from the `git rm` and rewrite it. Rules the learner added to `CLAUDE.md` are shown to them, and kept as a slimmed `<slug>/CLAUDE.md` if they want (Claude Code loads it with the root one). Standard template content is dropped.
 
 Then:
 
 - Copy the standalone repo's `scratch/` (gitignored, so not in its history) to `<slug>/scratch/`. Create the empty directories from step 4 that are missing.
 - Fix `<slug>/LEARNING.md` wording that calls it a standalone repo (the title and intro line), add the `README.md` row, and commit: `docs(<slug>): adapt subject to the learning repo`.
 - Update the registry entry's `path` to `<learning repo>/<slug>` (keep its projects).
+- Repoint active learn mode: every state file in `${LEARNING_WORKFLOW_HOME:-~/.config/learning-workflow}/active/` that names the old path (`grep -l`) gets it replaced with `<learning repo>/<slug>`, so the hook and the build wrap-up write to the subject folder.
 - Check: `git log --oneline` lists the standalone repo's commits under the merge, and `<slug>/tools/` does not exist. (Per-file history before the move sits under the old paths: `git log <merge commit>^2 -- LEARNING.md`.)
-- Leave the standalone repo untouched. Offer to delete it (and its remote, if any) and do so only after the learner confirms.
+- Leave the standalone repo untouched. Offer to delete it (and its remote, if any) only after repeating what would be lost with it (the branches, stashes and unpushed commits listed above, and its `scratch/` if not copied), and delete only after the learner confirms.
 
 ## Data policy (applies to every linked project)
 
@@ -144,7 +157,7 @@ Then:
 }
 ```
 
-Create the file if missing; add or extend entries; never remove anything without asking. An entry whose `path` is not inside `repo` (or a registry with no `repo`) is a standalone v0.1.0 repo: it still resolves and works, and `/learn:init` offers to migrate it.
+Create the file if missing; add or extend entries; never remove anything without asking. An entry whose folder is its own git root (`git -C <path> rev-parse --show-toplevel` prints `<path>` itself) is a **standalone** v0.1.0 repo, wherever it sits, even inside `repo`'s directory: it still resolves and works, and `/learn:init` offers to migrate it. A subject of the learning repo has `repo` as its git top level.
 
 **Resolving the subject (every /learn skill does this):**
 1. A `LEARNING.md` in the current directory or an ancestor: its folder is the subject.
@@ -153,6 +166,8 @@ Create the file if missing; add or extend entries; never remove anything without
 4. Else ask which one. If none is registered, offer `/learn:init`.
 
 Every path a skill writes (`curriculum/`, `plans/`, `builds/`, `lessons/`, `reflections/`, `flashcards/deck.md`, `PROGRESS.md`, `scratch/`) is relative to the resolved **subject folder**, and its data policy is the one in that folder's `LEARNING.md`. Commits go to the learning repo that contains it (`git -C <subject folder> …`), scoped by subject: `docs(<subject>): …`. For a standalone v0.1.0 repo the subject folder is the repo root and the scope may be dropped.
+
+From a project in build mode, the subject is fixed when learn mode starts: it is the folder of the plan named in the state file (`plan <subject folder>/plans/<plan>.md`). `/learn:build`'s wrap-up and `/learn:off` use that folder, never the project's directory.
 
 The **current project** is the linked project whose path contains the current directory (compare whole path components, so `/x/app` doesn't match `/x/app2`), or, inside a git worktree, the project whose path is that repo's main worktree (the first entry of `git worktree list --porcelain`), or the one the user names. Skills that cite code use it.
 
