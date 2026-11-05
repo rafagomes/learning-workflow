@@ -63,14 +63,15 @@ tests/                    guard and manifest checks run by CI
 
 ## The shared contract
 
-Every skill depends on four things, defined once in [`skills/init/SKILL.md`](../skills/init/SKILL.md) and referenced, not restated, by the others:
+Every skill depends on five things, defined once in [`skills/init/SKILL.md`](../skills/init/SKILL.md) and referenced, not restated, by the others:
 
 1. **Resolving the subject**, in order: a `LEARNING.md` in the current directory or an ancestor → the registered subject whose linked projects contain the current directory (ask if several) → the only registered subject → ask. None registered → offer `/learn:init`. Every path a skill writes is relative to the subject folder; commits go to the learning repo, scoped `docs(<subject>): …`.
 2. **The current project**: the linked project containing the current directory, or the one you name.
 3. **The data policy** (see [DATA-POLICY.md](DATA-POLICY.md)).
 4. **Questions and examples**: every question that checks the learner is one AskUserQuestion with 2–4 options (none marked recommended, distractors from real misconceptions, Other for a typed answer) and its data in the preview, while flashcards, hints and reflect stay plain text; every reply to an answer opens with **Correct.**, **Incorrect.** or **Partly correct.**, the verdict that is recorded and scored; counted questions (a check, a quiz, a done-check) are announced with their count and numbered `Question 2/3`; a turn that teaches ends without a dialog and the question follows alone in the next turn; every example shows all the data it relies on, re-shown in full when built on, fresh when the concept doesn't need the old one, at most 6 rows.
+5. **Sync**: the learning repo is edited from several machines and sessions, so a skill pulls it (`pull --rebase`) before reading and pushes after every commit, when the branch has an upstream. No upstream: no sync, silently. Uncommitted changes: ask before pulling. A conflict: abort the rebase and bring it to the learner. Offline: one line, work locally, the next session pushes. Never force-push. The hook never syncs.
 
-Keeping these in one place means a change to resolution, policy or how questions are asked can't silently diverge between skills.
+Keeping these in one place means a change to resolution, policy, syncing or how questions are asked can't silently diverge between skills.
 
 ## Registry
 
@@ -125,7 +126,7 @@ A skill's instructions can drop out of context when a long session is compacted,
 2. On every prompt, `hooks/learn-mode.sh` resolves the session's project from the hook input's `cwd`. If that project's file exists and was touched in the last 12 hours, the hook refreshes its timestamp and prints it, and Claude Code adds it to the context. Otherwise it prints nothing.
 3. The skill rewrites the file as concepts are shown. The wrap-up and `/learn:off` delete it.
 
-The hook reads only `cwd` from its input (with `jq` or `python3`, falling back to `sed`), writes nothing except that timestamp, and never fails a prompt (it always exits 0). `tests/hook_test.sh` covers no state, the active project, subdirectories, other projects, paths with spaces, non-git directories, a missing `cwd`, an unset `HOME`, stale files, the timestamp refresh, and the skill/hook path snippet staying identical. Set `LEARNING_WORKFLOW_HOME` to relocate the registry and the state directory together. (The `/nonexistent` fallback for an unset `HOME` applies in bash; zsh fills `HOME` from the passwd entry. `HOME` is set in any normal session.)
+The hook does no git sync or network call (syncing is the skills' job, see the shared contract), reads only `cwd` from its input (with `jq` or `python3`, falling back to `sed`), writes nothing except that timestamp, and never fails a prompt (it always exits 0). `tests/hook_test.sh` covers no state, the active project, subdirectories, other projects, paths with spaces, non-git directories, a missing `cwd`, an unset `HOME`, stale files, the timestamp refresh, and the skill/hook path snippet staying identical. Set `LEARNING_WORKFLOW_HOME` to relocate the registry and the state directory together. (The `/nonexistent` fallback for an unset `HOME` applies in bash; zsh fills `HOME` from the passwd entry. `HOME` is set in any normal session.)
 
 ## Learning repo layout
 
@@ -155,7 +156,7 @@ tools/guard.sh       pre-commit guard; tools/hooks/pre-commit runs it
 
 | Skill | Reads | Writes | Commit |
 |---|---|---|---|
-| init | registry, project manifests | learning repo, registry | `chore: initialize <slug> learning repo`, `chore: link <project>` |
+| init | registry, project manifests | learning repo, registry, an optional private GitHub remote (`remote` mode for an existing repo) | `chore: initialize <slug> learning repo`, `chore: link <project>` |
 | plan | dev plan + code it touches (read-only), `PROGRESS.md` | `plans/<plan>.md`, `PROGRESS.md` | `docs: learning plan <plan>` |
 | plan (view) | `plans/<plan>.md`, `PROGRESS.md` | nothing (read-only); hands over to teach, quiz or build | none |
 | build | plan step, deck, project (works in it under its own rules) | active state file; `builds/`, plan, deck, `PROGRESS.md` | `docs: build log <step>` |
@@ -188,4 +189,5 @@ The guard is a seatbelt, not the policy: the skills also follow the policy when 
 | Plain Markdown state | A database or app | Markdown + git: diffable, portable, readable without the plugin |
 | Learn mode backed by a hook + state file | Rely on the skill staying in context | Hook: survives compaction and long sessions; silent everywhere else |
 | Learn mode keyed by project path | Keyed by session ID | Project path: the skill can compute it, worktrees isolate parallel sessions; a skill can't read its own session ID |
+| Sync in the skills: pull at start, push after every commit | Sync in the learn-mode hook; manual git | Skills: the hook runs on every prompt and must stay fast, silent and offline; manual git is what left stale copies on other machines |
 | Leitner boxes | SM-2 / FSRS scheduling | Leitner: simple enough to keep in a Markdown file and reason about; good enough for a personal deck |

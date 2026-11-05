@@ -4,6 +4,16 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Added
+
+- The learning repo syncs like a notes vault. When it has a remote, every `/learn` skill pulls it (`git pull --rebase`) before reading anything and pushes after every commit, so each machine and session works on the latest lessons and progress. With uncommitted changes in the learning repo, the skill shows them and asks: commit them first, or continue without pulling. A conflict is never resolved for you: the rebase is aborted and brought to you. A rejected push is retried once after a rebase; offline, the skill says so in one line and the next session pushes. Nothing ever force-pushes. Without a remote, nothing changes and nothing nags. The learn-mode hook never syncs, so prompts stay fast.
+- `/learn:init remote` gives an existing learning repo a private GitHub remote. On another machine, give `/learn:init` a clone of the learning repo as the location and it registers the repo and its subjects instead of refusing the folder.
+
+### Changed
+
+- `/learn:init` now recommends a private GitHub remote when it creates the learning repo (still only after you confirm; local-only stays a valid choice). If the name is taken on your account, it asks whether to pick another name or rename the existing repo, checking first whether the rename would break a GitHub Pages site, base paths, workflows or webhooks. The learning repo never takes a renamed repo's old name, so GitHub's redirect keeps working.
+- New learning repos' `CLAUDE.md` carries the sync rule, so sessions opened in the learning repo without a skill pull, push and never force-push too. An existing learning repo can copy the **Sync** line from `skills/init/templates/repo/CLAUDE.md`; the skills follow the rule either way.
+
 ## [0.7.0] - 2026-11-04
 
 ### Changed
