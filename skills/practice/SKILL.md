@@ -5,7 +5,7 @@ argument-hint: "<topic or lesson number> [easy|medium|hard]"
 ---
 Set exercises for a topic. Argument: $ARGUMENTS
 
-Resolve the subject as `/learn:init` describes and find the topic's lesson folder (create a minimal one, with the next free NNN, if the topic is `claimed` and has none).
+Resolve the subject as `/learn:init` describes, pull the learning repo as its **Sync** says, and find the topic's lesson folder (create a minimal one, with the next free NNN, if the topic is `claimed` and has none).
 
 ## Write the exercises
 
@@ -32,4 +32,4 @@ Create 2–4 exercises, increasing in difficulty, under `lessons/<NNN>-<topic>/e
 
 ## Finish
 
-Update `PROGRESS.md` (a `todo` or `learning` topic → `practised` when all exercises pass; any other status stays, since only a quiz confirms a `claimed` topic and practice is never evidence for a demotion), add a flashcard for each mistake that taught something, log the session, and commit `feat(<subject>): exercises for <topic>` (the learner's solutions are committed too, as their work).
+Update `PROGRESS.md` (a `todo` or `learning` topic → `practised` when all exercises pass; any other status stays, since only a quiz confirms a `claimed` topic and practice is never evidence for a demotion), add a flashcard for each mistake that taught something, log the session, and commit `feat(<subject>): exercises for <topic>` (the learner's solutions are committed too, as their work), then push as `/learn:init` → **Sync** says.

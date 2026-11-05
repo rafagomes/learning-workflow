@@ -26,6 +26,18 @@ if bash tests/guard_test.sh; then ok "guard behaviour"; else bad "guard behaviou
 if bash -n hooks/learn-mode.sh && bash tests/hook_test.sh; then ok "learn-mode hook"; else bad "learn-mode hook"; fi
 if python3 -c 'import json; json.load(open("hooks/hooks.json"))'; then ok "valid JSON: hooks/hooks.json"; else bad "invalid JSON: hooks/hooks.json"; fi
 
+# Sync (spec 008): the rule lives once in init; every skill that commits to the learning repo points at it;
+# the hook stays fast and offline; new learning repos carry the rule for non-skill sessions.
+if grep -qx '## Sync (every /learn skill)' skills/init/SKILL.md; then ok "init defines the Sync section"; else bad "skills/init/SKILL.md lacks '## Sync (every /learn skill)'"; fi
+for skill in skills/*/SKILL.md; do
+  [ "$skill" = skills/init/SKILL.md ] && continue
+  grep -qi 'commit' "$skill" || continue
+  if grep -q '\*\*Sync\*\*' "$skill"; then ok "$(basename "$(dirname "$skill")") references Sync"; else bad "$skill commits but doesn't reference /learn:init → **Sync**"; fi
+done
+if grep -nE 'git[^#]*\b(pull|push|fetch|remote)\b|curl|wget' hooks/learn-mode.sh; then bad "hooks/learn-mode.sh must not sync or touch the network"; else ok "hook does no git sync or network"; fi
+if grep -q 'pull --rebase' skills/init/templates/repo/CLAUDE.md && grep -qi 'never force-push' skills/init/templates/repo/CLAUDE.md; then ok "repo template carries the sync rule"; else bad "skills/init/templates/repo/CLAUDE.md lacks the sync rule"; fi
+if grep -rn 'push --force\|push -f\b\|--force-with-lease' skills; then bad "a skill force-pushes"; else ok "no skill force-pushes"; fi
+
 # claude plugin update only pulls a new version, so plugin.json must match the newest released CHANGELOG heading.
 pv=$(python3 -c 'import json; print(json.load(open(".claude-plugin/plugin.json"))["version"])')
 cv=$(grep -m1 -oE '^## \[[0-9]+\.[0-9]+\.[0-9]+\]' CHANGELOG.md | tr -d '#[] ')

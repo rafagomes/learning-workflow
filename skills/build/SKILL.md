@@ -5,7 +5,7 @@ argument-hint: "<step ID> [plan name] [level: claude|adaptive|you]"
 ---
 Start learn mode for a step. Argument: $ARGUMENTS
 
-Resolve the subject and the current project as `/learn:init` describes; questions to the learner follow its **Questions and examples**. Find the step in `plans/*.md` (ask which plan if several have it). No plan, or the step isn't in one: offer `/learn:plan` first, or, if the learner just wants to start, create a one-step plan from their description (concepts, level, done-check) and continue.
+Resolve the subject and the current project as `/learn:init` describes; questions to the learner follow its **Questions and examples**. Before reading anything from the learning repo, pull it as `/learn:init` → **Sync** says. Find the step in `plans/*.md` (ask which plan if several have it). No plan, or the step isn't in one: offer `/learn:plan` first, or, if the learner just wants to start, create a one-step plan from their description (concepts, level, done-check) and continue.
 
 ## 1. Start
 
@@ -64,7 +64,7 @@ When the learner says the step is done, or a PR for it is opened, ask the done-c
 ## 4. Wrap-up
 
 1. **Sweep the project** for `TODO(learner)` markers left from this step (`git grep -n --untracked "TODO(learner)"`, which also covers new files not yet added). Resolve each with the learner (they finish it, or you do) before anything else; never leave one behind.
-2. Write `builds/<date>-<step>.md` in the subject folder, the folder of the plan named in the state file (never the project): link (`<project-slug>@<shortsha>`, or `<project-slug>#<PR number>`; no branch names, which can carry internal names), concepts shown, predictions vs results, done-check questions with the options, pick and verdict for each (project code as its citation only), score and misses, follow-ups. Obey the data policy: aggregates, no data or internal names.
+2. Pull the learning repo again as `/learn:init` → **Sync** says (the session may be hours old), then write `builds/<date>-<step>.md` in the subject folder, the folder of the plan named in the state file (never the project): link (`<project-slug>@<shortsha>`, or `<project-slug>#<PR number>`; no branch names, which can carry internal names), concepts shown, predictions vs results, done-check questions with the options, pick and verdict for each (project code as its citation only), score and misses, follow-ups. Obey the data policy: aggregates, no data or internal names.
 3. Update the plan: the step's Status → `done` and its Log line.
 4. Update `PROGRESS.md`:
    - under **Plans**, the step's status;
@@ -73,5 +73,5 @@ When the learner says the step is done, or a PR for it is opened, ask the done-c
      - missed → `learning` from `todo`, `claimed`, `learning`, `practised` or `ready` (a disproven claim or a forgotten idea needs work again); a missed `built` or `reflected` concept keeps its status. Every miss gets a flashcard;
      - shown but not checked → `learning` only if it was `todo`; otherwise unchanged.
    - the session log.
-5. Commit in the learning repo: `docs(<subject>): build log <step>`.
+5. Commit in the learning repo: `docs(<subject>): build log <step>`, then push as `/learn:init` → **Sync** says.
 6. Delete the state file. Learn mode is off; say so in one line and suggest the next step.

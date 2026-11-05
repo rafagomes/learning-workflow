@@ -5,7 +5,7 @@ argument-hint: "<track>/<topic-number> | <topic> | <plan step> | <plan> | <plan>
 ---
 Teach a topic. Argument: $ARGUMENTS
 
-Resolve the subject and current project as `/learn:init` describes. Read `LEARNING.md` (profile, toolchain, data policy) and, if the topic is in a track, its entry in `curriculum/<track>.md` (why it matters, ready-when, touchpoint).
+Resolve the subject and current project as `/learn:init` describes, and pull the learning repo as its **Sync** says (before starting the writer or reading anything). Read `LEARNING.md` (profile, toolchain, data policy) and, if the topic is in a track, its entry in `curriculum/<track>.md` (why it matters, ready-when, touchpoint).
 
 ## What to teach
 
@@ -55,7 +55,7 @@ The writer has a fresh context, so its brief carries everything:
 - the data policy as `LEARNING.md` records it, with each linked project's slug and sensitivity;
 - the **Finish** rules below and the **Plan items** rules they use (every item with the concept name, `<plan>/<step>`, skip notes), the card format in `flashcards/deck.md`, and the commit messages (the lesson's, and a skip's, see **Skipping**);
 - **it never invents content**: it writes only what it was sent, reworded at most, with no number it wasn't given; what's missing it leaves out. Each question is written with the data it showed (a linked project's code only as its `slug:path@sha` citation and a paraphrase), its options, the pick and the verdict word exactly as sent (Correct, Partly correct or Incorrect; never softened or reworded), so the lesson reads on its own;
-- it commits as `/learn:init` says, staging only that commit's paths (`lessons/<NNN>-<slug>/` without run artefacts such as caches or output files, `flashcards/deck.md`, `PROGRESS.md`); it leaves other changes unstaged and reports them; after each commit it reports the short sha in one line; on any error it reports it and stops.
+- it commits as `/learn:init` says, staging only that commit's paths (`lessons/<NNN>-<slug>/` without run artefacts such as caches or output files, `flashcards/deck.md`, `PROGRESS.md`); it leaves other changes unstaged and reports them; after each commit it pushes as `/learn:init` → **Sync** says, restated in the brief: `git push` when the branch has an upstream; rejected → `git pull --rebase` and push once more (not if the session left uncommitted changes in place); a conflict → `git rebase --abort`, report it and stop; a network failure → report it in one line and keep going (the commit stays local); never force-push; it reports the short sha in one line, and whether it was pushed; on any error it reports it and stops.
 
 **The lab.** Write the lab file yourself in the lesson folder, so what runs is exactly what you wrote, and run it live (predict, then run). The writer commits it with the lesson.
 
@@ -108,5 +108,5 @@ Send the writer the check results, 3–6 flashcards and the log line; it does th
 
 - Add 3–6 flashcards for the core ideas to `flashcards/deck.md` (box 1, next = today).
 - Update `PROGRESS.md`: a `todo` topic → `learning` (any other status stays, since teaching isn't evidence of a gap). For a plan item, update (or add) the **Concepts** row of every item with that concept name (see **Plan items**): `Concept` = the concept name as written in the plan, `Step` = `<plan>/<step>`, status `todo` → `learning` (others stay), `Note` = `lesson <NNN>` (a recheck appends it: `lesson 002, 011`; a cleared skip drops `skipped`). Update the same-named Tracks topic the same way. Log the session with one line on what clicked and what didn't.
-- Commit `docs(<subject>): lesson <NNN> <topic>`, one commit per lesson, so stopping between items loses nothing.
+- Commit `docs(<subject>): lesson <NNN> <topic>`, one commit per lesson, so stopping between items loses nothing, and push as `/learn:init` → **Sync** says (a skip's commit too).
 - Without waiting for the sha, suggest the next step (another skill starts only once the sha is in): `/learn:practice <topic>`, or `/learn:quiz <topic>` if every check answer was Correct. When working through a plan, offer the next item first (continue, skip, stop).

@@ -5,7 +5,7 @@ argument-hint: "<spec path | plan path | artifact URL | goal> [plan name] | <exi
 ---
 Build a learning plan linked to a development plan. Argument: $ARGUMENTS
 
-Resolve the subject and the current project as `/learn:init` describes. If there's no subject, offer `/learn:init` and stop. If the dev plan belongs to a project not linked to that subject, offer `/learn:init add <project>` first.
+Resolve the subject and the current project as `/learn:init` describes. If there's no subject, offer `/learn:init` and stop. If the dev plan belongs to a project not linked to that subject, offer `/learn:init add <project>` first. Before reading anything from the learning repo, pull it as `/learn:init` → **Sync** says (the plan view too).
 
 **Existing plan, or no argument: show it instead.** When the argument is the name of a file in `plans/` (with or without `.md`), or there's no argument and plans exist, don't build a plan: show one (see **Plan view** at the end). With no argument and several plans, ask which. Anything else builds a new plan as below.
 
@@ -61,7 +61,7 @@ Obey the data policy: for a `work` project, describe steps and concepts in gener
 
 ## Finish
 
-Update `PROGRESS.md` (under **Plans**: the plan and its steps, `todo`), commit `docs(<subject>): learning plan <plan>`, and say how to start: `/learn:teach <plan>` to study its concepts in order, or `/learn:build <first step>` to learn while building; mention any `deep` concepts worth a lesson first.
+Update `PROGRESS.md` (under **Plans**: the plan and its steps, `todo`), commit `docs(<subject>): learning plan <plan>` and push as `/learn:init` → **Sync** says, and say how to start: `/learn:teach <plan>` to study its concepts in order, or `/learn:build <first step>` to learn while building; mention any `deep` concepts worth a lesson first.
 
 ## Plan view
 

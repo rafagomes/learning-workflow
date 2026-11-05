@@ -5,7 +5,7 @@ argument-hint: "<plan path | artifact URL | spec | topic> [track name]"
 ---
 Build a learning track. Argument: $ARGUMENTS
 
-Resolve the subject and the current project as `/learn:init` describes. If there's no subject, offer `/learn:init` and stop.
+Resolve the subject and the current project as `/learn:init` describes. If there's no subject, offer `/learn:init` and stop. Before reading anything from the learning repo, pull it as `/learn:init` → **Sync** says.
 
 ## 1. Read the source
 
@@ -53,4 +53,4 @@ Rules:
 
 ## 4. Record
 
-Add the track to `PROGRESS.md` (`## Tracks` with a row per topic and its status), log the session, commit `docs(<subject>): add <track> curriculum`. Tell the learner the first topic and the command: `/learn:teach <track>/<topic-number>`.
+Add the track to `PROGRESS.md` (`## Tracks` with a row per topic and its status), log the session, commit `docs(<subject>): add <track> curriculum` and push as `/learn:init` → **Sync** says. Tell the learner the first topic and the command: `/learn:teach <track>/<topic-number>`.

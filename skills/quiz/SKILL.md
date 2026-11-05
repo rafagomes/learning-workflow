@@ -5,7 +5,7 @@ argument-hint: "<track>/<n> | <topic> | <plan step> | <plan> | <plan>/<step>/<co
 ---
 Quiz the learner. Argument: $ARGUMENTS
 
-Resolve the subject as `/learn:init` describes. Every question is asked and recorded as `/learn:init` → **Questions and examples** says; flashcards are the plain-text exception it names.
+Resolve the subject as `/learn:init` describes. Every question is asked and recorded as `/learn:init` → **Questions and examples** says; flashcards are the plain-text exception it names. Pull the learning repo before reading it, and push after each commit below, as `/learn:init` → **Sync** says.
 
 ## Review mode (`review`)
 
