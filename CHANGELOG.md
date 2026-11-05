@@ -4,6 +4,10 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Changed
+
+- Verdicts come first. Every reply to your answer (lesson predictions and checks, quiz questions and flashcards, build mode's predictions and done-check) opens with **Correct.**, **Incorrect.** or **Partly correct.**, then explains: for Incorrect, the right answer and why the wrong one was tempting; for Partly correct, which part was right and which wasn't. Partly correct is only for a multi-part answer or a right pick with the wrong reason, never a softened Incorrect, and no "not quite" or "close" replaces the verdict. Lessons, `quiz.md` and build logs record the same word, and it's what the score counts.
+
 ## [0.6.0] - 2026-11-04
 
 ### Changed
