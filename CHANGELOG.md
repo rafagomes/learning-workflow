@@ -4,6 +4,11 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Changed
+
+- Exercises say what to do first. Every exercise README from `/learn:practice` opens with **Start here**: the `cd` into the exercise folder, a short test command run from inside it (no more long one-liner from the subject root) and what the first run shows (`4 failed`, each with `NotImplementedError`, expected), which file and which lines to replace (each placeholder is marked `TODO: replace with your code`; the test file is the answer checker), a suggested order of functions, and the finish line (`4 passed`). Then, where it helps, a worked function or input example that isn't the answer, **Reading a failing test** (real output from a deliberately wrong solution, with a one-line translation), the task, examples with their data in full, and **Stuck?**. Before you see it, the Start-here command is run on the stub to check the README's count. Toolchain `none` problem sets get the same Start here, with how to answer.
+- The practice handover walks you through the first step in chat (the `cd`, the first run, which function to start with), then asks whether the instructions are clear, a feedback question with no verdict; anything unclear is explained and fixed in the README.
+
 ## [0.7.0] - 2026-11-04
 
 ### Changed

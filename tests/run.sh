@@ -26,6 +26,13 @@ if bash tests/guard_test.sh; then ok "guard behaviour"; else bad "guard behaviou
 if bash -n hooks/learn-mode.sh && bash tests/hook_test.sh; then ok "learn-mode hook"; else bad "learn-mode hook"; fi
 if python3 -c 'import json; json.load(open("hooks/hooks.json"))'; then ok "valid JSON: hooks/hooks.json"; else bad "invalid JSON: hooks/hooks.json"; fi
 
+# Exercises must tell the learner what to do first (spec 009).
+missing=""
+for term in "Start here" "Reading a failing test" "Stuck?" "TODO: replace with your code" "In-folder test command"; do
+  grep -qF "$term" skills/practice/SKILL.md || missing="$missing \"$term\""
+done
+if [ -z "$missing" ]; then ok "practice README structure"; else bad "skills/practice/SKILL.md lacks:$missing"; fi
+
 # claude plugin update only pulls a new version, so plugin.json must match the newest released CHANGELOG heading.
 pv=$(python3 -c 'import json; print(json.load(open(".claude-plugin/plugin.json"))["version"])')
 cv=$(grep -m1 -oE '^## \[[0-9]+\.[0-9]+\.[0-9]+\]' CHANGELOG.md | tr -d '#[] ')

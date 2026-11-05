@@ -124,12 +124,14 @@ Adds 3–6 flashcards. Status `todo` → `learning`; other statuses stay. A plan
 /learn:practice <topic or lesson number> [easy|medium|hard]
 ```
 
-Writes 2–4 exercises of rising difficulty, each with a task README, a stub, failing tests and (if needed) a seeded data generator.
+Writes 2–4 exercises of rising difficulty, each with a README, a stub, failing tests and (if needed) a seeded data generator.
 
-- The tests are run against a reference solution in `scratch/` (never committed) and against the stub before you see them, so they're known to be fair.
+- Each README opens with **Start here**: `cd` into the exercise folder, run the tests once with a short command from inside it (and what that first run shows, e.g. `4 failed` with `NotImplementedError`), which file and which `TODO: replace with your code` lines to replace (never the test file), a suggested order of functions, and the finish line (`4 passed`). Then, where it helps, a worked function or input example that isn't the answer; **Reading a failing test**, real output from a deliberately wrong solution with a one-line translation; the task; the examples with their data in full; and **Stuck?**.
+- The tests are run against a reference solution in `scratch/` (never committed) and the Start-here command against the stub before you see them, so they're known to be fair and the README's first-run count is right.
+- The handover walks you through the first step in chat (the `cd`, the first run, which function to start with), then asks whether the instructions are clear; an unclear point is explained and fixed in the README.
 - Hint ladder, one rung per request: a pointing question → the approach in words → a partial snippet. Full solution only on explicit request.
 - A passing solution gets a short code review.
-- Toolchain `none`: a problem set with the answer key kept in `scratch/`.
+- Toolchain `none`: a problem set whose Start here says how to answer, with the answer key kept in `scratch/`.
 
 Status `todo`/`learning` → `practised` when every exercise passes; other statuses stay.
 

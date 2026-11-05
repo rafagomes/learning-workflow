@@ -168,6 +168,8 @@ Then:
 
 Three kinds stay in plain text: flashcards (they train recall, so the learner answers in their own words before seeing anything; the reply still opens with **Correct.** or **Incorrect.**), hints (practice's pointing question must not hand over the approach as an option), and open questions that ask for the learner's account (reflect's talk-through questions).
 
+A **feedback question** has no right answer (practice's "are these instructions clear?" after handing over exercises): ask it with AskUserQuestion in the format above, prefixed with what it belongs to (`Practice · question · `), and after a teaching turn as **Content before the dialog** says, but give no verdict and don't record it as evidence.
+
 **Examples.** Every question and explanation shows all the data it relies on, right there:
 
 - Never refer back to an earlier table ("the parcels from our table") without showing it again.

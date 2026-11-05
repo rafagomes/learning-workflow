@@ -33,6 +33,44 @@ The lesson is a conversation. Before the lab prints `type(0.1 + 0.2)` and `0.1 +
 
 ```
 /learn:practice 1                      # stubs + failing tests in lessons/001-values-and-types/exercises/
+```
+
+Each exercise README starts with what to do first (abbreviated):
+
+````markdown
+# 01 · Close enough
+
+Trains: comparing floats with a tolerance.
+
+## Start here
+
+1. `cd ~/Learning/python/lessons/001-values-and-types/exercises/01-close-enough`
+2. Run the tests once, before writing anything: `uv run --with pytest pytest -q`.
+   Expect `4 failed`, each with `NotImplementedError` — expected, the functions are empty.
+3. Open `solution.py`. In each function, replace the line marked `# TODO: replace with your code`.
+   Keep the names and signatures. Don't edit `test_solution.py`: it's the answer checker.
+4. Start with `is_close`, then `average`. Re-run the tests after each.
+5. You're done when the run ends with `4 passed`.
+
+## Reading a failing test
+
+```
+>       assert is_close(0.1 + 0.2, 0.3)
+E       assert False
+E        +  where False = is_close((0.1 + 0.2), 0.3)
+FAILED test_solution.py::test_float_sum_is_close_not_equal - assert False
+1 failed, 3 passed in 0.01s
+```
+
+Your `is_close(0.1 + 0.2, 0.3)` returned `False` but should be `True`; the test name says which idea is checked.
+
+## Task · Examples · Stuck?
+…
+````
+
+In chat, Claude walks you through steps 1 and 2, says to start with `is_close`, then asks whether the instructions are clear.
+
+```
 /learn:quiz spreadsheet-automation/1   # 9/10, both critical right → ready
 /learn:quiz review                     # tomorrow, two minutes
 ```
