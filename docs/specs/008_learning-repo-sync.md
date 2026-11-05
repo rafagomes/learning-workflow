@@ -16,22 +16,23 @@ Before reading anything from the learning repo (the git repo that holds the subj
 
 1. **No upstream** (`git -C <repo> rev-parse --abbrev-ref @{u}` fails): skip syncing silently. A local-only repo is a valid choice.
 2. **A rebase or merge already in progress**: stop and bring it to the learner.
-3. **Uncommitted changes** (`git -C <repo> status --porcelain` prints anything): don't pull over them. Show the list and ask (AskUserQuestion): commit them (`chore: save local changes`, then pull) or leave them and continue without pulling this session.
+3. **Uncommitted changes** (`git -C <repo> status --porcelain` prints anything): don't pull over them. Show the list, then ask (AskUserQuestion): commit them (one `chore(<subject>): save local changes` per subject folder with changes, root files in a separate `chore: save local changes`, then pull) or leave them and continue without pulling and without pushing this session (one line at the end of the session says the commits stayed local).
 4. `git -C <repo> pull --rebase`.
-   - **Conflict** (the pull fails and a rebase is in progress): `git -C <repo> rebase --abort`, stop, and bring it to the learner with the conflicting files.
+   - **Conflict** (the pull fails and a rebase is in progress): capture `git -C <repo> diff --name-only --diff-filter=U` first, then `git -C <repo> rebase --abort`, stop, and bring it to the learner with that list.
    - **Network or auth failure** (fails with no rebase in progress): say so in one line and continue on the local copy.
-5. If the branch is still ahead of its upstream (commits from an offline session), push them as below.
+5. If the pull ran and the branch is still ahead of its upstream (commits from an offline session), push them as below.
 
 Skills that pull: init (`add`, `migrate`, `remote`, and adding a subject to an existing repo), curriculum, plan (including the read-only plan view), teach, practice, quiz, reflect, build (at start and again before the wrap-up writes), off.
 
 ### Push after every commit
 
-Every commit a skill makes to the learning repo is followed by `git -C <repo> push` when the branch has an upstream.
+Every commit a skill makes to the learning repo is followed by `git -C <repo> push` when the branch has an upstream and the pull wasn't skipped at step 3.
 
-- **Rejected** because the remote moved on: `pull --rebase`, then push once more. A conflict is aborted and brought to the learner, as above.
+- **Rejected** because the remote moved on: re-check `status --porcelain`; dirty (the learner's edits, a lab's output left unstaged) → no pull, no `--autostash`: one line, the commit stays local. Clean → `pull --rebase`, then push once more. A conflict is captured, aborted and brought to the learner, as above.
 - **Network failure**: say so in one line; the commit stays local and the next session's pull/push carries it.
 - **Never force-push.**
-- In a session that skipped the pull because of uncommitted changes, a rejected push is not followed by a pull (it would run over them): say in one line that the commit stays local until those changes are dealt with.
+- Migrate pushes once, after its last commit and its clean-tree check, so an undo never rewrites pushed history.
+- Teach's writer is told whether the pull ran; a push failure doesn't stop it (one line, the commit stays local), unlike a failed write or commit.
 
 ### The hook does no sync
 
@@ -71,8 +72,9 @@ No diagram shows commits or remotes, so `docs/diagrams/` is unchanged.
 
 1. With an upstream that has a commit the local copy lacks, `/learn:teach …` pulls it before reading `PROGRESS.md` (the lesson number accounts for it).
 2. With no upstream, no skill mentions syncing.
-3. With an uncommitted change in the learning repo, a skill shows it and asks; choosing "leave them" continues without pulling; choosing "commit" commits, pulls and pushes.
-4. With a conflicting remote commit, the skill runs `git rebase --abort`, stops, and names the conflicting files; the repo is left as before the pull.
+3. With an uncommitted change in the learning repo, a skill shows it and asks; choosing "leave them" continues without pulling or pushing, with one line at the end of the session; choosing "commit" makes one scoped commit per subject with changes (root files apart), pulls and pushes.
+4. With a conflicting remote commit, the skill lists the conflicting files (`diff --name-only --diff-filter=U`) before `git rebase --abort`, stops, and names them; the repo is left as before the pull.
+4a. A rejected push with a dirty tree doesn't pull; it says in one line that the commit stays local.
 5. Offline, a skill says so in one line, works on the local copy, and its commit stays local; the next online session pushes it.
 6. After every skill commit with an upstream, `git status -sb` shows the branch even with its upstream. A rejected push is retried once after `pull --rebase`. No command uses `--force`.
 7. `hooks/learn-mode.sh` contains no `git pull`, `git push`, `git fetch`, `curl` or `wget` (test).

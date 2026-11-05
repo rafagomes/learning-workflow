@@ -138,7 +138,6 @@ git commit -m "chore(<slug>): migrate subject from its standalone repo"
 git update-ref -d refs/learn-migrate/<slug>
 ```
 
-Push as **Sync** says once the migration commits below are in.
 
 If any of these fails (for example the guard blocks the commit because gitleaks flags an old file, or a file over 1 MB was committed with `--no-verify` in v0.1.0), undo it and report what blocked it: `git merge --abort; git update-ref -d refs/learn-migrate/<slug>`. The learning repo is then as it was, and the standalone repo was never touched.
 
@@ -147,9 +146,9 @@ If any of these fails (for example the guard blocks the commit because gitleaks 
 Then:
 
 - Copy the standalone repo's `scratch/` (gitignored, so not in its history) to `<slug>/scratch/`. Create the empty directories from step 4 that are missing.
-- Fix `<slug>/LEARNING.md` wording that calls it a standalone repo (the title and intro line), add the `README.md` row, and commit: `docs(<slug>): adapt subject to the learning repo`. Push both commits as **Sync** says.
+- Fix `<slug>/LEARNING.md` wording that calls it a standalone repo (the title and intro line), add the `README.md` row, and commit: `docs(<slug>): adapt subject to the learning repo`.
 - Update the registry entry's `path` from `<old>` to `<learning repo>/<slug>` (keep its projects), and repoint learn mode from `<old>` (see **Repointing learn mode**).
-- Check: `git log --oneline` lists the standalone repo's commits under the merge, `<slug>/tools/` does not exist, and `git status --porcelain` prints nothing. (Per-file history before the move sits under the old paths: `git log <merge commit>^2 -- LEARNING.md`.)
+- Check: `git log --oneline` lists the standalone repo's commits under the merge, `<slug>/tools/` does not exist, and `git status --porcelain` prints nothing. (Per-file history before the move sits under the old paths: `git log <merge commit>^2 -- LEARNING.md`.) Only after this check passes, push once, as **Sync** says; never earlier, so an undo never rewrites pushed history.
 - Leave the standalone repo untouched. Offer to delete it (and its remote, if any) only after repeating what would be lost with it (the branches, stashes and unpushed commits listed above, and its `scratch/` if not copied), and delete only after the learner confirms.
 
 ## Data policy (applies to every linked project)
@@ -173,15 +172,17 @@ The learning repo is edited from several machines and sessions, so it syncs like
 
 1. **No upstream** (`git -C <repo> rev-parse --abbrev-ref @{u}` fails): skip syncing silently, for pull and push alike. A local-only repo is a valid choice; never nag about a missing remote (`/learn:init remote` adds one).
 2. **A rebase or merge in progress** (`git -C <repo> status` says so): stop and bring it to the learner.
-3. **Uncommitted changes** (`git -C <repo> status --porcelain` prints anything): don't pull over them. Show the list and ask (AskUserQuestion): **commit them** (stage them, commit `chore: save local changes`, then pull) or **leave them** and continue without pulling this session.
+3. **Uncommitted changes** (`git -C <repo> status --porcelain` prints anything): don't pull over them. Show the list first, then ask (AskUserQuestion):
+   - **commit them**: one commit per subject folder with changes (`git -C <repo> add -A -- <subject>`, `chore(<subject>): save local changes`), and root files in a separate `chore: save local changes` (staging only those files); the guard runs on each. Then pull;
+   - **leave them**: continue without pulling, and without pushing, this session. Commits stay local; say so once, in one line, at the end of the session (not per commit).
 4. `git -C <repo> pull --rebase`:
-   - fails and a rebase is in progress: a **conflict**. Run `git -C <repo> rebase --abort`, stop, and bring it to the learner with the conflicting files; never resolve it yourself;
+   - fails and a rebase is in progress: a **conflict**. First capture the conflicting files (`git -C <repo> diff --name-only --diff-filter=U`), then `git -C <repo> rebase --abort`, stop, and bring the conflict to the learner with that list; never resolve it yourself;
    - fails otherwise (offline, network, auth): say so in one line and continue on the local copy.
-5. If the branch is still ahead of its upstream (`git -C <repo> status -sb` shows `ahead`, e.g. commits from an offline session), push as below.
+5. If the pull ran and the branch is still ahead of its upstream (`git -C <repo> status -sb` shows `ahead`, e.g. commits from an offline session), push as below.
 
-**Push after every commit** the skill makes to the repo, when there is an upstream: `git -C <repo> push`.
+**Push after every commit** the skill makes to the repo, when there is an upstream and the pull wasn't skipped at step 3: `git -C <repo> push`.
 
-- **Rejected** because the remote moved on: `git -C <repo> pull --rebase`, then push once more. A conflict: abort the rebase and bring it to the learner, as above. If this session left uncommitted changes in place (step 3), don't pull: say in one line that the commit stays local until those changes are dealt with.
+- **Rejected** because the remote moved on: re-check `git -C <repo> status --porcelain` first. If it prints anything (the learner's edits, a lab's output left unstaged), don't pull (no `--autostash`): say in one line that the commit stays local until those changes are dealt with. Otherwise `git -C <repo> pull --rebase` and push once more; a conflict is captured, aborted and brought to the learner, as in step 4.
 - **Network failure**: say so in one line; the commit stays local and the next session's pull and push carry it.
 - **Never force-push**, and never rewrite pushed history.
 
