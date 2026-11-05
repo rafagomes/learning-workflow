@@ -12,7 +12,7 @@ To keep the skills from triggering at all in one project, set `"enabledPlugins":
 
 ### Build mode or the study loop?
 
-Use build mode when you have real work to do and want to learn what it needs as you go. Use the study loop for foundations you want before starting, or for a `deep` concept that build mode flagged. They share one learning repo, deck and progress file.
+Use build mode when you have real work to do and want to learn what it needs as you go. Use the study loop for foundations you want before starting, or for a `deep` concept that build mode flagged. They share the subject's folder, deck and progress file.
 
 ### I don't know what I need to learn for this work.
 
@@ -24,11 +24,15 @@ Rarely. It's silent by default: a concept note appears only when a decision depe
 
 ### Do I need a project?
 
-No. `/learn:init <subject>` with no paths creates a learning repo for the subject alone, and `/learn:curriculum` can build a track from a goal in plain words. Linking projects makes lessons concrete, but it's optional.
+No. `/learn:init <subject>` with no paths adds a subject folder that links no project, and `/learn:curriculum` can build a track from a goal in plain words. Linking projects makes lessons concrete, but it's optional.
 
 ### Can one learning repo serve several projects?
 
-Yes. A learning repo is per **subject** and links any number of projects (`/learn:init add <path>`). Lessons can draw on whichever one illustrates the idea best.
+Yes. Each **subject** in it links any number of projects (`/learn:init add <path>`), and a project can be linked to several subjects. Lessons can draw on whichever one illustrates the idea best.
+
+### Do I need a repo per subject?
+
+No. There is one learning repo (default `~/Learning`) and every subject is a folder in it, listed in its `README.md`. `/learn:init <subject>` adds the next one. Work from inside a subject folder, or from a linked project, and the skills pick the subject from the nearest `LEARNING.md`. If you set up subjects as separate repos with v0.1.0, `/learn:init migrate` moves each one in as a folder and keeps its git history; the old repo is only deleted if you confirm.
 
 ### Will it touch my project?
 
@@ -52,7 +56,7 @@ No. There are no extra services or APIs; labs run on your machine with your tool
 
 ### Where's my progress?
 
-`PROGRESS.md` in the learning repo has a status per topic and a session log. `git log` is the full history.
+Each subject's `PROGRESS.md` has a status per topic and a session log. `git log` is the full history.
 
 ### Can I skip a lesson for something I already know?
 

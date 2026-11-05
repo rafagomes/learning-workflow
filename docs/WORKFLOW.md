@@ -17,7 +17,7 @@ Learning material is personal, exploratory and full of half-right attempts. Proj
 | Repo | Holds | Visibility |
 |---|---|---|
 | `learning-workflow` (plugin) | The method: skills, templates, docs | Public |
-| Learning repo, one per subject | Your curriculum, lessons, exercises, deck, reflections | Private by default |
+| Learning repo, one folder per subject | Your curriculum, lessons, exercises, deck, reflections | Private by default |
 | Projects | Real code and data, unchanged | As they were |
 
 The learning repo reads projects; nothing reads the learning repo. Anything you learn that should reach a project is rewritten there through that project's own workflow (spec, branch, PR, review).
@@ -27,11 +27,11 @@ The learning repo reads projects; nothing reads the learning repo. Anything you 
 | | Build mode | Study loop |
 |---|---|---|
 | When | You have real work to do now | Before the work, or for a deep concept |
-| Where | In the project session | In the learning repo |
+| Where | In the project session | In the subject's folder of the learning repo |
 | Driven by | A learning plan linked to the dev plan (`/learn:plan`) | A curriculum (`/learn:curriculum`) |
 | Teaching | Short concept notes only when a decision needs them; deep dives during background waits | Full lessons with labs |
 | Checking | Predictions before runs; done-check when the step is done | Exercises with tests; quizzes |
-| Shared | One learning repo, flashcard deck, `PROGRESS.md` | ← same |
+| Shared | The subject's folder, flashcard deck, `PROGRESS.md` | ← same |
 
 Verdict: start with build mode for most work; reach for the study loop when build mode flags a `deep` concept or you're new to the subject.
 

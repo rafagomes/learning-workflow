@@ -1,11 +1,11 @@
 ---
 name: teach
-description: "Teach one topic in depth as an interactive lesson: intuition, the mechanism, a runnable lab with real numbers, how it shows up in the linked project, pitfalls, and a check for understanding. Use when the user says 'teach me X', 'explain X properly', 'deep dive on X', 'next lesson', or names a curriculum topic. Writes lessons/<NNN>-<topic>/ in the learning repo."
+description: "Teach one topic in depth as an interactive lesson: intuition, the mechanism, a runnable lab with real numbers, how it shows up in the linked project, pitfalls, and a check for understanding. Use when the user says 'teach me X', 'explain X properly', 'deep dive on X', 'next lesson', or names a curriculum topic. Writes lessons/<NNN>-<topic>/ in the subject's folder of the learning repo."
 argument-hint: "<track>/<topic-number> | <topic>"
 ---
 Teach a topic. Argument: $ARGUMENTS
 
-Resolve the learning repo and current project as `/learn:init` describes. Read `LEARNING.md` (profile, toolchain, data policy) and, if the topic is in a track, its entry in `curriculum/<track>.md` (why it matters, ready-when, touchpoint). With no argument, pick the first `todo` topic whose prerequisites are all `ready`, `claimed`, `built` or `reflected`.
+Resolve the subject and current project as `/learn:init` describes. Read `LEARNING.md` (profile, toolchain, data policy) and, if the topic is in a track, its entry in `curriculum/<track>.md` (why it matters, ready-when, touchpoint). With no argument, pick the first `todo` topic whose prerequisites are all `ready`, `claimed`, `built` or `reflected`.
 
 ## How to teach
 
@@ -34,5 +34,5 @@ Work through these parts, writing `lessons/<NNN>-<topic-slug>/lesson.md` as you 
 
 - Add 3–6 flashcards for the core ideas to `flashcards/deck.md` (box 1, next = today).
 - Update `PROGRESS.md`: a `todo` topic → `learning` (any other status stays, since teaching isn't evidence of a gap); log the session with one line on what clicked and what didn't.
-- Commit `docs: lesson <NNN> <topic>`.
+- Commit `docs(<subject>): lesson <NNN> <topic>`.
 - Suggest the next step: `/learn:practice <topic>`, or `/learn:quiz <topic>` if the check went perfectly.

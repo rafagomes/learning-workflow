@@ -1,6 +1,6 @@
-# {{SUBJECT}} — learning repo
+# {{SUBJECT}}
 
-Created {{DATE}} with the `learn` plugin (`/learn:init`). Private study space: lessons, exercises, quizzes and reflections for **{{SUBJECT}}**.
+Subject folder in the learning repo, created {{DATE}} with the `learn` plugin (`/learn:init`): lessons, exercises, quizzes and reflections for **{{SUBJECT}}**. Paths below are relative to this folder.
 
 ## Learner
 
@@ -21,7 +21,7 @@ Created {{DATE}} with the `learn` plugin (`/learn:init`). Private study space: l
 
 ## Linked projects
 
-Read-only references. Cite code as `<slug>:path@shortsha`. Paths and remotes live only in the local registry (`~/.config/learning-workflow/spaces.json`), never in this repo.
+Read-only references. Cite code as `<slug>:path@shortsha`. Paths and remotes live only in the local registry (`~/.config/learning-workflow/spaces.json`), never in the learning repo.
 
 | Slug | Sensitivity | What it is (one line, no internal names) |
 |---|---|---|

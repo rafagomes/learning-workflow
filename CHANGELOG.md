@@ -2,6 +2,17 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- One learning repo for every subject: `/learn:init <subject>` creates the learning repo the first time (default `~/Learning`, with a `README.md` subject index, shared `CLAUDE.md`, `.gitignore` and guard) and adds each subject as its own folder (`<subject>/LEARNING.md`, `PROGRESS.md`, `curriculum/`, `lessons/`, …). Skills resolve the **subject** from the nearest `LEARNING.md` and commit with a subject scope (`docs(<subject>): …`). The registry gains a top-level `repo`. Templates split into `templates/repo/` and `templates/subject/`.
+- The guard allows exercise data and lesson SQL only under `<subject>/lessons/` of a folder with a `LEARNING.md`, blocks embedded git repos, and points blocked data to `<subject>/scratch/`.
+
+### Added
+
+- `/learn:init migrate [path]`: folds a v0.1.0 one-repo-per-subject learning repo into the learning repo as a subject folder, keeping its git history; the old repo is deleted only on confirmation. Standalone repos keep working until migrated.
+
 ## [0.1.0] - 2026-11-04
 
 ### Added

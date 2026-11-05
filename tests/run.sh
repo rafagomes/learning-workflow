@@ -21,7 +21,7 @@ for skill in skills/*/SKILL.md; do
   if grep -qx "name: $name" <<<"$fm"; then ok "frontmatter: $name"; else bad "$skill: name must be $name"; fi
 done
 
-if bash -n skills/init/templates/tools/guard.sh; then ok "guard.sh parses"; else bad "guard.sh syntax"; fi
+if bash -n skills/init/templates/repo/tools/guard.sh; then ok "guard.sh parses"; else bad "guard.sh syntax"; fi
 if bash tests/guard_test.sh; then ok "guard behaviour"; else bad "guard behaviour"; fi
 if bash -n hooks/learn-mode.sh && bash tests/hook_test.sh; then ok "learn-mode hook"; else bad "learn-mode hook"; fi
 if python3 -c 'import json; json.load(open("hooks/hooks.json"))'; then ok "valid JSON: hooks/hooks.json"; else bad "invalid JSON: hooks/hooks.json"; fi

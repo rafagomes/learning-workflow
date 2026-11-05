@@ -8,7 +8,7 @@ Four walkthroughs: three for the study loop, from no project at all to a work pr
 /learn:init python
 ```
 
-Claude asks your level (*new*), depth (*practical first*), lesson language, and proposes the Python toolchain (`uv run lab.py` for labs, `uv run --with pytest --with-requirements <dir>/requirements.txt pytest <dir>` for exercises). It creates `~/Learning/python` and commits.
+Claude asks your level (*new*), depth (*practical first*), lesson language, and proposes the Python toolchain (`uv run lab.py` for labs, `uv run --with pytest --with-requirements <dir>/requirements.txt pytest <dir>` for exercises). It creates the learning repo at `~/Learning` (only the first time), adds `~/Learning/python/`, lists it in the root `README.md`, and commits.
 
 ```
 /learn:curriculum "automate the reports I build in spreadsheets every week"

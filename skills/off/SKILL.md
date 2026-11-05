@@ -13,11 +13,11 @@ top=$(git rev-parse --show-toplevel 2>/dev/null || pwd); key=${top//[%]/%25}; st
 echo "$state"
 ```
 
-   If `"$state"` doesn't exist, say learn mode isn't on here and stop.
+   If `"$state"` doesn't exist, say learn mode isn't on here and stop. Otherwise the **subject folder** is the folder of the plan named on the state file's first line (`plan <subject folder>/plans/<plan>.md`); every path below is relative to it, never to the project, and `<subject>` is its folder name.
 2. Sweep the project for `TODO(learner)` markers (`git grep -n --untracked "TODO(learner)"`) and resolve or report each one, with or without `no-wrapup`.
 3. Unless the argument is `no-wrapup`, save a partial wrap-up. This is not `/learn:build` section 4: there is no done-check, so nothing is promoted.
    - Write `builds/<date>-<step>.md` with the concepts shown so far and any predictions, marked as paused.
    - In the plan, the step **stays `in progress`**; add a Log line saying it was paused.
    - In `PROGRESS.md`, concepts shown but still `todo` → `learning`; no other status changes.
-   - Commit in the learning repo: `docs: build log <step> (paused)`.
+   - Commit in the learning repo: `docs(<subject>): build log <step> (paused)`.
 4. Delete the state file (`rm -f "$state"`) and confirm in one line. The next `/learn:build <step>` resumes the step.
