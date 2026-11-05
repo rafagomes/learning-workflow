@@ -116,7 +116,7 @@ Each topic moves through `todo → learning → practised → ready → built �
 | `/learn:quiz review` | Spaced-repetition review of due flashcards | `flashcards/deck.md` |
 | `/learn:reflect <topic> [PR \| commit range]` | After building: prediction vs result, gaps, follow-ups | `reflections/<date>-<topic>.md` |
 
-In lessons, quizzes, build mode and practice, every reply to your answer starts with **Correct.**, **Incorrect.** or **Partly correct.**, then explains.
+In lessons, quizzes, build mode and practice, every reply to your answer starts with **Correct.**, **Incorrect.** or **Partly correct.**, then explains. Lessons open with a roadmap of their parts and mark each one (`[3/9 · Mechanism]`); checks, quizzes and done-checks number their questions (`Question 2/3`).
 
 Full reference: [docs/SKILLS.md](docs/SKILLS.md).
 

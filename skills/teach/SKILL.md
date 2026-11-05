@@ -63,6 +63,8 @@ The writer has a fresh context, so its brief carries everything:
 
 ## Lesson structure
 
+**Roadmap.** Open each lesson with one line of its parts in order, leaving out those that won't happen (Watch when no video would help or videos are off, In the project with no linked project, a short lesson's Lab unless added), with the check's count: `Lesson 012 · Problem → Intuition → Mechanism → Watch → Lab → In the project → Pitfalls → Vocabulary → Check (3 questions)`. Open each part with its position, `[3/9 · Mechanism]`, and end it with one short line on what's next. If the plan changes (no video qualifies after all, a short lesson gains a lab), restate the roadmap in one line. Markers are for the conversation only; `lesson.md` keeps its `## <part>` headings.
+
 Work through these parts; the writer records each in `lessons/<NNN>-<topic-slug>/lesson.md` as you go (NNN = next free number, counting lessons the writer hasn't committed yet):
 
 1. **The problem**: the concrete situation in the linked project, or the learner's goal, that needs this. Cite `<project-slug>:path@shortsha` when relevant; obey the data policy.
@@ -77,7 +79,7 @@ Work through these parts; the writer records each in `lessons/<NNN>-<topic-slug>
 
 ### Short lesson (plan items not flagged `deep`)
 
-Same rules (one idea at a time, questions with options, examples that stand alone, predict before running, never state an uncomputed number). `lessons/<NNN>-<concept-slug>/lesson.md` has: **The problem** (from the item's `why:`), **Intuition** with a tiny worked example by hand, **Watch** (optional, see **Videos**), **In the project**, **One pitfall** with its symptom, and a **Check** of 2 questions. There's no lab unless the learner asks for one or the check shows the idea didn't land; then add one and treat it as a full lesson. A lesson has at most one **Watch** part: when a short lesson grows, it stays where it is (before the lab).
+Same rules (one idea at a time, questions with options, examples that stand alone, predict before running, never state an uncomputed number). `lessons/<NNN>-<concept-slug>/lesson.md` has: **The problem** (from the item's `why:`), **Intuition** with a tiny worked example by hand, **Watch** (optional, see **Videos**), **In the project**, **One pitfall** with its symptom, and a **Check** of 2 questions. There's no lab unless the learner asks for one or the check shows the idea didn't land; then add one and treat it as a full lesson. Its roadmap: `Lesson 013 · Problem → Intuition → Watch → In the project → One pitfall → Check (2 questions)`, minus the parts left out. A lesson has at most one **Watch** part: when a short lesson grows, it stays where it is (before the lab).
 
 ### Videos
 

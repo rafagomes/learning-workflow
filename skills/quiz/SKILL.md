@@ -9,7 +9,7 @@ Resolve the subject as `/learn:init` describes. Every question is asked and reco
 
 ## Review mode (`review`)
 
-Read `flashcards/deck.md`, take every card whose `next` date is today or earlier (box 1 first), and ask them one at a time, in plain text. The learner answers in their own words; judge the meaning, not the wording, and open the reply with **Correct.** or **Incorrect.** Correct → box +1 (max 5), next = today + interval for that box (1, 2, 4, 8, 16 days). Incorrect → box 1, next = tomorrow, and explain briefly. Stop after 20 cards or when the learner says so. Update the deck, log, commit `docs(<subject>): flashcard review`.
+Read `flashcards/deck.md`, take every card whose `next` date is today or earlier (box 1 first), say how many are due, and ask them one at a time, in plain text, each starting `Card 3/12 · `. The learner answers in their own words; judge the meaning, not the wording, and open the reply with **Correct.** or **Incorrect.** Correct → box +1 (max 5), next = today + interval for that box (1, 2, 4, 8, 16 days). Incorrect → box 1, next = tomorrow, and explain briefly. Stop after 20 cards or when the learner says so. Update the deck, log, commit `docs(<subject>): flashcard review`.
 
 ## Plan mode (a plan step, a plan, or a plan item)
 
@@ -18,7 +18,7 @@ Match the argument as `/learn:teach` does (step ID, plan name, `<plan>/<step>/<c
 Run it like topic mode below, with these differences:
 
 - **Ready when** for an item comes from its lesson's **Check** (if it has a lesson) and its `why:` line in the plan. **Critical** questions are the ones the step's **Done-check** depends on.
-- Plan 3–5 questions per item (8–12 for a single item), still asked one at a time.
+- Plan 3–5 questions per item (8–12 for a single item), still asked one at a time. Each item starts with one line, `Item 2/4 · <concept> · 4 questions`, and its questions are numbered within it.
 - **Save after each item**, so stopping loses nothing: write `quiz.md` in the item's lesson folder (an item with no lesson, e.g. a `claimed` one, gets a new `lessons/<NNN>-<concept-slug>/` to hold it), update the Concepts rows of every item with that concept name and its same-named Tracks topic with the status rules below, append the dated score to `Note` (`quiz 4.5/5 2026-11-04`) and drop a `skipped <date>` mark if the status is no longer `todo`, add flashcards for misses, and commit `docs(<subject>): quiz <concept>`. Then offer the next item: continue or stop. A later quiz of the same plan or step skips items already quizzed that day.
 - After the quiz, say whether each step involved is **ready to build**, with the definition in `/learn:teach` → **Plan items** (every item covered), and separately which items are now `ready`. A failed item that drops to `todo` (a disproven `known`) is taught again by the next `/learn:teach <plan>`.
 
@@ -27,7 +27,7 @@ Run it like topic mode below, with these differences:
 1. Read the topic's "ready when" from the curriculum and its lesson, if it has one. A `claimed` topic may have no lesson folder: create `lessons/<NNN>-<topic>/` (next free NNN) to hold `quiz.md`. Plan 8–12 questions covering every ready-when item; mark 2–3 as **critical** (the ideas the project phase depends on).
 2. Mix formats: explain-in-your-words, predict-the-output (run the snippet afterwards to confirm), spot-the-bug, choose-and-justify (a design decision from the project phase), and calculation with numbers you computed.
    Explain, choose-and-justify and critical questions need the right reason too (the "why?" follow-up in `/learn:init` → **Questions and examples**, scored with its question); **Partly correct** scores 0.5 and fails a critical question.
-3. Ask **one question at a time**. After each answer (and its "why?", if any): the verdict first (**Correct.**, **Incorrect.** or **Partly correct.**, as `/learn:init` → **Questions and examples** says), then the one-sentence reason. A miss is an Incorrect or Partly correct answer. Adapt: two misses on a sub-idea → one easier follow-up on it.
+3. Say how many questions the quiz has, then ask **one question at a time**, numbered as `/learn:init` → **Questions and examples** → **Position** says (`Question 4/10 · …`). After each answer (and its "why?", if any): the verdict first (**Correct.**, **Incorrect.** or **Partly correct.**, as `/learn:init` → **Questions and examples** says), then the one-sentence reason. A miss is an Incorrect or Partly correct answer. Adapt: two misses on a sub-idea → one easier follow-up on it.
 4. Do not reveal upcoming questions or hint at answers in the question wording.
 
 **Score:** ready at ≥ 80% **and** all critical questions right. Otherwise list the gaps and point to the exact lesson part or exercise to revisit.
