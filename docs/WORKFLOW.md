@@ -54,7 +54,7 @@ Verdict: start with build mode for most work; reach for the study loop when buil
 </picture>
 
 1. **Curriculum.** The source is split into topics ordered by dependency, each tied to the phase that needs it, each with 2–3 observable "ready when" abilities. A short self-assessment skips what you already know (it gets a quiz instead of a lesson).
-2. **Teach.** One concept at a time, with a question after each step. Before every lab run you predict the result. The lesson file is written as you go, so it records the explanation that actually worked for you.
+2. **Teach.** One concept at a time, with a question after each step. Before every lab run you predict the result. The lesson file is written as you go, by a background agent so you never wait on it, and records the explanation that actually worked for you.
 3. **Practice.** Exercises with stubs and failing tests. The tests are checked against a hidden reference solution first, so a green run means you're right. Hints come one rung at a time; the solution only if you ask.
 4. **Quiz.** Adaptive, one question at a time, mixing explain, predict-the-output, spot-the-bug and choose-and-justify. Ready means ≥ 80% **and** every critical question right.
 5. **Build.** In the real project, with its normal process. The plugin stays out of it.

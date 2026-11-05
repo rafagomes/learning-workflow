@@ -4,6 +4,14 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Changed
+
+- `/learn:teach` keeps the conversation on teaching. A background writer agent, reused for the session, records each lesson part as it's taught, then adds the flashcards, updates `PROGRESS.md` and makes the one commit per lesson; Claude shows its sha in one line and moves to the next item without waiting. It writes only what it was sent and stages only that lesson's paths. Video search and reading the linked project's code run in background agents at lesson start; Claude re-reads every cited line before teaching it. Without the Agent tool, lessons are written inline as before.
+
+### Added
+
+- After a lesson is saved in a long session, `/learn:teach` suggests `/compact`, or `/clear` then `/learn:teach <plan>` to resume at the next item (a skill can't run either itself). At most once per lesson, never mid-lesson.
+
 ## [0.4.0] - 2026-11-04
 
 ### Added

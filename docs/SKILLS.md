@@ -92,7 +92,7 @@ Builds a track in `curriculum/<track>.md`.
 /learn:teach
 ```
 
-Writes `lessons/<NNN>-<topic>/lesson.md` while teaching.
+Writes `lessons/<NNN>-<topic>/lesson.md` while teaching. The conversation only teaches; a background writer agent records each part as it's taught, then adds the flashcards, updates `PROGRESS.md` and commits (one commit per lesson, sha shown in one line), so the next question or lesson never waits on a write. Video search and reading the linked project's code also run in the background at lesson start, and Claude re-reads every cited line before teaching it. After a lesson is saved in a long session, it suggests `/compact`, or `/clear` then `/learn:teach <plan>` to resume (a skill can't run either). Without the Agent tool, it writes inline.
 
 | Argument | Teaches |
 |---|---|
