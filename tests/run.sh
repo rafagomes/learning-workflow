@@ -36,6 +36,8 @@ for skill in skills/*/SKILL.md; do
 done
 if grep -nE 'git[^#]*\b(pull|push|fetch|remote)\b|curl|wget' hooks/learn-mode.sh; then bad "hooks/learn-mode.sh must not sync or touch the network"; else ok "hook does no git sync or network"; fi
 if grep -q 'pull --rebase' skills/init/templates/repo/CLAUDE.md && grep -qi 'never force-push' skills/init/templates/repo/CLAUDE.md; then ok "repo template carries the sync rule"; else bad "skills/init/templates/repo/CLAUDE.md lacks the sync rule"; fi
+if grep -n 'gh repo create' skills/init/SKILL.md | grep -q -- '--push'; then bad "gh repo create must not --push before visibility is checked"; else ok "remote is created without --push"; fi
+if grep -q -- '--json visibility' skills/init/SKILL.md && grep -q 'never push' skills/init/SKILL.md; then ok "init checks remote visibility before pushing"; else bad "init must check PRIVATE visibility before pushing"; fi
 if grep -rn 'push --force\|push -f\b\|--force-with-lease' skills; then bad "a skill force-pushes"; else ok "no skill force-pushes"; fi
 
 # claude plugin update only pulls a new version, so plugin.json must match the newest released CHANGELOG heading.
