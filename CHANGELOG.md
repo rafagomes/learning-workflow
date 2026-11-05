@@ -4,6 +4,8 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-05
+
 ### Added
 
 - The learning repo syncs like a notes vault. When it has a remote, every `/learn` skill pulls it (`git pull --rebase`) before reading anything and pushes after every commit, so each machine and session works on the latest lessons and progress. With uncommitted changes in the learning repo, the skill shows them and asks: commit them first, or continue without pulling. A conflict is never resolved for you: the rebase is aborted and brought to you. A rejected push is retried once after a rebase; offline, the skill says so in one line and the next session pushes. Nothing ever force-pushes. Without a remote, nothing changes and nothing nags. The learn-mode hook never syncs, so prompts stay fast.
