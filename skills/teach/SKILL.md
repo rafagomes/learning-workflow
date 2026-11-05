@@ -34,8 +34,8 @@ Teach **one item per lesson**. After each, offer the next item by name and ask: 
 
 This is a conversation, not a document dump. Every question and example follows `/learn:init` → **Questions and examples**.
 
-- **One concept at a time.** Explain a step, then ask one question (prediction, or "what would happen if…"), and wait for the answer before continuing. Open your reply with the verdict (**Correct.**, **Incorrect.** or **Partly correct.**, see **Questions and examples**), then correct misconceptions directly and say why the wrong idea was tempting.
-- **Predict before running.** Before every lab run, ask the learner to predict the result. Afterwards, give the prediction its verdict first, then compare.
+- **One question per part, at most.** Teach the part, end the turn (see **Content before the dialog**), then ask its one question (prediction, or "what would happen if…") and wait for the answer. Never two questions on the same idea, and once the learner gets an idea right, move on. A `deep` lesson adds depth (mechanism, maths, a lab, the next idea), not questions. The Check keeps its count. Open your reply with the verdict (**Correct.**, **Incorrect.** or **Partly correct.**, see **Questions and examples**), then correct misconceptions directly and say why the wrong idea was tempting.
+- **Predict before running.** Before the lab runs, ask the learner to predict the result (the Lab part's question). Afterwards, give the prediction its verdict first, then compare.
 - **Never state a number you haven't computed.** Run the lab or a snippet and quote its output.
 - Match the profile's depth and language. Define every term the first time it appears.
 - If the learner already knows a part, skip it after one check question.
@@ -51,7 +51,7 @@ The conversation only teaches: it explains, asks, reacts to answers and runs the
 Until its last sha is in, nothing else touches the learning repo's files or git (the lab file excepted, below): wait for it before another `/learn` skill runs, before ending the session, and before starting a replacement writer (say, when `/compact` lost its ID). If it reports an error, it has stopped: send it nothing more, fix the error inline and write inline for the rest of the session.
 
 The writer has a fresh context, so its brief carries everything:
-- the subject folder's absolute path; per lesson (in the first message about it): its number, slug, and parts in order (**Lesson structure** or **Short lesson**), each written as `## <part>` with the content sent, leaving out the conversation's roadmap line, `[n/N · <part>]` markers and `Question n/N · ` prefixes;
+- the subject folder's absolute path; per lesson (in the first message about it): its number, slug, and parts in order (**Lesson structure** or **Short lesson**), each written as `## <part>` with the content sent, leaving out the conversation's roadmap line, `[n/N · <part>]` markers, `Question n/N · ` prefixes and an earlier answer's verdict leading a question;
 - the data policy as `LEARNING.md` records it, with each linked project's slug and sensitivity;
 - the **Finish** rules below and the **Plan items** rules they use (every item with the concept name, `<plan>/<step>`, skip notes), the card format in `flashcards/deck.md`, and the commit messages (the lesson's, and a skip's, see **Skipping**);
 - **it never invents content**: it writes only what it was sent, reworded at most, with no number it wasn't given; what's missing it leaves out. Each question is written with the data it showed (a linked project's code only as its `slug:path@sha` citation and a paraphrase), its options, the pick and the verdict word exactly as sent (Correct, Partly correct or Incorrect; never softened or reworded), so the lesson reads on its own;
