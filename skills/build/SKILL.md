@@ -68,7 +68,7 @@ When the learner says the step is done, or a PR for it is opened, ask the step's
 3. Update the plan: the step's Status → `done` and its Log line.
 4. Update `PROGRESS.md`:
    - under **Plans**, the step's status;
-   - under **Concepts** (and the matching Tracks topic, if one exists, so the two never disagree), each concept the step covered. A done-check is evidence, like a quiz:
+   - under **Concepts** (and the matching Tracks topic, if one exists, so the two never disagree), each concept the step covered, in the row with `Step` = `<plan>/<step>` (rewrite an old bare `<step>` row to that form), and the rows of the same concept in other steps (see `/learn:teach` → **Plan items**). A done-check is evidence, like a quiz:
      - answered correctly → `built` (unless already `built` or `reflected`);
      - missed → `learning` from `todo`, `claimed`, `learning`, `practised` or `ready` (a disproven claim or a forgotten idea needs work again); a missed `built` or `reflected` concept keeps its status. Every miss gets a flashcard;
      - shown but not checked → `learning` only if it was `todo`; otherwise unchanged.

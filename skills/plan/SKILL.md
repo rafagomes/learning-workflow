@@ -65,12 +65,12 @@ Update `PROGRESS.md` (under **Plans**: the plan and its steps, `todo`), commit `
 
 ## Plan view
 
-Read-only: it changes no file. Read `plans/<plan>.md` and the subject's `PROGRESS.md`. Each concept listed under a step is an **item**; its status is its **Concepts** row with `Step` = `<plan>/<step>` (no row = `todo`; marked `known` in the plan = `claimed`). The step status is from the plan's table.
+Read-only: it changes no file. Read `plans/<plan>.md` and the subject's `PROGRESS.md`. Items, their status (including old rows with a bare step ID), **covered** and skipped items are defined in `/learn:teach` → **Plan items**. The step status is from the plan's table.
 
 Print it as a compact text block:
 
 ```
-<Plan name> · <n> of <total> items taught · <n> ready · <next step to build, if any>
+<Plan name> · <n> of <total> items covered · <n> ready · <n> skipped · <next step to build, if any>
 Z0 · <step title>                                   <step status>
   ✓ learning   zoning vs land use                   lesson 001
   ✓ learning   precision vs recall           deep   lesson 002 · quiz 4/5
@@ -79,7 +79,7 @@ Z1 · …
 Next: <first todo item> (<step>)
 ```
 
-Marks: `✓` taught (`learning`, `practised`), `★` `ready`, `built` or `reflected`, `·` `todo`, `○` `known` / `claimed`. "Taught" counts items at `learning` or beyond. A step is **ready to build** when all its items are at `learning` or beyond. Show the step's done-check score from its **Log** if it was built.
+Marks: `✓` taught (`learning`, `practised`), `★` `ready`, `built` or `reflected` (say which), `·` `todo`, `–` skipped, `○` `known` / `claimed`. "Covered" counts items that are `claimed` or at `learning` or beyond. A step is **ready to build** when all its items are covered. Show the step's done-check score from its **Log** if it was built. `Next:` is the first `todo` item that isn't skipped.
 
 Then ask one question (AskUserQuestion) and act on the answer by invoking that skill with the Skill tool:
 

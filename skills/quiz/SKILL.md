@@ -13,14 +13,14 @@ Read `flashcards/deck.md`, take every card whose `next` date is today or earlier
 
 ## Plan mode (a plan step, a plan, or a plan item)
 
-Match the argument as `/learn:teach` does (step ID, plan name, `<plan>/<step>/<concept>` or a concept name matching one item; ask when ambiguous). Quiz the **taught** items it covers (`learning` or beyond in `PROGRESS.md` → **Concepts**, `Step` = `<plan>/<step>`), in plan order; a single named item is quizzed whatever its status. If none are taught, say so and offer `/learn:teach` with the same argument.
+Match the argument as `/learn:teach` does (step ID, plan name, `<plan>/<step>/<concept>` or a concept name); items, concept names, status lookup and shared concepts are defined in `/learn:teach` → **Plan items**. Quiz the **taught** items (`learning` or beyond) of the step or plan, in plan order, one concept at a time; a single named item is quizzed whatever its status. If none are taught, say so and offer `/learn:teach` with the same argument. For a whole plan, say how many items that is and ask whether to do all of them or one step.
 
 Run it like topic mode below, with these differences:
 
-- **Ready when** for an item comes from its lesson's **Check** and its `why:` line in the plan. **Critical** questions are the ones the step's **Done-check** depends on.
+- **Ready when** for an item comes from its lesson's **Check** (if it has a lesson) and its `why:` line in the plan. **Critical** questions are the ones the step's **Done-check** depends on.
 - Plan 3–5 questions per item (8–12 for a single item), still asked one at a time.
-- Write `quiz.md` in each item's lesson folder. Update each item's Concepts row with the same rules as topics (passed → `ready`; failed `claimed` → `todo`; failed `ready` → `learning`; failed `built`/`reflected` unchanged), and append the score to its `Note` (`quiz 4/5`). Commit `docs(<subject>): quiz <plan or step>`.
-- When every item of a step is `ready` or beyond, say the step is ready to build: `/learn:build <step>`, from the project.
+- **Save after each item**, so stopping loses nothing: write `quiz.md` in the item's lesson folder (an item with no lesson, e.g. a `claimed` one, gets a new `lessons/<NNN>-<concept-slug>/` to hold it), update the Concepts rows of every item with that concept name and its same-named Tracks topic with the status rules below, append the dated score to `Note` (`quiz 4/5 2026-11-04`), add flashcards for misses, and commit `docs(<subject>): quiz <concept>`. Then offer the next item: continue or stop. A later quiz of the same plan or step skips items already quizzed that day.
+- When every item of a step is `ready` or beyond (or `claimed` and not quizzed), say the step is ready to build: `/learn:build <step>`, from the project.
 
 ## Topic mode
 
@@ -31,6 +31,6 @@ Run it like topic mode below, with these differences:
 
 **Score:** ready at ≥ 80% **and** all critical questions right. Otherwise list the gaps and point to the exact lesson part or exercise to revisit.
 
-Write `lessons/<NNN>-<topic>/quiz.md` (date, questions, learner's answers summarised, score, gaps). Add a flashcard per miss. Update `PROGRESS.md`: passed → `ready`; failed `claimed` → `todo`; failed `ready` (a re-check) → `learning`; failed `built` or `reflected` → unchanged (the gaps become flashcards), log, commit `docs(<subject>): quiz <topic>`.
+Write `lessons/<NNN>-<topic>/quiz.md` (date, questions, learner's answers summarised, score, gaps). Add a flashcard per miss. Update `PROGRESS.md`: passed → `ready`, except a `built` or `reflected` topic, which keeps its status (the score is still recorded); failed `claimed` → `todo`; failed `ready` (a re-check) → `learning`; failed `built` or `reflected` → unchanged (the gaps become flashcards), log, commit `docs(<subject>): quiz <topic>`. Plan mode uses the same rules.
 
 When a whole phase's topics are `ready`, say so: the learner can now build that phase in the project, through the project's own workflow. After building it, `/learn:reflect` records the result and moves those topics to `built` and `reflected`.
