@@ -26,7 +26,7 @@ Run it like topic mode below, with these differences:
 
 1. Read the topic's "ready when" from the curriculum and its lesson, if it has one. A `claimed` topic may have no lesson folder: create `lessons/<NNN>-<topic>/` (next free NNN) to hold `quiz.md`. Plan 8–12 questions covering every ready-when item; mark 2–3 as **critical** (the ideas the project phase depends on).
 2. Mix formats: explain-in-your-words, predict-the-output (run the snippet afterwards to confirm), spot-the-bug, choose-and-justify (a design decision from the project phase), and calculation with numbers you computed.
-   **Picking isn't enough for an ability.** An explain or choose-and-justify question, and every critical question, is right only when the reason is right too: after a right pick, ask "why?" as one more question whose options are candidate reasons (the tempting wrong reasons as distractors), or take a typed explanation. A right pick with a wrong reason is **partly**, which scores 0.5 and fails a critical question.
+   Explain, choose-and-justify and critical questions need the right reason too (the "why?" follow-up in `/learn:init` → **Questions and examples**, scored with its question); **partly** scores 0.5 and fails a critical question.
 3. Ask **one question at a time**. After each answer: right/partly/wrong, and the one-sentence reason. Adapt: two misses on a sub-idea → one easier follow-up on it.
 4. Do not reveal upcoming questions or hint at answers in the question wording.
 

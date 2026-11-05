@@ -158,11 +158,12 @@ Then:
 - Distractors are real misconceptions: a swapped formula, the tempting wrong idea, an off-by-one, the confusion just warned about.
 - When the question needs data (a table, snippet or output), put it in the options' `preview` as markdown (a linked project's code only within the data policy), the same on each option, or different per option when the options are alternative tables, outputs or code. The learner then sees the data beside the options.
 - Where options would give the answer away (explain why, derive), offer approaches or partial claims, and say in the question that typing an explanation via Other is welcome.
+- Where a pick is evidence of an ability (a quiz's explain, choose-and-justify and critical questions; every done-check question), it's right only with the right reason: after a right pick, follow up with "why?" (candidate reasons as options, the tempting wrong ones as distractors) or take a typed explanation. The follow-up belongs to the same question and is scored with it, once: right pick and wrong reason is **partly**.
 - The automatic Other is the learner's free answer: judge a typed reply as the answer, or, if it's a question ("why…?"), explain or rephrase and ask again.
 - Record, per question, the data shown, the options, the pick (or the typed text) and right / partly / wrong: it's the evidence a check, quiz score or done-check counts. Synthetic or lesson data is recorded in full; a linked project's code or output only as its `<slug>:path@sha` citation and a paraphrase, never pasted.
 - Without AskUserQuestion (headless, or denied), ask in plain text with the data above the question and the options listed.
 
-Three kinds stay in plain text: flashcards (they train recall, so the learner answers in their own words before seeing anything), hints (practice's pointing question must not hand over the approach as an option), and open questions that ask for the learner's account (reflect's "what happened?").
+Three kinds stay in plain text: flashcards (they train recall, so the learner answers in their own words before seeing anything), hints (practice's pointing question must not hand over the approach as an option), and open questions that ask for the learner's account (reflect's talk-through questions).
 
 **Examples.** Every question and explanation shows all the data it relies on, right there:
 
