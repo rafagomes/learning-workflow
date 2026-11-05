@@ -160,7 +160,7 @@ tools/guard.sh       pre-commit guard; tools/hooks/pre-commit runs it
 | build | plan step, deck, project (works in it under its own rules) | active state file; `builds/`, plan, deck, `PROGRESS.md` | `docs: build log <step>` |
 | off | active state file | `builds/`, plan, `PROGRESS.md`; deletes state | `docs: build log <step>` |
 | curriculum | source (file, URL, spec, issue), `LEARNING.md`, `PROGRESS.md` | `curriculum/<track>.md`, `PROGRESS.md` | `docs: add <track> curriculum` |
-| teach | curriculum entry or plan item(s), linked project (read-only), web search for an optional video (general terms only) | `lessons/<NNN>-<topic>/`, deck, `PROGRESS.md` (Tracks and Concepts) | `docs: lesson <NNN> <topic>`, one per lesson, made by the background writer |
+| teach | curriculum entry or plan item(s), linked project (read-only), web search for an optional video (general terms only) | `lessons/<NNN>-<topic>/`, deck, `PROGRESS.md` (Tracks and Concepts) | `docs: lesson <NNN> <topic>`, one per lesson, and `docs: skip <concept>`, made by the background writer |
 | practice | lesson | `exercises/`, deck, `PROGRESS.md` | `feat: exercises for <topic>` |
 | quiz | curriculum or plan item(s), lesson, deck | `quiz.md`, deck, `PROGRESS.md` (Tracks and Concepts) | `docs: quiz <topic>`, one per item in plan mode / `docs: flashcard review` |
 | reflect | PR or commit range (read-only), lesson, quiz | `reflections/`, curriculum, deck, `PROGRESS.md` | `docs: reflect on <topic>` |

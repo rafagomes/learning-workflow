@@ -26,7 +26,7 @@ An **item** is one concept listed under a step's **Concepts** in `plans/<plan>.m
 
 **Same concept, several items.** Teaching a concept updates the row of **every** item with that concept name in the subject's plans, creating the rows that don't exist yet, and the **Tracks** topic with the same name if there is one, so `PROGRESS.md` never contradicts itself. A concept already covered elsewhere is not taught again when the plan reaches it; say so in one line and move on.
 
-**Skipping.** A skipped item gets a row with status `todo` and `Note` = `skipped <date>`. Resuming takes the first `todo` item that isn't skipped. When nothing else is left, list the skipped items and offer them. Naming a skipped item (rule 4) teaches it and clears the skip. Status wins over the skip mark: an item counts as skipped only while its status is `todo`; any skill that moves it past `todo` drops `skipped <date>` from its `Note`.
+**Skipping.** A skipped item gets a row with status `todo` and `Note` = `skipped <date>`, committed on its own: `docs(<subject>): skip <concept>`. Resuming takes the first `todo` item that isn't skipped. When nothing else is left, list the skipped items and offer them. Naming a skipped item (rule 4) teaches it and clears the skip. Status wins over the skip mark: an item counts as skipped only while its status is `todo`; any skill that moves it past `todo` drops `skipped <date>` from its `Note`.
 
 Teach **one item per lesson**. After each, offer the next item by name and ask: continue, skip it, or stop. Stopping is always fine: `/learn:teach <plan>` (or `/learn:plan <plan>` to see where you are) resumes at the first `todo` item. A `deep` item gets the full **Lesson structure** below. Any other item gets a **short lesson** (see below). Start the lesson's problem and "in the project" parts from the item's `why:` line and the step's **Builds** line, so it's about what the learner will build. **Ready to build** has one meaning everywhere: every item of the step is covered. Then say so: `/learn:build <step>`, from the project.
 
@@ -53,7 +53,7 @@ Until its last sha is in, nothing else touches the learning repo's files or git 
 The writer has a fresh context, so its brief carries everything:
 - the subject folder's absolute path; per lesson (in the first message about it): its number, slug, and parts in order (**Lesson structure** or **Short lesson**), each written as `## <part>` with the content sent;
 - the data policy as `LEARNING.md` records it, with each linked project's slug and sensitivity;
-- the **Finish** rules below and the **Plan items** rules they use (every item with the concept name, `<plan>/<step>`, skip notes), the card format in `flashcards/deck.md`, and the commit messages: the lesson's, and `docs(<subject>): skip <concept>` for a skip, committed on its own;
+- the **Finish** rules below and the **Plan items** rules they use (every item with the concept name, `<plan>/<step>`, skip notes), the card format in `flashcards/deck.md`, and the commit messages (the lesson's, and a skip's, see **Skipping**);
 - **it never invents content**: it writes only what it was sent, reworded at most, with no number it wasn't given; what's missing it leaves out;
 - it commits as `/learn:init` says, staging only that commit's paths (`lessons/<NNN>-<slug>/` without run artefacts such as caches or output files, `flashcards/deck.md`, `PROGRESS.md`); it leaves other changes unstaged and reports them; after each commit it reports the short sha in one line; on any error it reports it and stops.
 
