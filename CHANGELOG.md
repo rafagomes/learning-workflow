@@ -4,6 +4,10 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Changed
+
+- Exercise READMEs say what running the tests from the wrong folder looks like. Run from the subject or repo root, the in-folder command picks up every exercise's tests (pytest stops with `ERROR … during collection`), which looked like broken code. Start here now shows that symptom, observed, not invented, and the fix: check `pwd`, then `cd` into the exercise folder.
+
 ## [0.8.0] - 2026-11-05
 
 ### Added
