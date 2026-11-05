@@ -1,6 +1,6 @@
 # Skills reference
 
-All skills resolve the learning repo the same way ([ARCHITECTURE.md](ARCHITECTURE.md#the-shared-contract)) and end by updating `PROGRESS.md` and committing. Questions are asked one at a time; decisions use Claude Code's question prompt.
+All skills resolve the learning repo the same way ([ARCHITECTURE.md](ARCHITECTURE.md#the-shared-contract)) and end by updating `PROGRESS.md` and committing. Questions are asked one at a time, and decisions use Claude Code's question prompt. So do the questions that check what you learned (lesson predictions and checks, quiz questions, build mode's predictions and done-check): you pick one of 2–4 options (none marked recommended) or type your own answer or a "why…?" via Other, and any table or snippet the question needs is shown beside the options. Flashcards, hints and reflect's open questions stay plain text. Examples always show all their data where they're used: re-shown in full when a lesson builds on them, or a fresh small example (≤ 6 rows) for a new concept. Without the prompt (headless), questions are plain text.
 
 ## `/learn:init`
 
@@ -56,9 +56,9 @@ Turns learn mode on for one step in the current project.
 2. **While on:** normal pair programming under the project's own rules, plus:
    - code at the hands-on level (overridable per prompt);
    - a `▸ concept:` note (2–4 lines) only when a decision depends on a `new` concept not yet shown;
-   - a one-line prediction before tests, evals or benchmarks;
+   - a prediction (pick an outcome) before tests, evals or benchmarks;
    - during background waits, one offer of a 2–5 minute deep dive with 1–2 "is this clear?" questions.
-3. **Done-check** when you say the step is done or its PR opens: the step's questions, one at a time; misses become flashcards.
+3. **Done-check** when you say the step is done or its PR opens: the step's questions, one at a time, each needing the right reason as well as the right pick; misses (and right picks with a wrong reason) become flashcards.
 4. **Wrap-up:** sweeps the project for `TODO(learner)` markers, writes `builds/<date>-<step>.md`, sets the step `done`, records each concept in `PROGRESS.md` → Concepts (answered correctly → `built`; missed → a flashcard, and back to `learning` unless already `built`/`reflected`; shown but unchecked → `learning` if it was `todo`), commits in the learning repo, and deletes the state file.
 
 With no plan, it can create a one-step plan from your description.
@@ -143,7 +143,7 @@ Status `todo`/`learning` → `practised` when every exercise passes; other statu
 
 **Plan mode:** quizzes the taught concepts of a step or plan (3–5 questions each), or one concept (8–12). Ready-when comes from the concept's lesson check and its `why:` in the plan; critical questions are the ones the step's done-check depends on. Scores are recorded on each concept's row.
 
-**Topic mode:** 8–12 questions covering every "ready when" item, 2–3 marked critical, in mixed formats (explain, predict-the-output, spot-the-bug, choose-and-justify, calculate). Adaptive: two misses on a sub-idea bring an easier follow-up. **Ready** at ≥ 80% and all critical questions right; otherwise you get the exact lesson part or exercise to revisit. Misses become flashcards.
+**Topic mode:** 8–12 questions covering every "ready when" item, 2–3 marked critical, in mixed formats (explain, predict-the-output, spot-the-bug, choose-and-justify, calculate). Adaptive: two misses on a sub-idea bring an easier follow-up. Explain, choose-and-justify and critical questions also need the right reason (a "why?" pick or a typed explanation), so a lucky pick can't make a topic ready. **Ready** at ≥ 80% and all critical questions right; otherwise you get the exact lesson part or exercise to revisit. Misses become flashcards.
 
 **Review mode:** asks every due card, at most 20. Right moves a card up a box (max 5); wrong sends it to box 1.
 

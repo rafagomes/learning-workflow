@@ -4,6 +4,13 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-04
+
+### Changed
+
+- Questions are picked, not typed. Every question a study skill asks you to answer (lesson predictions and checks, quiz questions, build mode's predictions and done-check) is one question prompt with 2–4 short options: none marked recommended, the right one's position varied, distractors drawn from real misconceptions. Type your own answer or a "why…?" via Other. Any table or snippet the question needs is shown beside the options, and your pick and its verdict are recorded in the lesson, quiz or build log. Explain, choose-and-justify and critical quiz questions, and every done-check question, also need the right reason (a "why?" follow-up), so a lucky pick can't make a topic ready or a concept built. Flashcards, hints and reflect's open questions stay plain text. Without the prompt (headless), questions are plain text.
+- Examples carry their own data. A question never points back to "the table from earlier": building on an example re-shows the whole table with the new columns, a concept that doesn't need it gets a fresh example, each lesson opens with its own, and examples stay at 6 rows or fewer.
+
 ## [0.5.0] - 2026-11-04
 
 ### Changed

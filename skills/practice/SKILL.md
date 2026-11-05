@@ -13,7 +13,7 @@ Create 2–4 exercises, increasing in difficulty, under `lessons/<NNN>-<topic>/e
 
 | File | Contents |
 |---|---|
-| `README.md` | The task, the inputs and expected outputs, and what it trains. No solution. |
+| `README.md` | The task, the inputs and expected outputs, and what it trains, with every example's data shown in full (no "the table from lesson 001"). No solution. |
 | solution stub | Signatures and doc comments with a not-implemented body, named the toolchain's way (`solution.py`, `solution.ts`, `src/lib.rs`, …). The learner edits this file. |
 | tests | Tests in the toolchain's test framework that fail on the stub and pass on a correct solution: normal cases, an edge case, and one property or tolerance check where it fits. |
 | data generator | Seeded synthetic data generator, only if the exercise needs data; writes to `data/`. |
@@ -27,7 +27,7 @@ Create 2–4 exercises, increasing in difficulty, under `lessons/<NNN>-<topic>/e
 ## While they work
 
 - Run their tests when asked and explain failures in terms of the concept, not just the assertion.
-- **Hint ladder**, one rung per request: (1) a question that points at the concept, (2) the approach in words, (3) a partial snippet. Give the full solution only when the learner explicitly asks for it.
+- **Hint ladder**, one rung per request: (1) a question that points at the concept (plain text, never options that name the approach), (2) the approach in words, (3) a partial snippet. Give the full solution only when the learner explicitly asks for it.
 - Review a passing solution like a code review: correctness, clarity, complexity, what a production version would add.
 
 ## Finish

@@ -150,6 +150,28 @@ Then:
 
 `tools/guard.sh` enforces the mechanical part on the staged content: it blocks data files outside `<subject>/lessons/*/exercises/*/data/` (common config files such as `package.json` are allowed), files over 1 MB, and anything gitleaks flags when gitleaks is installed.
 
+## Questions and examples (every study skill)
+
+**Questions.** Every question that asks the learner to answer, predict or explain (a lesson's predictions, "your turn" questions and check, quiz questions, build mode's predictions, "is this clear?" questions and done-check) is one AskUserQuestion call, so answering is a pick, not typing:
+
+- One question per call; 2–4 short options. Never mark one "(Recommended)", and never let order or wording give the right one away: vary its position, keep options alike in length and tone.
+- Distractors are real misconceptions: a swapped formula, the tempting wrong idea, an off-by-one, the confusion just warned about.
+- When the question needs data (a table, snippet or output), put it in the options' `preview` as markdown (a linked project's code only within the data policy), the same on each option, or different per option when the options are alternative tables, outputs or code. The learner then sees the data beside the options.
+- Where options would give the answer away (explain why, derive), offer approaches or partial claims, and say in the question that typing an explanation via Other is welcome.
+- Where a pick is evidence of an ability (a quiz's explain, choose-and-justify and critical questions; every done-check question), it's right only with the right reason: after a right pick, follow up with "why?" (candidate reasons as options, the tempting wrong ones as distractors) or take a typed explanation. The follow-up belongs to the same question and is scored with it, once: right pick and wrong reason is **partly**.
+- The automatic Other is the learner's free answer: judge a typed reply as the answer, or, if it's a question ("why…?"), explain or rephrase and ask again.
+- Record, per question, the data shown, the options, the pick (or the typed text) and right / partly / wrong: it's the evidence a check, quiz score or done-check counts. Synthetic or lesson data is recorded in full; a linked project's code or output only as its `<slug>:path@sha` citation and a paraphrase, never pasted.
+- Without AskUserQuestion (headless, or denied), ask in plain text with the data above the question and the options listed.
+
+Three kinds stay in plain text: flashcards (they train recall, so the learner answers in their own words before seeing anything), hints (practice's pointing question must not hand over the approach as an option), and open questions that ask for the learner's account (reflect's talk-through questions).
+
+**Examples.** Every question and explanation shows all the data it relies on, right there:
+
+- Never refer back to an earlier table ("the parcels from our table") without showing it again.
+- To build on an example, re-show it whole with the new columns added; never a partial or derived table that drops a column the question depends on.
+- A concept that doesn't need the old example gets a fresh one. Each lesson opens with its own self-contained example; it may reuse a running example, shown again in full.
+- Keep examples to 6 rows or fewer, so they fit in a preview.
+
 ## Registry
 
 `${LEARNING_WORKFLOW_HOME:-~/.config/learning-workflow}/spaces.json` (the same root the learn-mode state uses). Each entry in `spaces` is a subject:
