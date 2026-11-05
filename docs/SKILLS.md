@@ -145,7 +145,7 @@ Status `todo`/`learning` → `practised` when every exercise passes; other statu
 
 **Topic mode:** 8–12 questions covering every "ready when" item, 2–3 marked critical, in mixed formats (explain, predict-the-output, spot-the-bug, choose-and-justify, calculate). Adaptive: two misses on a sub-idea bring an easier follow-up. Explain, choose-and-justify and critical questions also need the right reason (a "why?" pick or a typed explanation), so a lucky pick can't make a topic ready. **Ready** at ≥ 80% and all critical questions right; otherwise you get the exact lesson part or exercise to revisit. Misses become flashcards.
 
-**Review mode:** asks every due card, at most 20. Right moves a card up a box (max 5); wrong sends it to box 1.
+**Review mode:** asks every due card, at most 20. Correct moves a card up a box (max 5); Incorrect sends it to box 1.
 
 | Box | Review interval |
 |---|---|

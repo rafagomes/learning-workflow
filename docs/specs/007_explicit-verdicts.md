@@ -14,7 +14,9 @@ A shared study-question rule, so it goes in `skills/init/SKILL.md` → **Questio
 - **Partly correct** only for a multi-part answer with some parts right, or a right pick with the wrong reason (spec 006's "why?" rule). Flashcards are Correct or Incorrect (the Leitner box is binary).
 - **Then the explanation.** Incorrect: the right answer and why the tempting wrong one was tempting. Partly correct: which part was right and which wasn't.
 - **No hedge in place of a verdict** ("not quite", "close", "half right", "almost"). Kindness is fine after the verdict.
-- **The verdict is the record.** Never soften Incorrect into Partly correct. The verdict said is the one recorded (lesson, `quiz.md`, build log) and scored: Correct 1, Partly correct 0.5 in a quiz (and fails a critical question), Incorrect 0; in a done-check Partly correct and Incorrect are misses. Records use the same words in place of 0.6.0's right / partly / wrong.
+- **The verdict is the record.** Never soften Incorrect into Partly correct. The verdict said is the one recorded (lesson, `quiz.md`, build log) and scored: Correct 1, Partly correct 0.5 in a quiz (and fails a critical question), Incorrect 0; Partly correct and Incorrect are both misses (a flashcard; in a done-check, no `built`). Records use the same words in place of 0.6.0's right / partly / wrong.
+- **After a "why?" follow-up.** A right pick on a question that needs the right reason gets no verdict until the reason is in; then one verdict covers both.
+- **Predictions** are Correct when the result falls within the option picked, so numeric options are non-overlapping ranges.
 - **No verdict** for a typed Other that is a question (it's answered and re-asked), hints, or reflect's open questions.
 
 ## Affected files

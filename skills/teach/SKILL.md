@@ -73,7 +73,7 @@ Work through these parts; the writer records each in `lessons/<NNN>-<topic-slug>
 6. **In the project**: how a linked project uses (or should use) this, and what to look for when reading its code. Read-only. Skip when no project is linked.
 7. **Pitfalls**: the 3–5 mistakes practitioners actually make, each with a symptom to recognise it.
 8. **Vocabulary**: a term → one-line definition table.
-9. **Check**: 3 short questions, each asked as `/learn:init` → **Questions and examples** says; record the picks and which ones the learner got right.
+9. **Check**: 3 short questions, each asked as `/learn:init` → **Questions and examples** says; record each pick and its verdict.
 
 ### Short lesson (plan items not flagged `deep`)
 
@@ -107,4 +107,4 @@ Send the writer the check results, 3–6 flashcards and the log line; it does th
 - Add 3–6 flashcards for the core ideas to `flashcards/deck.md` (box 1, next = today).
 - Update `PROGRESS.md`: a `todo` topic → `learning` (any other status stays, since teaching isn't evidence of a gap). For a plan item, update (or add) the **Concepts** row of every item with that concept name (see **Plan items**): `Concept` = the concept name as written in the plan, `Step` = `<plan>/<step>`, status `todo` → `learning` (others stay), `Note` = `lesson <NNN>` (a recheck appends it: `lesson 002, 011`; a cleared skip drops `skipped`). Update the same-named Tracks topic the same way. Log the session with one line on what clicked and what didn't.
 - Commit `docs(<subject>): lesson <NNN> <topic>`, one commit per lesson, so stopping between items loses nothing.
-- Without waiting for the sha, suggest the next step (another skill starts only once the sha is in): `/learn:practice <topic>`, or `/learn:quiz <topic>` if the check went perfectly. When working through a plan, offer the next item first (continue, skip, stop).
+- Without waiting for the sha, suggest the next step (another skill starts only once the sha is in): `/learn:practice <topic>`, or `/learn:quiz <topic>` if every check answer was Correct. When working through a plan, offer the next item first (continue, skip, stop).
