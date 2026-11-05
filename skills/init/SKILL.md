@@ -86,7 +86,11 @@ A project may be linked to several subjects; each subject records it separately.
 
 For a v0.1.0 learning repo that is its own git repo (a `LEARNING.md` at its root, `path` outside the registry's `repo`). Resolve it from the argument, the current directory, or the registry's standalone entries (ask which if several). Create the learning repo first (steps 2.3 and 3) if there is none.
 
-Refuse and explain if `<slug>/` already exists in the learning repo or the standalone repo has uncommitted changes (`git -C <old> status --porcelain` not empty). Then, from the learning repo, keeping the standalone repo's history:
+Refuse and explain if the standalone repo has uncommitted changes (`git -C <old> status --porcelain` not empty), or if `<slug>/` already exists in the learning repo and is not the standalone repo itself.
+
+**The standalone repo is in the way** when it sits at `<learning repo>/<slug>` (or anywhere inside the chosen learning repo location). Move it aside **before** step 3 creates the learning repo, or `git add -A` there would commit it as an embedded repo: `mv <old> <old>.v0` (beside it, outside the learning repo), tell the learner, and use `<old>.v0` as `<old path>` below. The registry entry's `path` ends up where it was.
+
+Then, from the learning repo, keeping the standalone repo's history:
 
 ```bash
 git fetch <old path> <its branch>:refs/learn-migrate/<slug>
