@@ -4,8 +4,17 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-05
+
+### Added
+
+- The learning repo syncs like a notes vault. When it has a remote, every `/learn` skill pulls it (`git pull --rebase`) before reading anything and pushes after every commit, so each machine and session works on the latest lessons and progress. With uncommitted changes in the learning repo, the skill shows them and asks: commit them first (one commit per subject), or continue without pulling or pushing this session. A conflict is never resolved for you: the conflicting files are listed, the rebase is aborted, and it comes to you. A rejected push is retried once after a rebase, only on a clean tree; offline, the skill says so in one line and the next session pushes. Nothing ever force-pushes. Without a remote, nothing changes and nothing nags. The learn-mode hook never syncs, so prompts stay fast.
+- `/learn:init remote` gives an existing learning repo a private GitHub remote. On another machine, give `/learn:init` a clone of the learning repo as the location and it registers the repo and its subjects instead of refusing the folder.
+
 ### Changed
 
+- `/learn:init` now recommends a private GitHub remote when it creates the learning repo (still only after you confirm; local-only stays a valid choice). Nothing is pushed until GitHub confirms the repo is private, and `/learn:init remote` refuses to push to an existing `origin` that is public or not on GitHub. If the name is taken on your account, it asks whether to pick another name or rename the existing repo (renaming does not free the name), checking first whether the rename would break a GitHub Pages site, base paths, workflows or webhooks. The learning repo never takes a renamed repo's old name, so GitHub's redirect keeps working.
+- New learning repos' `CLAUDE.md` carries the sync rule, so sessions opened in the learning repo without a skill pull, push and never force-push too. An existing learning repo can copy the **Sync** line from `skills/init/templates/repo/CLAUDE.md`; the skills follow the rule either way.
 - Exercises say what to do first. Every exercise README from `/learn:practice` opens with **Start here**: open a terminal in the exercise folder, run the data generator if there is one, run the tests once with a short command from inside the folder (no more long one-liner from the subject root) and what that first run shows, which lines to replace (each placeholder is marked `TODO: replace with your code`; the test file is the answer checker), the order, and the finish line. It also shows how to read a failing test, from real output. Before you see it, the steps are followed on the stub from a fresh state, and the finish line and failure excerpt come from real runs. Toolchain `none` problem sets get the same Start here, with how to answer. The full structure is in `skills/practice/SKILL.md`.
 - The practice handover walks you through the first step in chat. A first run that doesn't match the README is fixed first; then you're asked whether the instructions are clear, a feedback question about the materials with no verdict (build mode's "is this clear?" checks keep theirs).
 - `/learn:init` records an in-folder test command for exercises next to the run and test commands (defaults in `skills/init/toolchains.md` → Exercises, which runs only one exercise's tests: Rust exercises are their own small crates, Go runs the exercise's package). An existing subject gets it recorded on its next `/learn:practice`.

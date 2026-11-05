@@ -70,7 +70,7 @@ Two kinds of repo, and one direction of reference:
 </picture>
 
 - **This repo** is the method only: skills, templates, docs. No lessons, no learner data.
-- **The learning repo** is yours, private by default, and holds every subject you study, one folder each (`~/Learning/python/`, `~/Learning/machine-learning/`, …), with a `README.md` index at the root. It keeps a log of everything in git. Upgrading from v0.1.0, where each subject was its own repo? `/learn:init migrate` folds each one in, history included.
+- **The learning repo** is yours, private by default, and holds every subject you study, one folder each (`~/Learning/python/`, `~/Learning/machine-learning/`, …), with a `README.md` index at the root. It keeps a log of everything in git and, with a private remote, syncs like a notes vault: skills pull before they read and push after they commit, so every machine sees the same lessons and progress. Upgrading from v0.1.0, where each subject was its own repo? `/learn:init migrate` folds each one in, history included.
 - **Projects** are read-only to the study skills and never point back at the learning repo. In build mode Claude codes in the project with you, under the project's own rules, but plans, logs, notes and learn-mode state stay out of it.
 - **Learn mode is per step, and off by default.** `/learn:build <step>` turns it on for that project and the done-check or `/learn:off` turns it off. Its state lives in `~/.config/learning-workflow/active/`, never in the project. See the [FAQ](docs/FAQ.md#how-do-i-turn-learn-mode-on-and-off).
 
@@ -104,6 +104,7 @@ Each topic moves through `todo → learning → practised → ready → built �
 |---|---|---|
 | `/learn:init <subject> [project paths…]` | Add a subject folder to the learning repo (creating the repo the first time); ask level, depth, language and toolchain; link projects | `<subject>/`, registry entry |
 | `/learn:init add <project path>` | Link another project to a subject | `LEARNING.md`, registry |
+| `/learn:init remote` | Give the learning repo a private GitHub remote, so it syncs across machines | remote |
 | `/learn:plan <spec \| plan \| URL \| goal>` | Link a project's dev plan to a learning plan: per step, the concepts needed (known/new), hands-on level, done-check | `plans/<plan>.md` |
 | `/learn:plan <plan>` | Show a plan as a checklist (taught, ready, todo per concept); continue, recheck a concept, or build a step | nothing (read-only) |
 | `/learn:build <step> [plan] [level]` | Learn mode on for a step: pair-program at your level, concept notes only when needed, predictions, idle-time deep dives, done-check and wrap-up | `builds/<date>-<step>.md`, flashcards |

@@ -26,6 +26,24 @@ if bash tests/guard_test.sh; then ok "guard behaviour"; else bad "guard behaviou
 if bash -n hooks/learn-mode.sh && bash tests/hook_test.sh; then ok "learn-mode hook"; else bad "learn-mode hook"; fi
 if python3 -c 'import json; json.load(open("hooks/hooks.json"))'; then ok "valid JSON: hooks/hooks.json"; else bad "invalid JSON: hooks/hooks.json"; fi
 
+# Sync (spec 008): the rule lives once in init; every skill that commits to the learning repo points at it;
+# the hook stays fast and offline; new learning repos carry the rule for non-skill sessions.
+if grep -qx '## Sync (every /learn skill)' skills/init/SKILL.md; then ok "init defines the Sync section"; else bad "skills/init/SKILL.md lacks '## Sync (every /learn skill)'"; fi
+for skill in skills/*/SKILL.md; do
+  [ "$skill" = skills/init/SKILL.md ] && continue
+  grep -qi 'commit' "$skill" || continue
+  if grep -q '\*\*Sync\*\*' "$skill"; then ok "$(basename "$(dirname "$skill")") references Sync"; else bad "$skill commits but doesn't reference /learn:init → **Sync**"; fi
+done
+if grep -nE 'git[^#]*\b(pull|push|fetch|remote)\b|curl|wget' hooks/learn-mode.sh; then bad "hooks/learn-mode.sh must not sync or touch the network"; else ok "hook does no git sync or network"; fi
+if grep -q 'pull --rebase' skills/init/templates/repo/CLAUDE.md && grep -qi 'never force-push' skills/init/templates/repo/CLAUDE.md; then ok "repo template carries the sync rule"; else bad "skills/init/templates/repo/CLAUDE.md lacks the sync rule"; fi
+if grep -n 'gh repo create' skills/init/SKILL.md | grep -q -- '--push'; then bad "gh repo create must not --push before visibility is checked"; else ok "remote is created without --push"; fi
+if grep -q -- '--json visibility' skills/init/SKILL.md && grep -q 'never push' skills/init/SKILL.md; then ok "init checks remote visibility before pushing"; else bad "init must check PRIVATE visibility before pushing"; fi
+sync=$(awk '/^## Sync/{f=1;next} /^## /{f=0} f' skills/init/SKILL.md)
+if python3 -c 'import sys; s=sys.stdin.read(); i=s.find("--diff-filter=U"); j=s.find("rebase --abort"); sys.exit(0 if -1<i<j else 1)' <<<"$sync"; then ok "Sync captures conflicting files before aborting"; else bad "Sync must list conflicting files before git rebase --abort"; fi
+if grep -q 'status --porcelain` first' <<<"$sync"; then ok "Sync re-checks the tree before a retry pull"; else bad "Sync must re-check status --porcelain before the retry pull"; fi
+migrate=$(awk '/^## 6\. Migrate/{f=1;next} /^## /{f=0} f' skills/init/SKILL.md)
+if [ "$(grep -o '\*\*Sync\*\*' <<<"$migrate" | wc -l)" -eq 1 ]; then ok "migrate pushes once"; else bad "migrate must push exactly once, after its check"; fi
+if grep -rn 'push --force\|push -f\b\|--force-with-lease' skills; then bad "a skill force-pushes"; else ok "no skill force-pushes"; fi
 # Exercises must tell the learner what to do first (spec 009). Patterns are anchored to the headings they belong to.
 missing=""
 check() { grep -qE -- "$2" "$1" || missing="$missing $1:/$2/"; }

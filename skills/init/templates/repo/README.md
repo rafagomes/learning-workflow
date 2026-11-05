@@ -25,4 +25,4 @@ tools/               pre-commit guard, shared by every subject
   scratch/           gitignored: anything real or throwaway
 ```
 
-Add a subject with `/learn:init <subject>`. After cloning on another machine, run `git config core.hooksPath tools/hooks`.
+Add a subject with `/learn:init <subject>`. The `/learn` skills pull before they read and push after they commit; `/learn:init remote` adds a private remote if there is none. On another machine, clone this repo and run `/learn:init` and give its path as the location (it registers the subjects and sets `git config core.hooksPath tools/hooks`).

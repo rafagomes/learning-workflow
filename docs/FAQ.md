@@ -66,6 +66,10 @@ Yes. The curriculum's self-assessment marks known topics, and they get a quiz in
 
 Leitner is simple enough to live in a Markdown file you can read and edit, and it's good enough for a personal deck. A smarter scheduler is a welcome contribution if it stays plain-text.
 
+### Can I use it on several machines?
+
+Yes. Give the learning repo a private GitHub remote (`/learn:init` offers one when it creates the repo; `/learn:init remote` adds one later). Every `/learn` skill then pulls before it reads and pushes after it commits, so each machine and session sees the latest lessons and progress. On a new machine, clone the repo and run `/learn:init` with the clone as the location. If you have uncommitted changes, the skill asks before pulling; a conflict is brought to you, never force-pushed over; offline, it works on the local copy and the next session pushes. The learn-mode hook never syncs, so prompts stay fast.
+
 ### Can I make my learning repo public?
 
 Yes, if it links only `personal` projects and you've checked its history. See [DATA-POLICY.md](DATA-POLICY.md#publishing-a-learning-repo).

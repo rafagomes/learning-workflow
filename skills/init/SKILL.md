@@ -1,9 +1,9 @@
 ---
 name: init
-description: "Create the learning repo and add a subject to it as its own folder, link the projects a subject learns from, or migrate an older one-repo-per-subject learning repo into it. Use when the user says 'set up learning for <projects or subject>', 'start a learning repo', 'add <subject> to my learning', 'I want to learn while building X', 'add this project to my learning', 'migrate my learning repo', or runs another /learn skill and no learning repo is registered yet. One learning repo holds every subject; it never lives inside a project."
-argument-hint: "[subject] [project paths...] | add <project path> | migrate [path]"
+description: "Create the learning repo and add a subject to it as its own folder, link the projects a subject learns from, migrate an older one-repo-per-subject learning repo into it, or give the learning repo a private remote so it syncs across machines. Use when the user says 'set up learning for <projects or subject>', 'start a learning repo', 'add <subject> to my learning', 'I want to learn while building X', 'add this project to my learning', 'migrate my learning repo', 'sync my learning repo across machines', or runs another /learn skill and no learning repo is registered yet. One learning repo holds every subject; it never lives inside a project."
+argument-hint: "[subject] [project paths...] | add <project path> | migrate [path] | remote"
 ---
-Create the learning repo, add a subject, link a project, or migrate. Argument: $ARGUMENTS
+Create the learning repo, add a subject, link a project, migrate, or add a remote. Argument: $ARGUMENTS
 
 The **learning repo** is one private git repo per learner. It holds every subject the learner studies (e.g. `python`, `rust`, `machine-learning`, `statistics`, `music-theory`), each in its own **subject folder** with its curriculum, lessons, exercises, quizzes, flashcards and reflections. The **projects** hold the real code and data. Each subject links any number of projects, from work repos and personal repos alike. Links are by reference only, so every project stays clean and the learning stays private.
 
@@ -21,8 +21,11 @@ The **learning repo** is one private git repo per learner. It holds every subjec
 
 ## 1. Mode
 
+When the registry already has a learning repo on disk, pull it first, as **Sync** below says, before reading anything from it (every mode). When it has none, ask the location first (step 2.3): if that is already a learning repo, such as a clone from another machine, register it (see **A clone from another machine** in step 3) and continue only with what the argument asked for (a subject, `add`, `remote`); with nothing more, report the registered subjects and stop.
+
 - `add <project path>` or "add this project": **link a project** to an existing subject (resolve it as below; ask which one if several). Skip to step 5.
 - `migrate [path]` or "migrate my learning repo": **fold a standalone repo** from v0.1.0 (one git repo per subject) into the learning repo. Skip to step 6.
+- `remote` or "sync my learning repo": **add a remote** to the registered learning repo (see **Remote** in step 3; none registered: offer `/learn:init <subject>`). With `origin` already set, check it before any push: it must be a GitHub repo (`git -C <learning repo> remote get-url origin` names `github.com/<owner>/<name>`) and `gh repo view <owner>/<name> --json visibility` must print `PRIVATE`. If it isn't on GitHub, can't be checked, or isn't private, stop and tell the learner why; never push. Otherwise make sure the current branch tracks it (`git -C <learning repo> push -u origin <branch>`) and report its URL. Then stop.
 - Otherwise: **add a subject**. Check the registry first:
   - The subject is already registered inside the learning repo: offer to link the new projects to it instead.
   - It is registered as a **standalone** repo (see Registry: its folder is its own git root): offer `migrate` instead of creating a second one.
@@ -41,6 +44,8 @@ Use AskUserQuestion for anything the argument doesn't give:
 ## 3. Create the learning repo (first time only)
 
 Skip when the registry already has a `repo` that exists on disk.
+
+**A clone from another machine.** If the location is already a learning repo (its git top level, with `tools/guard.sh` and a subjects table in `README.md`), don't create anything: first run the `git config core.hooksPath tools/hooks` line below (so the guard covers any commit Sync makes), then pull it (see **Sync**), record `"repo"`, register each subject folder listed in its `README.md` (projects are per machine: offer `/learn:init add <path>` for any it should link here), and continue as step 1 says.
 
 **Check the location first, and move nothing until the whole check passes.** It must not exist, be an empty directory, or hold only v0.1.0 learning repos. v0.1.0 put them at `~/Learning/<slug>`, inside the new default, and `git add -A` would commit them as broken embedded repos. A v0.1.0 learning repo is a folder that is its own git root **and** has a `LEARNING.md` at that root (usually also a registered standalone entry). Anything else in the location (files, plain folders, other git repos such as a course clone or a linked project) means: stop and ask for another location, before moving anything. When the check passes, move each v0.1.0 learning repo aside (see **Moving a standalone repo aside** below) and offer `migrate` for each after the learning repo exists.
 
@@ -77,7 +82,15 @@ git add -A && git commit -m "chore: initialize learning repo"
 
 Record `"repo": "<absolute path>"` at the top level of the registry. `core.hooksPath` is local git config, not committed: after cloning the learning repo on another machine, run that `git config` line again (the repo's `CLAUDE.md` says so).
 
-Do not create a remote. If the user wants one, offer a **private** GitHub repo and create it only after they confirm (`gh repo create <name> --private --source . --push`).
+### Remote
+
+Offer (AskUserQuestion) a **private** GitHub remote, recommended so the learning repo syncs across machines and sessions (see **Sync**), or keeping it local-only, which stays a valid choice. Create nothing until the learner confirms.
+
+1. `gh auth status` must pass; otherwise say how to log in (`gh auth login`), keep the repo local-only, and mention `/learn:init remote` for later.
+2. Owner: the authenticated account (`gh api user --jq .login`). Name: the learning repo's folder name, lowercased, unless the learner gives one.
+3. **Is the name taken?** If `gh repo view <owner>/<name>` succeeds, it is. Ask (AskUserQuestion): **choose another name** for the learning repo (offer two, e.g. `learning-vault` or `<name>-notes`, each checked the same way; Other for their own) or **rename the existing repo**. Say plainly in the question that renaming does not free the name for the learning repo (reusing a renamed repo's old name breaks GitHub's redirect), so the learning repo takes a new name either way; renaming is only for a learner who wants the existing repo renamed anyway, e.g. to keep names coherent.
+4. **Renaming the existing repo.** First check what the rename could break, and show what you find: a GitHub Pages site (`gh api repos/<owner>/<name>/pages`; a project site's URL moves with the name and gets no redirect), a hard-coded base path or the repo name in its build config, workflows that name the repo (`.github/workflows/`), webhooks (`gh api repos/<owner>/<name>/hooks`), a `homepage` pointing at it. If it would break anything live, stop and go back to choosing another name. Otherwise rename only after the learner confirms (`gh repo rename <new name> -R <owner>/<name>`). Never create a repo with the old name afterwards: that would break GitHub's redirect from the old name. The learning repo then takes another name: ask for it as in 3.
+5. Create it **without pushing**: `gh repo create <owner>/<name> --private`. Check `gh repo view <owner>/<name> --json visibility` prints `PRIVATE`; if not, say so and stop, with nothing pushed. Only then add the remote and push: `git -C <learning repo> remote add origin <its URL from gh repo view --json sshUrl or url>` and `git -C <learning repo> push -u origin <branch>`.
 
 ## 4. Add the subject folder
 
@@ -89,7 +102,7 @@ Never overwrite: if `<slug>/` already exists, stop and ask. Then check the slug 
 | `PROGRESS.md` | `<slug>/PROGRESS.md` |
 | `deck.md` | `<slug>/flashcards/deck.md` |
 
-Create the empty directories `curriculum/`, `plans/`, `builds/`, `lessons/` and `reflections/` (each with a `.gitkeep`) and `scratch/` inside `<slug>/`. Add a row to the root `README.md` subjects table: `| <Subject> | [<slug>/](<slug>/LEARNING.md) | <date> |`, keeping rows sorted by slug. Register the subject (see Registry) and commit only the subject and the index (`git add <slug> README.md`): `chore(<slug>): add subject`.
+Create the empty directories `curriculum/`, `plans/`, `builds/`, `lessons/` and `reflections/` (each with a `.gitkeep`) and `scratch/` inside `<slug>/`. Add a row to the root `README.md` subjects table: `| <Subject> | [<slug>/](<slug>/LEARNING.md) | <date> |`, keeping rows sorted by slug. Register the subject (see Registry) and commit only the subject and the index (`git add <slug> README.md`): `chore(<slug>): add subject`, then push as **Sync** says.
 
 ## 5. Link a project
 
@@ -97,7 +110,7 @@ For each project:
 
 - Record its `slug` (repo directory name unless the user names it), absolute path, `git remote get-url origin` (if any), default branch, and **sensitivity**: `work` (employer or client code, the default for repos under an org remote) or `personal`.
 - Store path, remote and branch **only in the registry**, in the subject's entry. In the subject's `LEARNING.md` add just a row with the slug, sensitivity and a one-line neutral description, so no absolute paths or work remotes are ever committed.
-- Commit: `chore(<subject>): link <project-slug>`.
+- Commit: `chore(<subject>): link <project-slug>`, then push as **Sync** says.
 
 A project may be linked to several subjects; each subject records it separately. Sensitivity changes how much may be quoted (see the policy). When in doubt, use `work`.
 
@@ -125,6 +138,7 @@ git commit -m "chore(<slug>): migrate subject from its standalone repo"
 git update-ref -d refs/learn-migrate/<slug>
 ```
 
+
 If any of these fails (for example the guard blocks the commit because gitleaks flags an old file, or a file over 1 MB was committed with `--no-verify` in v0.1.0), undo it and report what blocked it: `git merge --abort; git update-ref -d refs/learn-migrate/<slug>`. The learning repo is then as it was, and the standalone repo was never touched.
 
 **Customisations.** Learner additions are found by comparing with the v0.1.0 templates in this skill's `templates/v0.1.0/` (`gitignore`, `CLAUDE.md`, and `CLAUDE.earlier.md` for repos created by an earlier v0.1.0 build: a line in either template is not an addition), read from the old repo: `git -C <old> show HEAD:.gitignore` and `HEAD:CLAUDE.md`. Lines added to `.gitignore` go into a new `<slug>/.gitignore` holding only those lines (a nested `.gitignore` applies to its folder, so their meaning is unchanged). Rules added to `CLAUDE.md` are shown to the learner and, if they want them, go into a new `<slug>/CLAUDE.md` holding only those rules (Claude Code loads it with the root one). Write these after the `git rm` and stage them with the `git add` line, so the migration commit holds them and the tree ends clean.
@@ -134,7 +148,7 @@ Then:
 - Copy the standalone repo's `scratch/` (gitignored, so not in its history) to `<slug>/scratch/`. Create the empty directories from step 4 that are missing.
 - Fix `<slug>/LEARNING.md` wording that calls it a standalone repo (the title and intro line), add the `README.md` row, and commit: `docs(<slug>): adapt subject to the learning repo`.
 - Update the registry entry's `path` from `<old>` to `<learning repo>/<slug>` (keep its projects), and repoint learn mode from `<old>` (see **Repointing learn mode**).
-- Check: `git log --oneline` lists the standalone repo's commits under the merge, `<slug>/tools/` does not exist, and `git status --porcelain` prints nothing. (Per-file history before the move sits under the old paths: `git log <merge commit>^2 -- LEARNING.md`.)
+- Check: `git log --oneline` lists the standalone repo's commits under the merge, `<slug>/tools/` does not exist, and `git status --porcelain` prints nothing. (Per-file history before the move sits under the old paths: `git log <merge commit>^2 -- LEARNING.md`.) Only after this check passes, push once, as **Sync** says; never earlier, so an undo never rewrites pushed history.
 - Leave the standalone repo untouched. Offer to delete it (and its remote, if any) only after repeating what would be lost with it (the branches, stashes and unpushed commits listed above, and its `scratch/` if not copied), and delete only after the learner confirms.
 
 ## Data policy (applies to every linked project)
@@ -149,6 +163,28 @@ Then:
 - Never loosen this policy unless the user writes the exception themselves; record it in the subject's `LEARNING.md`.
 
 `tools/guard.sh` enforces the mechanical part on the staged content: it blocks data files outside `<subject>/lessons/*/exercises/*/data/` (common config files such as `package.json` are allowed), files over 1 MB, and anything gitleaks flags when gitleaks is installed.
+
+## Sync (every /learn skill)
+
+The learning repo is edited from several machines and sessions, so it syncs like a notes vault: pull before reading, push after every commit. `<repo>` is the git repo that holds the subject folder (for a standalone v0.1.0 repo, that repo). Every skill that reads or writes it does this; `hooks/learn-mode.sh` never does (it must stay fast and silent).
+
+**Pull at session start**, before reading anything from the repo:
+
+1. **No upstream** (`git -C <repo> rev-parse --abbrev-ref @{u}` fails): skip syncing silently, for pull and push alike. A local-only repo is a valid choice; never nag about a missing remote (`/learn:init remote` adds one).
+2. **A rebase or merge in progress** (`git -C <repo> status` says so): stop and bring it to the learner.
+3. **Uncommitted changes** (`git -C <repo> status --porcelain` prints anything): don't pull over them. Show the list first, then ask (AskUserQuestion):
+   - **commit them**: one commit per subject folder with changes (`git -C <repo> add -A -- <subject>`, `chore(<subject>): save local changes`), and root files in a separate `chore: save local changes` (staging only those files); the guard runs on each. Then pull;
+   - **leave them**: continue without pulling, and without pushing, this session. Commits stay local; say so once, in one line, at the end of the session (not per commit).
+4. `git -C <repo> pull --rebase`:
+   - fails and a rebase is in progress: a **conflict**. First capture the conflicting files (`git -C <repo> diff --name-only --diff-filter=U`), then `git -C <repo> rebase --abort`, stop, and bring the conflict to the learner with that list; never resolve it yourself;
+   - fails otherwise (offline, network, auth): say so in one line and continue on the local copy.
+5. If the pull ran and the branch is still ahead of its upstream (`git -C <repo> status -sb` shows `ahead`, e.g. commits from an offline session), push as below.
+
+**Push after every commit** the skill makes to the repo, when there is an upstream and the pull wasn't skipped at step 3: `git -C <repo> push`.
+
+- **Rejected** because the remote moved on: re-check `git -C <repo> status --porcelain` first. If it prints anything (the learner's edits, a lab's output left unstaged), don't pull (no `--autostash`): say in one line that the commit stays local until those changes are dealt with. Otherwise `git -C <repo> pull --rebase` and push once more; a conflict is captured, aborted and brought to the learner, as in step 4.
+- **Network failure**: say so in one line; the commit stays local and the next session's pull and push carry it.
+- **Never force-push**, and never rewrite pushed history.
 
 ## Questions and examples (every study skill)
 
@@ -216,4 +252,4 @@ The **current project** is the linked project whose path contains the current di
 
 ## Finish
 
-Report the learning repo path, the subject folder, the linked projects with their sensitivity, and the next step: `/learn:curriculum <plan, spec or topic>` to build the subject's first track. After a migration, also report the commits carried over and whether the standalone repo was kept.
+Report the learning repo path, the subject folder, the linked projects with their sensitivity, and the next step: `/learn:curriculum <plan, spec or topic>` to build the subject's first track. After a migration, also report the commits carried over and whether the standalone repo was kept. If the learning repo has no remote, mention once that `/learn:init remote` adds a private one to sync across machines.

@@ -17,7 +17,7 @@ Learning material is personal, exploratory and full of half-right attempts. Proj
 | Repo | Holds | Visibility |
 |---|---|---|
 | `learning-workflow` (plugin) | The method: skills, templates, docs | Public |
-| Learning repo, one folder per subject | Your curriculum, lessons, exercises, deck, reflections | Private by default |
+| Learning repo, one folder per subject | Your curriculum, lessons, exercises, deck, reflections | Private; a private GitHub remote is recommended so it syncs across machines |
 | Projects | Real code and data, unchanged | As they were |
 
 The learning repo reads projects; nothing reads the learning repo. Anything you learn that should reach a project is rewritten there through that project's own workflow (spec, branch, PR, review).
@@ -89,5 +89,5 @@ Topics (study loop) and concepts (build mode) share one status set. Plan **steps
 
 - Labs are self-contained programs in the repo's toolchain, with pinned dependencies and seeded data.
 - Project citations carry a commit sha, so a lesson still points at the code it described after the project moves on.
-- Every skill ends with a conventional commit, so the history is your learning log.
+- Every skill ends with a conventional commit, so the history is your learning log. With a remote, skills pull before they read and push after they commit, so every machine and session works on the same copy.
 - `PROGRESS.md` is the one-page answer to "where am I?".
