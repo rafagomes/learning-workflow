@@ -18,7 +18,7 @@ Match the argument as `/learn:teach` does (step ID, plan name, `<plan>/<step>/<c
 Run it like topic mode below, with these differences:
 
 - **Ready when** for an item comes from its lesson's **Check** (if it has a lesson) and its `why:` line in the plan. **Critical** questions are the ones the step's **Done-check** depends on.
-- Plan 3–5 questions per item (8–12 for a single item), still asked one at a time. Each item's questions are numbered within it, and its first question's text starts `Item 2/4 · <concept> · 4 questions · Question 1/4 · …`.
+- Plan 3–5 questions per item (8–12 for a single item), still asked one at a time. Each item's questions are numbered within it, and its first question's text carries, after any verdict, `Item 2/4 · <concept> · 4 questions · Question 1/4 · …`.
 - **Save after each item**, so stopping loses nothing: write `quiz.md` in the item's lesson folder (an item with no lesson, e.g. a `claimed` one, gets a new `lessons/<NNN>-<concept-slug>/` to hold it), update the Concepts rows of every item with that concept name and its same-named Tracks topic with the status rules below, append the dated score to `Note` (`quiz 4.5/5 2026-11-04`) and drop a `skipped <date>` mark if the status is no longer `todo`, add flashcards for misses, and commit `docs(<subject>): quiz <concept>`. Then offer the next item: continue or stop. A later quiz of the same plan or step skips items already quizzed that day.
 - After the quiz, say whether each step involved is **ready to build**, with the definition in `/learn:teach` → **Plan items** (every item covered), and separately which items are now `ready`. A failed item that drops to `todo` (a disproven `known`) is taught again by the next `/learn:teach <plan>`.
 
