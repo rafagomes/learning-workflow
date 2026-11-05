@@ -4,6 +4,10 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Fixed
+
+- Exercise READMEs say what running the tests from the wrong folder looks like. Run from outside the exercise folder, the in-folder command fails in a way that looked like broken code (for Python, pytest stops with collection errors naming other exercises' files). Start here now gives the toolchain's symptom in words and the fix: check the current folder, then `cd` into the exercise. When a learner pastes such output, the handover checks the folder first instead of changing the README.
+
 ## [0.8.0] - 2026-11-05
 
 ### Added

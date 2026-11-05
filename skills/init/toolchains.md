@@ -21,16 +21,16 @@
 
 `/learn:practice` exercises are run by the learner from inside the exercise folder, so `/learn:init` also records an **in-folder test** command. The reference-solution and wrong-solution checks run in `scratch/`, in a copy that the toolchain can still resolve.
 
-| Subject | Exercise layout | In-folder test | Scratch copy for the checks |
-|---|---|---|---|
-| Python, data, ML | `solution.py`, `test_solution.py`, `requirements.txt` | `uv run --with pytest --with-requirements requirements.txt pytest -q` (a README may drop `--with-requirements requirements.txt` when that file is empty) | The exercise folder |
-| JavaScript / TypeScript | `solution.ts`, `solution.test.ts`, `package.json` if it has deps | `bun test` | The exercise folder |
-| Rust | Its own crate: `Cargo.toml`, `src/lib.rs`, `tests/` (a separate package from the lesson crate, not a workspace member) | `cargo test` (runs only this exercise's crate) | The exercise folder |
-| Go | A package folder inside the lesson module (`go.mod` at the lesson root) | `go test .` | The whole lesson folder (it holds `go.mod`) |
-| Kotlin, Java, C, C++ | As in the Test column | The Test command (it already runs from the exercise folder) | The exercise folder |
-| SQL | `solution.sql`, `expected.txt` | `duckdb < solution.sql \| diff - expected.txt` | The exercise folder |
-| Shell | `solution.sh`, `test.bats` | `bats .` | The exercise folder |
-| No code | `README.md` problem set | — | — |
+| Subject | Exercise layout | In-folder test | Scratch copy for the checks | Run from the wrong folder |
+|---|---|---|---|---|
+| Python, data, ML | `solution.py`, `test_solution.py`, `requirements.txt` | `uv run --with pytest --with-requirements requirements.txt pytest -q` (a README may drop `--with-requirements requirements.txt` when that file is empty) | The exercise folder | uv can't find `requirements.txt`, or pytest stops with collection errors naming other exercises' files |
+| JavaScript / TypeScript | `solution.ts`, `solution.test.ts`, `package.json` if it has deps | `bun test` | The exercise folder | runs other exercises' tests too, or finds no test files |
+| Rust | Its own crate: `Cargo.toml`, `src/lib.rs`, `tests/` (a separate package from the lesson crate, not a workspace member) | `cargo test` (runs only this exercise's crate) | The exercise folder | cargo can't find `Cargo.toml`, or runs another crate's tests |
+| Go | A package folder inside the lesson module (`go.mod` at the lesson root) | `go test .` | The whole lesson folder (it holds `go.mod`) | `no Go files` or a missing-module error |
+| Kotlin, Java, C, C++ | As in the Test column | The Test command (it already runs from the exercise folder) | The exercise folder | the source or test file isn't found |
+| SQL | `solution.sql`, `expected.txt` | `duckdb < solution.sql \| diff - expected.txt` | The exercise folder | the shell can't find `solution.sql` (and `diff` can't find `expected.txt`) |
+| Shell | `solution.sh`, `test.bats` | `bats .` | The exercise folder | bats finds no tests (`bats .` doesn't search subfolders) |
+| No code | `README.md` problem set | — | — | — |
 
 A custom toolchain records its own in-folder test command and scratch copy the same way: the command must run only this exercise's tests, from its folder.
 
