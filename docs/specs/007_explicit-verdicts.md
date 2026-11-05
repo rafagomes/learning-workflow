@@ -25,15 +25,15 @@ A shared study-question rule, so it goes in `skills/init/SKILL.md` → **Questio
 
 ### Position (shared contract) and roadmap (teach)
 
-- **Counted questions** (a lesson's Check, a quiz, a done-check) start with their count in one line, and each question's text starts with `Question 2/3 · `. A "why?" follow-up keeps its number; an adaptive follow-up raises the total, said in one line. Other questions start with what they belong to (`Mechanism · question · `, `Prediction · `). In init next to the verdict rule, restated in build's state-file line.
+- **Counted questions** (a lesson's Check, a quiz, a done-check) give their count in the first question's text (`Check · 3 questions · Question 1/3 · `), and each later question's text starts with `Question 2/3 · `, so no count line is hidden by the dialog. A "why?" follow-up keeps its number; an adaptive follow-up shows the new total in its prefix. Other questions start with what they belong to (`Mechanism · question · `, `Prediction · `). In init next to the verdict rule, restated in build's state-file line.
 - **Lesson roadmap** (teach): one line at the start listing the parts that will happen, with the check's count, e.g. `Problem → Intuition → Mechanism → Watch → Lab → In the project → Pitfalls → Vocabulary → Check (3 questions)`; a short lesson lists its own parts. Parts left out: Watch when no video would help or videos are off, In the project with no linked project, a short lesson's Lab unless added. Each part opens with `[3/9 · Mechanism]` and ends with one line on what's next; a changed plan restates the roadmap. Conversation only: `lesson.md` keeps its headings, and the writer's brief says to leave the markers and question prefixes out. A dropped Watch's "No video" line goes in the restated roadmap.
-- **Quiz** says its question count up front; plan mode adds `Item 2/4 · <concept> · 4 questions`; flashcard review says how many cards it will ask (due, at most 20, and how many wait) and numbers them against that, `Card 3/12`. **Build's done-check** says its count first.
+- **Quiz** gives its count in the first question (`Quiz · 10 questions · Question 1/10`); plan mode's first question per item starts `Item 2/4 · <concept> · 4 questions · `; flashcard review says how many cards it will ask (due, at most 20, and how many wait) and numbers them against that, `Card 3/12`. **Build's done-check** says its count first.
 
 ### Content before the dialog (shared contract)
 
 - A turn that teaches (an explanation, a table, video links, lab output) ends **without** a dialog, on one line such as "Say *next* when you've read it, or ask anything."
 - The question comes in the **next** turn, which only asks it: everything it needs is in the question text and option previews.
-- A verdict is content too: it leads the next question's text (with its short why), or ends the turn.
+- A verdict is content too: it comes first in the next question's text, before the position (`**Incorrect.** <why> · Question 3/10 · `), or opens a teaching turn. Part markers, counts and the answer to a typed "why…?" follow the same split: counts and the Check's marker go in the question text. The plain-text fallback has no dialog, so the rule doesn't apply there.
 - Never teaching content and a dialog in the same turn. In init, restated in build's state-file line; teach's writer brief drops a verdict that leads a question.
 
 ### Question budget (teach)
@@ -58,7 +58,7 @@ A shared study-question rule, so it goes in `skills/init/SKILL.md` → **Questio
 5. After `/compact` in build mode, done-check replies still open with the verdict (the state-file line carries the rule).
 6. A typed "why is B wrong?" via Other gets an explanation and the question again, with no verdict.
 7. A lesson opens with a one-line roadmap that leaves out skipped parts (no Watch when no video, no In the project with no linked project); each part opens with `[n/N · <part>]`; the Check announces its count and numbers each question `Question n/N · `.
-8. `/learn:quiz <topic>` says its question count first and numbers each question; a quiz with an adaptive follow-up says the new total. Build's done-check says its count and numbers its questions, also after `/compact`.
+8. `/learn:quiz <topic>`'s first question text carries the count and every question is numbered; an adaptive follow-up's prefix shows the new total. Build's done-check does the same, also after `/compact`.
 9. In a lesson, no turn has both teaching text and an AskUserQuestion call: each teaching turn ends with a "say next" line, and the following turn only asks, with the data in the question and previews. The same holds in build mode for concept notes and deep dives, also after `/compact`.
 10. A lesson asks at most one question per part (the Check excepted), never two on the same idea, and a `deep` lesson doesn't ask more than a short one per part.
 11. `bash tests/run.sh` and `claude plugin validate .` pass.
