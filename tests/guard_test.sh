@@ -53,7 +53,9 @@ expect allow "exercise data in a subject added in the same commit" git add rust
 mkdir -p old-repo && git -C old-repo init -qb main && git -C old-repo -c user.email=t@example.com -c user.name=t commit -q --allow-empty -m x
 expect block "embedded git repo" git add old-repo
 rm -rf old-repo
-msg=$(echo "a,b" > python/leak.csv && git add python/leak.csv && git commit -qm leak 2>&1 || true); git reset -q --hard HEAD; rm -f python/leak.csv
+echo "a,b" > python/leak.csv; git add python/leak.csv
+if msg=$(git commit -qm leak 2>&1); then echo "  FAIL leak.csv was committed" >&2; exit 1; fi
+git reset -q --hard HEAD; rm -f python/leak.csv
 if [[ "$msg" == *"<subject>/scratch/"* ]]; then echo "  ok   message points to <subject>/scratch/"; else echo "  FAIL message: $msg" >&2; exit 1; fi
 # "?sub" read as a glob would match the gitlink "0sub", which sorts first: the gitlink check must read the path literally.
 mkdir -p 0sub && git -C 0sub init -qb main && git -C 0sub -c user.email=t@example.com -c user.name=t commit -q --allow-empty -m x
