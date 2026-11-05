@@ -4,6 +4,12 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Changed
+
+- Exercises say what to do first. Every exercise README from `/learn:practice` opens with **Start here**: open a terminal in the exercise folder, run the data generator if there is one, run the tests once with a short command from inside the folder (no more long one-liner from the subject root) and what that first run shows, which lines to replace (each placeholder is marked `TODO: replace with your code`; the test file is the answer checker), the order, and the finish line. It also shows how to read a failing test, from real output. Before you see it, the steps are followed on the stub from a fresh state, and the finish line and failure excerpt come from real runs. Toolchain `none` problem sets get the same Start here, with how to answer. The full structure is in `skills/practice/SKILL.md`.
+- The practice handover walks you through the first step in chat. A first run that doesn't match the README is fixed first; then you're asked whether the instructions are clear, a feedback question about the materials with no verdict (build mode's "is this clear?" checks keep theirs).
+- `/learn:init` records an in-folder test command for exercises next to the run and test commands (defaults in `skills/init/toolchains.md` → Exercises, which runs only one exercise's tests: Rust exercises are their own small crates, Go runs the exercise's package). An existing subject gets it recorded on its next `/learn:practice`.
+
 ## [0.7.0] - 2026-11-04
 
 ### Changed
