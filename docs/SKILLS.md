@@ -33,10 +33,10 @@ Links a project's development plan (read-only, stays in the project) to a learni
 - Reads the code each step will touch. For each step it lists 2–6 precise concepts, each marked `known` (from `PROGRESS.md` or a quick self-check) or `new`; `new` concepts too big for a note are flagged `deep`, with a `/learn:teach` suggestion.
 - Per step: hands-on level (subject default unless changed) and 3–5 done-check questions answerable from the built code.
 
-**Plan view** (read-only): every concept of every step is an item, shown in plan order with its status from `PROGRESS.md` → Concepts (`✓` taught, `★` ready or built, `·` todo, `○` known), its lesson and quiz score, which steps are ready to build, and the next item. Then one question: **continue** (`/learn:teach <plan>`), **recheck an item** (re-teach or quiz it), **build a step** (`/learn:build <step>` from the project) or **done**.
+**Plan view** (read-only): every concept of every step is an item, shown in plan order with its status from `PROGRESS.md` → Concepts (`✓` taught, `★` ready or built, `·` todo, `–` skipped, `○` known), its lesson and quiz score, which steps are ready to build (every item taught or known), and the next item. Then one question: **continue** (`/learn:teach <plan>`), **recheck an item** (re-teach or quiz it), **build a step** (`/learn:build <step>` from the project) or **done**.
 
 ```
-Zone classification · 2 of 30 items taught · 0 ready
+Zone classification · 2 of 30 items covered · 0 ready · 0 skipped
 Z0 · Funnel + "Industrial" definition                todo
   ✓ learning   zoning vs land use                   lesson 001
   ✓ learning   precision vs recall           deep   lesson 002
@@ -99,7 +99,7 @@ Writes `lessons/<NNN>-<topic>/lesson.md` while teaching.
 | `<track>/<n>`, `<topic>` | That curriculum topic or free topic |
 | `<step>` (e.g. `Z0`) | The step's concepts from its learning plan, in order, skipping those already taught |
 | `<plan>` | The whole plan in order, from the first untaught concept; stop any time and resume later |
-| `<plan>/<step>/<concept>` | That one concept, even if taught (a recheck) |
+| `<plan>/<step>/<concept>`, or a concept name | That one concept, even if taught or skipped (a recheck); one lesson updates every step that lists it |
 | nothing | Asks which plan or track to continue (lists them with progress) |
 
 Plan concepts are taught **one per lesson**, then it offers the next one (continue, skip, stop). A `deep` concept gets the full lesson below. Others get a short lesson: problem, worked intuition, in the project, one pitfall, a 2-question check (a lab only if asked or if the check misses).
