@@ -112,7 +112,7 @@ Each topic moves through `todo → learning → practised → ready → built �
 | `/learn:curriculum <plan \| spec \| URL \| topic>` | Turn a source into a track of 5–15 topics with prerequisites and checkable "ready when" criteria | `curriculum/<track>.md` |
 | `/learn:teach <track>/<n> \| <topic>` | Interactive lesson: problem, intuition, mechanism, a short free video when one helps, lab, project touchpoint, pitfalls, vocabulary, check; a background agent writes and commits it while you keep learning | `lessons/<NNN>-<topic>/lesson.md`, lab, flashcards |
 | `/learn:teach <step> \| <plan>` | Study a learning plan in order, one concept per lesson; resumes where you stopped | lessons, `PROGRESS.md` |
-| `/learn:practice <topic> [easy\|medium\|hard]` | 2–4 exercises with stubs and failing tests (verified against a hidden reference solution); hints one rung at a time | `exercises/` |
+| `/learn:practice <topic> [easy\|medium\|hard]` | 2–4 exercises with stubs and failing tests (verified against a hidden reference solution); each README starts with step-by-step **Start here** instructions and shows how to read a failing test; hints one rung at a time | `exercises/` |
 | `/learn:quiz <track>/<n> \| <topic> \| <step> \| <plan> \| <concept>` | 8–12 adaptive questions, one at a time (pick an option or type your own); ready at ≥ 80% with every critical question right | `quiz.md`, flashcards |
 | `/learn:quiz review` | Spaced-repetition review of due flashcards | `flashcards/deck.md` |
 | `/learn:reflect <topic> [PR \| commit range]` | After building: prediction vs result, gaps, follow-ups | `reflections/<date>-<topic>.md` |

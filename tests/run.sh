@@ -44,6 +44,19 @@ if grep -q 'status --porcelain` first' <<<"$sync"; then ok "Sync re-checks the t
 migrate=$(awk '/^## 6\. Migrate/{f=1;next} /^## /{f=0} f' skills/init/SKILL.md)
 if [ "$(grep -o '\*\*Sync\*\*' <<<"$migrate" | wc -l)" -eq 1 ]; then ok "migrate pushes once"; else bad "migrate must push exactly once, after its check"; fi
 if grep -rn 'push --force\|push -f\b\|--force-with-lease' skills; then bad "a skill force-pushes"; else ok "no skill force-pushes"; fi
+# Exercises must tell the learner what to do first (spec 009). Patterns are anchored to the headings they belong to.
+missing=""
+check() { grep -qE -- "$2" "$1" || missing="$missing $1:/$2/"; }
+check skills/practice/SKILL.md '^2\. \*\*Start here\*\*'
+check skills/practice/SKILL.md '^4\. \*\*Reading a failing test\*\*'
+check skills/practice/SKILL.md '^7\. \*\*Stuck\?\*\*'
+check skills/practice/SKILL.md '^\| solution stub \|.*TODO: replace with your code'
+check skills/practice/SKILL.md '^\*\*In-folder test command\.\*\*'
+check skills/practice/SKILL.md '^## Hand over$'
+check skills/init/SKILL.md '^Two kinds that sound alike.*\*\*feedback question\*\*.*no verdict'
+check skills/init/toolchains.md '^## Exercises$'
+check skills/init/templates/subject/LEARNING.md '^\| In-folder test \|'
+if [ -z "$missing" ]; then ok "practice Start here contract"; else bad "spec 009 text missing:$missing"; fi
 
 # claude plugin update only pulls a new version, so plugin.json must match the newest released CHANGELOG heading.
 pv=$(python3 -c 'import json; print(json.load(open(".claude-plugin/plugin.json"))["version"])')
