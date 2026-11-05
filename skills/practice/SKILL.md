@@ -22,7 +22,7 @@ Create 2–4 exercises, increasing in difficulty, under `lessons/<NNN>-<topic>/e
 - Exercises mirror the shape of a linked project's problem when there is one, but never use its data.
 - Before handing over, write a reference solution in `scratch/`, run the toolchain's test command against it, confirm the tests pass, then confirm they fail on the stub. Never commit the reference solution.
 - Tell the learner the exact test command for the exercise folder.
-- With toolchain `none`, write a problem set in `README.md` instead (no stub or tests), keep the answer key in `scratch/`, and check answers in conversation.
+- With toolchain `none`, write a problem set in `README.md` instead (no stub or tests), keep the answer key in `scratch/`, and check answers in conversation, each reply opening with its verdict (`/learn:init` → **Questions and examples**).
 
 ## While they work
 
