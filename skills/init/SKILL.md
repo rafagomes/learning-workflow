@@ -1,9 +1,9 @@
 ---
 name: init
-description: "Create the learning repo and add a subject to it as its own folder, link the projects a subject learns from, or migrate an older one-repo-per-subject learning repo into it. Use when the user says 'set up learning for <projects or subject>', 'start a learning repo', 'add <subject> to my learning', 'I want to learn while building X', 'add this project to my learning', 'migrate my learning repo', or runs another /learn skill and no learning repo is registered yet. One learning repo holds every subject; it never lives inside a project."
-argument-hint: "[subject] [project paths...] | add <project path> | migrate [path]"
+description: "Create the learning repo and add a subject to it as its own folder, link the projects a subject learns from, migrate an older one-repo-per-subject learning repo into it, or give the learning repo a private remote so it syncs across machines. Use when the user says 'set up learning for <projects or subject>', 'start a learning repo', 'add <subject> to my learning', 'I want to learn while building X', 'add this project to my learning', 'migrate my learning repo', 'sync my learning repo across machines', or runs another /learn skill and no learning repo is registered yet. One learning repo holds every subject; it never lives inside a project."
+argument-hint: "[subject] [project paths...] | add <project path> | migrate [path] | remote"
 ---
-Create the learning repo, add a subject, link a project, or migrate. Argument: $ARGUMENTS
+Create the learning repo, add a subject, link a project, migrate, or add a remote. Argument: $ARGUMENTS
 
 The **learning repo** is one private git repo per learner. It holds every subject the learner studies (e.g. `python`, `rust`, `machine-learning`, `statistics`, `music-theory`), each in its own **subject folder** with its curriculum, lessons, exercises, quizzes, flashcards and reflections. The **projects** hold the real code and data. Each subject links any number of projects, from work repos and personal repos alike. Links are by reference only, so every project stays clean and the learning stays private.
 
@@ -21,8 +21,11 @@ The **learning repo** is one private git repo per learner. It holds every subjec
 
 ## 1. Mode
 
+When the registry has no learning repo yet, ask the location first (step 2.3): if that is already a learning repo, such as a clone from another machine, register it (see **A clone from another machine** in step 3) and continue only with what the argument asked for (a subject, `add`, `remote`); with nothing more, report the registered subjects and stop.
+
 - `add <project path>` or "add this project": **link a project** to an existing subject (resolve it as below; ask which one if several). Skip to step 5.
 - `migrate [path]` or "migrate my learning repo": **fold a standalone repo** from v0.1.0 (one git repo per subject) into the learning repo. Skip to step 6.
+- `remote` or "sync my learning repo": **add a remote** to the registered learning repo (see **Remote** in step 3; none registered: offer `/learn:init <subject>`). With `origin` already set, only make sure the current branch tracks it (`git -C <learning repo> push -u origin <branch>`) and report its URL. Then stop.
 - Otherwise: **add a subject**. Check the registry first:
   - The subject is already registered inside the learning repo: offer to link the new projects to it instead.
   - It is registered as a **standalone** repo (see Registry: its folder is its own git root): offer `migrate` instead of creating a second one.
@@ -41,6 +44,8 @@ Use AskUserQuestion for anything the argument doesn't give:
 ## 3. Create the learning repo (first time only)
 
 Skip when the registry already has a `repo` that exists on disk.
+
+**A clone from another machine.** If the location is already a learning repo (its git top level, with `tools/guard.sh` and a subjects table in `README.md`), don't create anything: run the `git config core.hooksPath tools/hooks` line below, record `"repo"`, register each subject folder listed in its `README.md` (projects are per machine: offer `/learn:init add <path>` for any it should link here), and continue as step 1 says.
 
 **Check the location first, and move nothing until the whole check passes.** It must not exist, be an empty directory, or hold only v0.1.0 learning repos. v0.1.0 put them at `~/Learning/<slug>`, inside the new default, and `git add -A` would commit them as broken embedded repos. A v0.1.0 learning repo is a folder that is its own git root **and** has a `LEARNING.md` at that root (usually also a registered standalone entry). Anything else in the location (files, plain folders, other git repos such as a course clone or a linked project) means: stop and ask for another location, before moving anything. When the check passes, move each v0.1.0 learning repo aside (see **Moving a standalone repo aside** below) and offer `migrate` for each after the learning repo exists.
 
@@ -77,7 +82,15 @@ git add -A && git commit -m "chore: initialize learning repo"
 
 Record `"repo": "<absolute path>"` at the top level of the registry. `core.hooksPath` is local git config, not committed: after cloning the learning repo on another machine, run that `git config` line again (the repo's `CLAUDE.md` says so).
 
-Do not create a remote. If the user wants one, offer a **private** GitHub repo and create it only after they confirm (`gh repo create <name> --private --source . --push`).
+### Remote
+
+Offer (AskUserQuestion) a **private** GitHub remote, recommended so the learning repo syncs across machines and sessions, or keeping it local-only, which stays a valid choice. Create nothing until the learner confirms.
+
+1. `gh auth status` must pass; otherwise say how to log in (`gh auth login`), keep the repo local-only, and mention `/learn:init remote` for later.
+2. Owner: the authenticated account (`gh api user --jq .login`). Name: the learning repo's folder name, lowercased, unless the learner gives one.
+3. **Is the name taken?** If `gh repo view <owner>/<name>` succeeds, it is. Ask (AskUserQuestion): **choose another name** for the learning repo (offer two, e.g. `learning-vault` or `<name>-notes`, each checked the same way; Other for their own) or **rename the existing repo**.
+4. **Renaming the existing repo.** First check what the rename could break, and show what you find: a GitHub Pages site (`gh api repos/<owner>/<name>/pages`; a project site's URL moves with the name and gets no redirect), a hard-coded base path or the repo name in its build config, workflows that name the repo (`.github/workflows/`), webhooks (`gh api repos/<owner>/<name>/hooks`), a `homepage` pointing at it. If it would break anything live, stop and go back to choosing another name. Otherwise rename only after the learner confirms (`gh repo rename <new name> -R <owner>/<name>`). Never create a repo with the old name afterwards: that would break GitHub's redirect from the old name. So the learning repo still takes a name other than the old one: ask for it as in 3.
+5. Create and push: `gh repo create <owner>/<name> --private --source <learning repo> --remote origin --push`. Check `gh repo view <owner>/<name> --json visibility` prints `PRIVATE`; if not, say so and stop.
 
 ## 4. Add the subject folder
 
@@ -214,4 +227,4 @@ The **current project** is the linked project whose path contains the current di
 
 ## Finish
 
-Report the learning repo path, the subject folder, the linked projects with their sensitivity, and the next step: `/learn:curriculum <plan, spec or topic>` to build the subject's first track. After a migration, also report the commits carried over and whether the standalone repo was kept.
+Report the learning repo path, the subject folder, the linked projects with their sensitivity, and the next step: `/learn:curriculum <plan, spec or topic>` to build the subject's first track. After a migration, also report the commits carried over and whether the standalone repo was kept. If the learning repo has no remote, mention once that `/learn:init remote` adds a private one to sync across machines.

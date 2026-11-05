@@ -49,6 +49,8 @@ Every commit a skill makes to the learning repo is followed by `git -C <repo> pu
 
 **Existing learning repos** (created before this, migrated, or kept local-only): a new mode, `/learn:init remote`, runs the same steps for the registered learning repo. With an `origin` already set it only makes sure the branch tracks it (`git push -u origin <branch>`). No other skill nags about a missing remote; init's **Finish** mentions `/learn:init remote` once when the learning repo has no remote.
 
+**A second machine.** The learner clones the learning repo there and runs `/learn:init`, giving the clone's path as the location. Today the location check refuses a non-empty folder; now a location that is already a learning repo (git top level with `tools/guard.sh` and a subjects table in `README.md`) is registered instead of created: pull, set `core.hooksPath`, record `repo`, register each subject in its `README.md`; projects are per machine, so `/learn:init add` links them there. Without this, a second machine could not use the synced repo at all.
+
 Decision: a `remote` mode rather than "run init again with no subject", because init with no subject already means "ask for one", and a named mode matches `add` and `migrate`.
 
 ### Template
@@ -57,7 +59,7 @@ Decision: a `remote` mode rather than "run init again with no subject", because 
 
 ## Affected files
 
-- `skills/init/SKILL.md`: **Sync** section; `remote` mode; step 3's remote setup; pull/push lines in add, migrate and subject creation; Finish.
+- `skills/init/SKILL.md`: **Sync** section; `remote` mode; step 3's remote setup and clone registration; pull/push lines in add, migrate and subject creation; Finish.
 - `skills/{build,off,curriculum,plan,teach,practice,quiz,reflect}/SKILL.md`: one line at start, one at each commit step; teach's writer brief carries the push rule.
 - `skills/init/templates/repo/CLAUDE.md`, `skills/init/templates/repo/README.md`.
 - `tests/run.sh`: every committing skill references **Sync**; the hook has no git sync or network call; the template carries the rule.
@@ -76,4 +78,5 @@ No diagram shows commits or remotes, so `docs/diagrams/` is unchanged.
 7. `hooks/learn-mode.sh` contains no `git pull`, `git push`, `git fetch`, `curl` or `wget` (test).
 8. `/learn:init` on a new machine offers a private remote, recommended; declining leaves a local-only repo. A taken name asks rename-or-other-name; renaming checks Pages, base paths, workflows and webhooks first, and the learning repo never takes the old name.
 9. `/learn:init remote` adds a private remote to an existing local-only learning repo.
-10. `bash tests/run.sh` and `claude plugin validate .` pass.
+10. On a second machine, `/learn:init` with a clone's path as the location registers it and its subjects without creating anything.
+11. `bash tests/run.sh` and `claude plugin validate .` pass.
