@@ -1,6 +1,6 @@
 # Skills reference
 
-All skills resolve the learning repo the same way ([ARCHITECTURE.md](ARCHITECTURE.md#the-shared-contract)) and end by updating `PROGRESS.md` and committing. Questions are asked one at a time with Claude Code's question prompt: you pick one of 2–4 options (none marked recommended) or type your own answer or a "why…?" via Other, and any table or snippet the question needs is shown beside the options. Examples always show all their data where they're used: re-shown in full when a lesson builds on them, or a fresh small example (≤ 6 rows) for a new concept. Without the prompt (headless), questions are plain text.
+All skills resolve the learning repo the same way ([ARCHITECTURE.md](ARCHITECTURE.md#the-shared-contract)) and end by updating `PROGRESS.md` and committing. Questions are asked one at a time, and decisions use Claude Code's question prompt. So do the questions that check what you learned (lesson predictions and checks, quiz questions, build mode's predictions and done-check): you pick one of 2–4 options (none marked recommended) or type your own answer or a "why…?" via Other, and any table or snippet the question needs is shown beside the options. Flashcards, hints and reflect's open questions stay plain text. Examples always show all their data where they're used: re-shown in full when a lesson builds on them, or a fresh small example (≤ 6 rows) for a new concept. Without the prompt (headless), questions are plain text.
 
 ## `/learn:init`
 
@@ -143,7 +143,7 @@ Status `todo`/`learning` → `practised` when every exercise passes; other statu
 
 **Plan mode:** quizzes the taught concepts of a step or plan (3–5 questions each), or one concept (8–12). Ready-when comes from the concept's lesson check and its `why:` in the plan; critical questions are the ones the step's done-check depends on. Scores are recorded on each concept's row.
 
-**Topic mode:** 8–12 questions covering every "ready when" item, 2–3 marked critical, in mixed formats (explain, predict-the-output, spot-the-bug, choose-and-justify, calculate). Adaptive: two misses on a sub-idea bring an easier follow-up. **Ready** at ≥ 80% and all critical questions right; otherwise you get the exact lesson part or exercise to revisit. Misses become flashcards.
+**Topic mode:** 8–12 questions covering every "ready when" item, 2–3 marked critical, in mixed formats (explain, predict-the-output, spot-the-bug, choose-and-justify, calculate). Adaptive: two misses on a sub-idea bring an easier follow-up. Explain, choose-and-justify and critical questions also need the right reason (a "why?" pick or a typed explanation), so a lucky pick can't make a topic ready. **Ready** at ≥ 80% and all critical questions right; otherwise you get the exact lesson part or exercise to revisit. Misses become flashcards.
 
 **Review mode:** asks every due card, at most 20. Right moves a card up a box (max 5); wrong sends it to box 1.
 

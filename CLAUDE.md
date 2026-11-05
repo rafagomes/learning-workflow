@@ -15,7 +15,7 @@ This repo is the `learn` Claude Code plugin: the learning **workflow** only. It 
 
 ## Rules
 
-- The shared contract (learning-repo resolution, current project, data policy) is defined only in `skills/init/SKILL.md`. Change it there and check every skill and `docs/ARCHITECTURE.md` still agree.
+- The shared contract (learning-repo resolution, current project, data policy, questions and examples) is defined only in `skills/init/SKILL.md`. Change it there and check every skill and `docs/ARCHITECTURE.md` still agree.
 - Skills stay subject-agnostic (use the recorded toolchain, never assume a language) and project-agnostic (no real employer, client or project names).
 - A behaviour change updates `README.md`, `docs/SKILLS.md`, `docs/WORKFLOW.md` when the loop changes (and the diagrams in `docs/diagrams/render.py` if they show it), and `CHANGELOG.md`.
 - Before committing: `bash tests/run.sh` and `claude plugin validate .`.

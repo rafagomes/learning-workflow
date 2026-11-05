@@ -152,17 +152,17 @@ Then:
 
 ## Questions and examples (every study skill)
 
-**Questions.** Every question that asks the learner to answer, predict or explain (a lesson's predictions, "your turn" questions and check, quiz questions and flashcards, build mode's predictions, "is this clear?" questions and done-check, practice's pointing hint) is one AskUserQuestion call, so answering is a pick, not typing:
+**Questions.** Every question that asks the learner to answer, predict or explain (a lesson's predictions, "your turn" questions and check, quiz questions, build mode's predictions, "is this clear?" questions and done-check) is one AskUserQuestion call, so answering is a pick, not typing:
 
 - One question per call; 2–4 short options. Never mark one "(Recommended)", and never let order or wording give the right one away: vary its position, keep options alike in length and tone.
 - Distractors are real misconceptions: a swapped formula, the tempting wrong idea, an off-by-one, the confusion just warned about.
-- When the question needs data (a table, snippet or output), put it in the options' `preview` as markdown, the same on each option, or different per option when the options are alternative tables, outputs or code. The learner then sees the data beside the options.
+- When the question needs data (a table, snippet or output), put it in the options' `preview` as markdown (a linked project's code only within the data policy), the same on each option, or different per option when the options are alternative tables, outputs or code. The learner then sees the data beside the options.
 - Where options would give the answer away (explain why, derive), offer approaches or partial claims, and say in the question that typing an explanation via Other is welcome.
 - The automatic Other is the learner's free answer: judge a typed reply as the answer, or, if it's a question ("why…?"), explain or rephrase and ask again.
-- Record, per question, the data shown, the options, the pick (or the typed text) and right / partly / wrong: it's the evidence a check, quiz score or done-check counts.
+- Record, per question, the data shown, the options, the pick (or the typed text) and right / partly / wrong: it's the evidence a check, quiz score or done-check counts. Synthetic or lesson data is recorded in full; a linked project's code or output only as its `<slug>:path@sha` citation and a paraphrase, never pasted.
 - Without AskUserQuestion (headless, or denied), ask in plain text with the data above the question and the options listed.
 
-Open questions that ask for the learner's account rather than an answer (reflect's "what happened?") stay in plain text.
+Three kinds stay in plain text: flashcards (they train recall, so the learner answers in their own words before seeing anything), hints (practice's pointing question must not hand over the approach as an option), and open questions that ask for the learner's account (reflect's "what happened?").
 
 **Examples.** Every question and explanation shows all the data it relies on, right there:
 

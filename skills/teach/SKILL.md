@@ -32,10 +32,9 @@ Teach **one item per lesson**. After each, offer the next item by name and ask: 
 
 ## How to teach
 
-This is a conversation, not a document dump. Questions and examples follow `/learn:init` → **Questions and examples**: every question is one AskUserQuestion with 2–4 options and its data in the preview, and every example shows all its data where it's used.
+This is a conversation, not a document dump. Every question and example follows `/learn:init` → **Questions and examples**.
 
 - **One concept at a time.** Explain a step, then ask one question (prediction, or "what would happen if…"), and wait for the answer before continuing. Correct misconceptions directly and say why the wrong idea was tempting.
-- **Examples stand alone.** Open each lesson with its own small example (≤ 6 rows). Building on it, re-show the whole table with the new columns; a concept that doesn't need it gets a fresh one. Never "the rows from our earlier table" without the table.
 - **Predict before running.** Before every lab run, ask the learner to predict the result. Compare afterwards.
 - **Never state a number you haven't computed.** Run the lab or a snippet and quote its output.
 - Match the profile's depth and language. Define every term the first time it appears.
@@ -55,7 +54,7 @@ The writer has a fresh context, so its brief carries everything:
 - the subject folder's absolute path; per lesson (in the first message about it): its number, slug, and parts in order (**Lesson structure** or **Short lesson**), each written as `## <part>` with the content sent;
 - the data policy as `LEARNING.md` records it, with each linked project's slug and sensitivity;
 - the **Finish** rules below and the **Plan items** rules they use (every item with the concept name, `<plan>/<step>`, skip notes), the card format in `flashcards/deck.md`, and the commit messages (the lesson's, and a skip's, see **Skipping**);
-- **it never invents content**: it writes only what it was sent, reworded at most, with no number it wasn't given; what's missing it leaves out. Each question is written with the data it showed, its options, the pick and the verdict, so the lesson reads on its own;
+- **it never invents content**: it writes only what it was sent, reworded at most, with no number it wasn't given; what's missing it leaves out. Each question is written with the data it showed (a linked project's code only as its `slug:path@sha` citation and a paraphrase), its options, the pick and the verdict, so the lesson reads on its own;
 - it commits as `/learn:init` says, staging only that commit's paths (`lessons/<NNN>-<slug>/` without run artefacts such as caches or output files, `flashcards/deck.md`, `PROGRESS.md`); it leaves other changes unstaged and reports them; after each commit it reports the short sha in one line; on any error it reports it and stops.
 
 **The lab.** Write the lab file yourself in the lesson folder, so what runs is exactly what you wrote, and run it live (predict, then run). The writer commits it with the lesson.
@@ -74,7 +73,7 @@ Work through these parts; the writer records each in `lessons/<NNN>-<topic-slug>
 6. **In the project**: how a linked project uses (or should use) this, and what to look for when reading its code. Read-only. Skip when no project is linked.
 7. **Pitfalls**: the 3–5 mistakes practitioners actually make, each with a symptom to recognise it.
 8. **Vocabulary**: a term → one-line definition table.
-9. **Check**: 3 short questions, each asked as `/learn:init` → **Questions** says; record the picks and which ones the learner got right.
+9. **Check**: 3 short questions, each asked as `/learn:init` → **Questions and examples** says; record the picks and which ones the learner got right.
 
 ### Short lesson (plan items not flagged `deep`)
 

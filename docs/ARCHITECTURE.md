@@ -68,7 +68,7 @@ Every skill depends on four things, defined once in [`skills/init/SKILL.md`](../
 1. **Resolving the subject**, in order: a `LEARNING.md` in the current directory or an ancestor → the registered subject whose linked projects contain the current directory (ask if several) → the only registered subject → ask. None registered → offer `/learn:init`. Every path a skill writes is relative to the subject folder; commits go to the learning repo, scoped `docs(<subject>): …`.
 2. **The current project**: the linked project containing the current directory, or the one you name.
 3. **The data policy** (see [DATA-POLICY.md](DATA-POLICY.md)).
-4. **Questions and examples**: every question to the learner is one AskUserQuestion with 2–4 options (none marked recommended, distractors from real misconceptions, Other for a typed answer) and its data in the preview; every example shows all the data it relies on, re-shown in full when built on, fresh when the concept doesn't need the old one, at most 6 rows.
+4. **Questions and examples**: every question that checks the learner is one AskUserQuestion with 2–4 options (none marked recommended, distractors from real misconceptions, Other for a typed answer) and its data in the preview, while flashcards, hints and reflect stay plain text; every example shows all the data it relies on, re-shown in full when built on, fresh when the concept doesn't need the old one, at most 6 rows.
 
 Keeping these in one place means a change to resolution, policy or how questions are asked can't silently diverge between skills.
 

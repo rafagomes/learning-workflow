@@ -11,11 +11,16 @@ Two things slowed a real lesson down.
 
 ## Design
 
-Both rules apply to every study skill's conversation, so they are part of the shared contract, defined once in `skills/init/SKILL.md` (new section **Questions and examples**) and referenced by `teach`, `quiz`, `build` and `practice`. `docs/ARCHITECTURE.md` lists it as the contract's fourth part.
+Both rules apply to every study skill's conversation, so they are part of the shared contract, defined once in `skills/init/SKILL.md` (new section **Questions and examples**) and referenced, not restated, by `teach`, `quiz`, `build` and `practice`. `docs/ARCHITECTURE.md` and the repo's `CLAUDE.md` list it as the contract's fourth part. The one restatement is build's state-file line (see below).
 
 ### A. Questions are asked with AskUserQuestion
 
-Covers every question that asks the learner to answer, predict or explain: teach's predictions, "your turn" questions and Check; quiz questions (topic, plan and flashcard review); build's spaced review, predictions, "is this clear?" questions and done-check; practice's first hint rung (a question pointing at the concept). Setup questions that already use AskUserQuestion (init, curriculum, plan) are unchanged. Reflect's open questions about what happened stay in plain text: they ask for the learner's account, not an answer.
+Covers every question that asks the learner to answer, predict or explain: teach's predictions, "your turn" questions and Check; quiz questions (topic and plan mode); build's predictions, "is this clear?" questions and done-check. Setup questions that already use AskUserQuestion (init, curriculum, plan) are unchanged.
+
+Three kinds stay in plain text, because options would defeat them:
+- **Flashcards** (quiz review mode, build's spaced review) train recall: with the answer among the options the learner only recognises it, and the Leitner box promotes a card that was never recalled.
+- **Hints** (practice's first rung, a question pointing at the concept): options would name the approach that rung 2 is meant to hold back.
+- **Open questions** that ask for the learner's account (reflect's "what happened?").
 
 - **One question per call**, so it stays one question at a time.
 - **2–4 options, none marked "(Recommended)"**, and no order or wording that gives the right one away (the right answer's position varies; options are similar in length and tone).
@@ -23,7 +28,9 @@ Covers every question that asks the learner to answer, predict or explain: teach
 - **"Other" is the free answer.** The automatic Other lets the learner type an answer or a "why…?" question. A typed reply is judged as the answer, or, when it's a question, the question is rephrased or explained and asked again.
 - **Data goes in the preview.** When the question needs data (a table, a snippet, output), put it in the option `preview` as markdown, so it shows in a monospace box beside the options. Use the same preview on every option, or a different one per option when the options are alternative tables, outputs or code.
 - **Questions where options would give the answer away** (explain why, derive) are still asked with AskUserQuestion: the options are approaches or partial claims to choose between, and the question says that typing a full explanation via Other is welcome.
-- **Record the pick**: for each question, the options shown, the one picked (or the typed text) and right / partly / wrong. teach sends this to the writer with the part (so it reaches `lesson.md` and the Check result), quiz writes it to `quiz.md` and counts it in the score, build records it in the build log.
+- **Record the pick**: for each question, the data shown, the options, the one picked (or the typed text) and right / partly / wrong. teach sends this to the writer with the part (so it reaches `lesson.md` and the Check result), quiz writes it to `quiz.md` and counts it in the score, build records it in the build log. **Data policy:** synthetic or lesson data is recorded in full; a linked project's code or output, which a done-check or "In the project" question may show (within the policy's few-lines limit for `work` projects), is recorded only as its `<slug>:path@sha` citation and a paraphrase, never pasted into the learning repo.
+- **Picking isn't enough for an ability (quiz).** With options, the ready bar could be reached by recognising or guessing. In quiz, an explain or choose-and-justify question, and every critical question, counts as right only with the right reason: after a right pick, a "why?" question whose options are candidate reasons, or a typed explanation. Right pick, wrong reason is **partly** (0.5), which fails a critical question. This is quiz-specific scoring, so it lives in `skills/quiz/SKILL.md`.
+- **Build mode after compaction.** The hook re-injects only the state file's rule line, not the skill, so that line carries the essentials itself: one question per call, 2–4 options, none recommended, position varied, real-misconception distractors, data in the preview within the data policy, Other handled, picks recorded, plain-text fallback.
 - **Fallback**: without AskUserQuestion (headless, or a denied tool), ask in plain text with the same options listed, data shown above the question.
 
 ### B. Examples carry their own data
@@ -42,10 +49,11 @@ The writer records only what it is sent. Each part sent to it now carries, per q
 ## Affected files
 
 - `skills/init/SKILL.md`: new **Questions and examples** section in the shared contract.
-- `skills/teach/SKILL.md`: How to teach, the writer's message, Intuition and the lesson's opening example, Check.
-- `skills/quiz/SKILL.md`: review mode, topic mode formats and recording.
-- `skills/build/SKILL.md`: spaced review, state-file rule line, predictions, idle-time questions, done-check, build log.
-- `skills/practice/SKILL.md`: the first hint rung; exercise READMEs carry their own data.
+- `CLAUDE.md`: the contract's list.
+- `skills/teach/SKILL.md`: How to teach, the writer's message and brief, Short lesson, Check.
+- `skills/quiz/SKILL.md`: the reference, review mode stays plain text, the "why?" rule, recording in `quiz.md`.
+- `skills/build/SKILL.md`: spaced review stays plain text, state-file rule line, predictions, done-check, build log.
+- `skills/practice/SKILL.md`: the first hint rung stays plain text; exercise READMEs carry their own data.
 - `docs/ARCHITECTURE.md`, `docs/SKILLS.md`, `docs/WORKFLOW.md`, `README.md`: the new rule where questions are described.
 - `CHANGELOG.md`: Unreleased → Changed.
 
@@ -57,6 +65,8 @@ The writer records only what it is sent. Each part sent to it now carries, per q
 4. An explain-why question offers approaches or partial claims as options and says typing via Other is welcome.
 5. A lesson building on an earlier example re-shows the full table with the new columns; a lesson on an unrelated concept uses a fresh example of ≤ 6 rows; no question says "from our earlier table" without showing it.
 6. The committed `lesson.md` records, per question, the data shown, the options, the pick and the verdict; `quiz.md` does the same and its score matches the picks.
-7. `/learn:build`: the done-check and predictions use AskUserQuestion; the build log records the picks.
-8. With AskUserQuestion unavailable, questions are asked in plain text with the options listed and the data shown above them.
-9. `bash tests/run.sh` and `claude plugin validate .` pass.
+7. `/learn:build`: the done-check and predictions use AskUserQuestion, also after `/compact`; the build log records the picks, citing project code as `slug:path@sha` rather than pasting it.
+8. `/learn:quiz review` and build's spaced review ask cards in plain text; practice's first hint is a plain question.
+9. A quiz where the learner picks the right option on a critical explain question but the wrong reason in the "why?" follow-up scores it **partly** and the topic is not marked ready.
+10. With AskUserQuestion unavailable, questions are asked in plain text with the options listed and the data shown above them.
+11. `bash tests/run.sh` and `claude plugin validate .` pass.

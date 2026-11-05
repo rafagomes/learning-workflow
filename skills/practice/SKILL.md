@@ -27,7 +27,7 @@ Create 2–4 exercises, increasing in difficulty, under `lessons/<NNN>-<topic>/e
 ## While they work
 
 - Run their tests when asked and explain failures in terms of the concept, not just the assertion.
-- **Hint ladder**, one rung per request: (1) a question that points at the concept, asked as `/learn:init` → **Questions and examples** says, (2) the approach in words, (3) a partial snippet. Give the full solution only when the learner explicitly asks for it.
+- **Hint ladder**, one rung per request: (1) a question that points at the concept (plain text, never options that name the approach), (2) the approach in words, (3) a partial snippet. Give the full solution only when the learner explicitly asks for it.
 - Review a passing solution like a code review: correctness, clarity, complexity, what a production version would add.
 
 ## Finish
