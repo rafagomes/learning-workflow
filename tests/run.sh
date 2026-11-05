@@ -26,6 +26,11 @@ if bash tests/guard_test.sh; then ok "guard behaviour"; else bad "guard behaviou
 if bash -n hooks/learn-mode.sh && bash tests/hook_test.sh; then ok "learn-mode hook"; else bad "learn-mode hook"; fi
 if python3 -c 'import json; json.load(open("hooks/hooks.json"))'; then ok "valid JSON: hooks/hooks.json"; else bad "invalid JSON: hooks/hooks.json"; fi
 
+# claude plugin update only pulls a new version, so plugin.json must match the newest released CHANGELOG heading.
+pv=$(python3 -c 'import json; print(json.load(open(".claude-plugin/plugin.json"))["version"])')
+cv=$(grep -m1 -oE '^## \[[0-9]+\.[0-9]+\.[0-9]+\]' CHANGELOG.md | tr -d '#[] ')
+if [ "$pv" = "$cv" ]; then ok "plugin.json version $pv matches CHANGELOG"; else bad "plugin.json version $pv != newest CHANGELOG release $cv"; fi
+
 # Skills and docs must stay project-agnostic: no real home paths or personal email addresses.
 if grep -rnE '/(home|Users)/[A-Za-z0-9._-]+/' --exclude-dir=.git --exclude=.git --exclude-dir=tests . | grep -vE '/(home|Users)/me/'; then
   bad "real home path found (use /home/me/...)"

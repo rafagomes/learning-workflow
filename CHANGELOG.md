@@ -4,6 +4,8 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-04
+
 ### Changed
 
 - One learning repo for every subject: `/learn:init <subject>` creates the learning repo the first time (default `~/Learning`, with a `README.md` subject index, shared `CLAUDE.md`, `.gitignore` and guard) and adds each subject as its own folder (`<subject>/LEARNING.md`, `PROGRESS.md`, `curriculum/`, `lessons/`, …). Skills resolve the **subject** from the nearest `LEARNING.md` and commit with a subject scope (`docs(<subject>): …`). The registry gains a top-level `repo`. Templates split into `templates/repo/` and `templates/subject/`.
