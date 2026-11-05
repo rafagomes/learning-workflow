@@ -1,6 +1,6 @@
 # Data policy
 
-A learning repo often sits next to code you don't own: your employer's, a client's, an open-source project with its own rules. The policy below is the default for every learning repo the plugin creates. It's written into each repo's `LEARNING.md` and followed by every skill.
+A learning repo often sits next to code you don't own: your employer's, a client's, an open-source project with its own rules. The policy below is the default for every learning repo the plugin creates. It's written into each subject's `LEARNING.md` and followed by every skill.
 
 ## Rules
 
@@ -12,7 +12,7 @@ A learning repo often sits next to code you don't own: your employer's, a client
 | Commit project data (rows, dumps, exports, real schema values) | **Never** | Only data you mark public in `LEARNING.md` |
 | Secrets, credentials, personal or customer data | **Never** | **Never** |
 | Internal hostnames, URLs, ticket contents | **Never** | Your call |
-| Real samples for a lab | `scratch/` only (gitignored) | `scratch/` only |
+| Real samples for a lab | The subject's `scratch/` only (gitignored) | The subject's `scratch/` only |
 | Edit, commit, branch or open PRs in the project | Study skills: **never**. Build mode: yes, at your request, under the project's own rules | Same |
 | Write learning artefacts (plans, logs, notes, flashcards) or mention the learning repo in the project | **Never**, including in build mode | **Never** |
 | Leave `TODO(learner)` scaffolds in the project | **Never**: swept before every commit and at wrap-up | **Never** |
@@ -33,7 +33,7 @@ Nothing flows back automatically. What you learn reaches a project when you writ
 
 The pre-commit guard installed by `/learn:init` blocks:
 
-- data-like files (any case) outside `lessons/*/exercises/*/data/`, except named config files (`package.json`, `tsconfig*.json`, `.vscode/settings.json`, …), and SQL scripts under `lessons/`; archives and dumps (`zip`, `gz`, `sql`, `bak`, …) are blocked too;
+- data-like files (any case) outside `<subject>/lessons/*/exercises/*/data/`, except named config files (`package.json`, `tsconfig*.json`, `.vscode/settings.json`, …), and SQL scripts under `<subject>/lessons/`; archives and dumps (`zip`, `gz`, `sql`, `bak`, …) are blocked too;
 - files over 1 MB;
 - secrets flagged by [gitleaks](https://github.com/gitleaks/gitleaks), when it's installed (recommended).
 
@@ -43,6 +43,6 @@ The guard catches mistakes; it can't recognise a pasted snippet of proprietary c
 
 If you want to make a learning repo public:
 
-1. Check `LEARNING.md` → Linked projects: any `work` project means don't publish.
+1. Check every subject's `LEARNING.md` → Linked projects: any `work` project in any subject means don't publish.
 2. Search the history, not just the tree: `git log -p | grep -i -E '<employer>|<client>|internal'`, and run `gitleaks detect`.
 3. Remember that citations name paths and commit shas of linked projects.

@@ -52,7 +52,7 @@ Learn while building a step of a real project:
 Or study first:
 
 ```
-/learn:init python                         # create ~/Learning/python, pick level and toolchain
+/learn:init python                         # create ~/Learning with a python/ folder, pick level and toolchain
 /learn:curriculum "write and test small CLI tools in Python"
 /learn:teach python-cli/1                  # first lesson, interactive
 /learn:practice 1                          # exercises with failing tests
@@ -66,11 +66,11 @@ Two kinds of repo, and one direction of reference:
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/repo-model-dark.svg">
-  <img alt="The plugin creates a private learning repo per subject. Study skills read your linked work and personal projects; in build mode Claude codes in the project with you. Projects never reference the learning repo." src="docs/diagrams/repo-model-light.svg" width="880">
+  <img alt="The plugin creates one private learning repo with a folder per subject. Study skills read your linked work and personal projects; in build mode Claude codes in the project with you. Projects never reference the learning repo." src="docs/diagrams/repo-model-light.svg" width="880">
 </picture>
 
 - **This repo** is the method only: skills, templates, docs. No lessons, no learner data.
-- **A learning repo** is yours, private by default, one per subject. It holds everything you study and keeps a log of it in git.
+- **The learning repo** is yours, private by default, and holds every subject you study, one folder each (`~/Learning/python/`, `~/Learning/machine-learning/`, …), with a `README.md` index at the root. It keeps a log of everything in git. Upgrading from v0.1.0, where each subject was its own repo? `/learn:init migrate` folds each one in, history included.
 - **Projects** are read-only to the study skills and never point back at the learning repo. In build mode Claude codes in the project with you, under the project's own rules, but plans, logs, notes and learn-mode state stay out of it.
 - **Learn mode is per step, and off by default.** `/learn:build <step>` turns it on for that project and the done-check or `/learn:off` turns it off. Its state lives in `~/.config/learning-workflow/active/`, never in the project. See the [FAQ](docs/FAQ.md#how-do-i-turn-learn-mode-on-and-off).
 

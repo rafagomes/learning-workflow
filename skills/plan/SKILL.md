@@ -1,13 +1,13 @@
 ---
 name: plan
-description: "Connect a development plan to a learning plan: split a project's spec, roadmap or goal into steps and, for each step, work out the concepts it needs, which are new to the learner, who writes the code, and the questions that check learning when the step is done. Use when the user says 'plan the learning for this spec', 'what do I need to learn to build X', 'I want to learn while building this', or before /learn:build. Writes plans/<plan>.md in the learning repo; never edits the project."
+description: "Connect a development plan to a learning plan: split a project's spec, roadmap or goal into steps and, for each step, work out the concepts it needs, which are new to the learner, who writes the code, and the questions that check learning when the step is done. Use when the user says 'plan the learning for this spec', 'what do I need to learn to build X', 'I want to learn while building this', or before /learn:build. Writes plans/<plan>.md in the subject's folder of the learning repo; never edits the project."
 argument-hint: "<spec path | plan path | artifact URL | goal> [plan name]"
 ---
 Build a learning plan linked to a development plan. Argument: $ARGUMENTS
 
-Resolve the learning repo and the current project as `/learn:init` describes. If there's no learning repo, offer `/learn:init` and stop. If the dev plan belongs to a project not linked to that learning repo, offer `/learn:init add <project>` first.
+Resolve the subject and the current project as `/learn:init` describes. If there's no subject, offer `/learn:init` and stop. If the dev plan belongs to a project not linked to that subject, offer `/learn:init add <project>` first.
 
-The **development plan stays where it is**: in the project's docs, specs or issues, owned by the team. This skill only reads it, and writes the learning side in the learning repo. The two are linked by step ID.
+The **development plan stays where it is**: in the project's docs, specs or issues, owned by the team. This skill only reads it, and writes the learning side in the subject's folder of the learning repo. The two are linked by step ID.
 
 ## 1. Read the development plan
 
@@ -59,4 +59,4 @@ Obey the data policy: for a `work` project, describe steps and concepts in gener
 
 ## Finish
 
-Update `PROGRESS.md` (under **Plans**: the plan and its steps, `todo`), commit `docs: learning plan <plan>`, and say how to start: `/learn:build <first step>`; mention any `deep` concepts worth a `/learn:teach` first.
+Update `PROGRESS.md` (under **Plans**: the plan and its steps, `todo`), commit `docs(<subject>): learning plan <plan>`, and say how to start: `/learn:build <first step>`; mention any `deep` concepts worth a `/learn:teach` first.

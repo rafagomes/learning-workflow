@@ -25,7 +25,7 @@ Instead, use [GitHub's private vulnerability reporting](https://github.com/rafag
 
 This project is a Claude Code plugin (Markdown skills, templates, one shell hook). Relevant vulnerabilities include:
 
-- Command injection or unsafe file handling in `skills/init/templates/tools/guard.sh`
+- Command injection or unsafe file handling in `skills/init/templates/repo/tools/guard.sh`
 - Skill instructions that could write to a linked project, leak project data into a learning repo, or bypass the guard
 - Sensitive data exposure through default configurations
 - Skill or agent definitions that could lead to unintended code execution

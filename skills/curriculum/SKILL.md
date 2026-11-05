@@ -1,11 +1,11 @@
 ---
 name: curriculum
-description: "Build a learning track from a project plan, spec, design doc, claude.ai artifact or plain topic: phases, topics, prerequisites, and a concrete 'ready when' per topic, mapped to what the learner will build. Use when the user says 'make a curriculum for X', 'what do I need to learn to build this', 'turn this plan into lessons', or starts learning a new area. Writes curriculum/<track>.md in the learning repo."
+description: "Build a learning track from a project plan, spec, design doc, claude.ai artifact or plain topic: phases, topics, prerequisites, and a concrete 'ready when' per topic, mapped to what the learner will build. Use when the user says 'make a curriculum for X', 'what do I need to learn to build this', 'turn this plan into lessons', or starts learning a new area. Writes curriculum/<track>.md in the subject's folder of the learning repo."
 argument-hint: "<plan path | artifact URL | spec | topic> [track name]"
 ---
 Build a learning track. Argument: $ARGUMENTS
 
-Resolve the learning repo and the current project as `/learn:init` describes. If there's no learning repo, offer `/learn:init` and stop.
+Resolve the subject and the current project as `/learn:init` describes. If there's no subject, offer `/learn:init` and stop.
 
 ## 1. Read the source
 
@@ -53,4 +53,4 @@ Rules:
 
 ## 4. Record
 
-Add the track to `PROGRESS.md` (`## Tracks` with a row per topic and its status), log the session, commit `docs: add <track> curriculum`. Tell the learner the first topic and the command: `/learn:teach <track>/<topic-number>`.
+Add the track to `PROGRESS.md` (`## Tracks` with a row per topic and its status), log the session, commit `docs(<subject>): add <track> curriculum`. Tell the learner the first topic and the command: `/learn:teach <track>/<topic-number>`.

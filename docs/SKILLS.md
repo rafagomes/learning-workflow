@@ -7,15 +7,18 @@ All skills resolve the learning repo the same way ([ARCHITECTURE.md](ARCHITECTUR
 ```
 /learn:init <subject> [project paths…]
 /learn:init add <project path>
+/learn:init migrate [path]
 ```
 
-Creates a learning repo for a subject, or links another project to an existing one.
+Adds a subject to the learning repo as its own folder (creating the repo the first time), links another project to a subject, or migrates a v0.1.0 one-repo-per-subject learning repo into it.
 
-- **Asks** (only what's missing): subject slug, projects to link, location (default `~/Learning/<slug>`, never inside a project), level, depth, lesson language, toolchain (proposed from [toolchains.md](../skills/init/toolchains.md) or detected from a linked project's manifest).
-- **Creates**: `LEARNING.md` (including the default hands-on level for build mode), `PROGRESS.md`, `CLAUDE.md`, `.gitignore`, `flashcards/deck.md`, `tools/guard.sh` with `tools/hooks/pre-commit` (enabled via repo-local `core.hooksPath`), and empty `curriculum/`, `plans/`, `builds/`, `lessons/`, `reflections/`, `scratch/`.
-- **Registers** the repo in `spaces.json` under `$LEARNING_WORKFLOW_HOME` (default `~/.config/learning-workflow/`).
+- **Asks** (only what's missing): subject slug, projects to link, location of the learning repo, only the first time (default `~/Learning`, never inside a project), level, depth, lesson language, toolchain (proposed from [toolchains.md](../skills/init/toolchains.md) or detected from a linked project's manifest).
+- **Creates**, the first time, the learning repo root: `README.md` (subject index), `CLAUDE.md`, `.gitignore`, `tools/guard.sh` with `tools/hooks/pre-commit` (enabled via repo-local `core.hooksPath`).
+- **Adds** a `<subject>/` folder: `LEARNING.md` (including the default hands-on level for build mode), `PROGRESS.md`, `flashcards/deck.md`, and empty `curriculum/`, `plans/`, `builds/`, `lessons/`, `reflections/`, `scratch/`; and a row in `README.md`. An existing folder is never overwritten.
+- **Registers** the repo and the subject in `spaces.json` under `$LEARNING_WORKFLOW_HOME` (default `~/.config/learning-workflow/`).
+- **Migrates** (`migrate`) a standalone v0.1.0 repo into `<subject>/` with its git history (subtree merge), drops its own guard, `.gitignore` and `CLAUDE.md`, copies its `scratch/`, and repoints the registry. The old repo is deleted only if you confirm.
 - **Never** creates a remote unless you confirm; it offers a private GitHub repo.
-- Per linked project it records slug, path, remote, default branch and sensitivity (`work` by default for org-owned repos) in the registry; `LEARNING.md` gets only the slug, sensitivity and a neutral one-line description.
+- Per linked project it records slug, path, remote, default branch and sensitivity (`work` by default for org-owned repos) in the subject's registry entry; the subject's `LEARNING.md` gets only the slug, sensitivity and a neutral one-line description.
 
 ## `/learn:plan`
 

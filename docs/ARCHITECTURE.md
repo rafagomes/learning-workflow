@@ -9,7 +9,7 @@ flowchart TB
         SK --> TOOLS["Claude Code tools<br/>Read · Write · Bash · AskUserQuestion"]
         HK["UserPromptSubmit hook<br/>hooks/learn-mode.sh"] -->|adds reminder to context| SK
     end
-    TOOLS --> LR[("Learning repo<br/>git, private")]
+    TOOLS --> LR[("Learning repo<br/>git, private, a folder per subject")]
     TOOLS -. "study: read only<br/>build mode: codes under project rules" .-> PR["Linked projects"]
     TOOLS --> TC["Local toolchain<br/>run + test commands"]
     TOOLS --> REG[("Registry<br/>~/.config/learning-workflow/spaces.json")]
@@ -28,7 +28,7 @@ flowchart TB
     style CC fill:transparent,stroke:#818b98,stroke-dasharray:5 4
 ```
 
-The plugin is plain Markdown plus one small shell hook: each skill is a `SKILL.md` that Claude Code loads when you run the command. There is no server, daemon or database. State lives in three places: the **registry** (which learning repos exist and which projects they link), the **learn-mode state** (which project has learn mode on, for which step), and each **learning repo** (everything you study).
+The plugin is plain Markdown plus one small shell hook: each skill is a `SKILL.md` that Claude Code loads when you run the command. There is no server, daemon or database. State lives in three places: the **registry** (where the learning repo is, its subjects and the projects each links), the **learn-mode state** (which project has learn mode on, for which step), and the **learning repo** (everything you study, one folder per subject).
 
 ## Plugin layout
 
@@ -41,10 +41,13 @@ hooks/
   learn-mode.sh           prints the active learn-mode reminder for this project, else nothing
 skills/
   init/
-    SKILL.md              create/extend a learning repo; defines the shared contract
+    SKILL.md              create the learning repo, add subjects, link projects, migrate; defines the shared contract
     toolchains.md         default run/test commands per subject
-    templates/            copied into every new learning repo
-      LEARNING.md  PROGRESS.md  CLAUDE.md  gitignore  deck.md  tools/guard.sh  tools/hooks/pre-commit
+    templates/
+      repo/               copied once into the learning repo root
+        README.md  CLAUDE.md  gitignore  tools/guard.sh  tools/hooks/pre-commit
+      subject/            copied into each new <subject>/ folder
+        LEARNING.md  PROGRESS.md  deck.md
   plan/SKILL.md           dev plan → learning plan, by step ID
   build/SKILL.md          learn mode for a step
   off/SKILL.md            end learn mode early
@@ -61,7 +64,7 @@ tests/                    guard and manifest checks run by CI
 
 Every skill depends on three things, defined once in [`skills/init/SKILL.md`](../skills/init/SKILL.md) and referenced, not restated, by the others:
 
-1. **Resolving the learning repo**, in order: a `LEARNING.md` in the current directory or an ancestor → the registry entry whose linked projects contain the current directory (ask if several) → the only registered entry → ask. None registered → offer `/learn:init`.
+1. **Resolving the subject**, in order: a `LEARNING.md` in the current directory or an ancestor → the registered subject whose linked projects contain the current directory (ask if several) → the only registered subject → ask. None registered → offer `/learn:init`. Every path a skill writes is relative to the subject folder; commits go to the learning repo, scoped `docs(<subject>): …`.
 2. **The current project**: the linked project containing the current directory, or the one you name.
 3. **The data policy** (see [DATA-POLICY.md](DATA-POLICY.md)).
 
@@ -73,6 +76,7 @@ Keeping these in one place means a change to resolution or policy can't silently
 
 ```json
 {
+  "repo": "/home/me/Learning",
   "spaces": [
     {
       "slug": "rust",
@@ -91,13 +95,25 @@ Keeping these in one place means a change to resolution or policy can't silently
 
 | Field | Meaning |
 |---|---|
-| `slug` | Subject identifier, also the default directory name |
-| `path` | Absolute path of the learning repo |
+| `repo` | Absolute path of the learning repo |
+| `spaces[]` | One entry per subject |
+| `slug` | Subject identifier, also its folder name |
+| `path` | Absolute path of the subject folder (`<repo>/<slug>`); outside `repo` means a standalone v0.1.0 repo, which still works and which `/learn:init migrate` folds in |
 | `projects[].slug` | Short name used in citations (`<slug>:path@sha`) |
 | `projects[].path`, `remote`, `branch` | Where the project lives, its origin (or `null`) and default branch; kept only here, never in git |
 | `projects[].sensitivity` | `work` (paraphrase, quote sparingly, never data) or `personal` |
 
 Entries are only ever added or extended by the skills; removal needs your confirmation. The registry lives outside every repo, so neither the learning repo nor any project records the other's path in git.
+
+## Learning repo layout
+
+```
+<repo>/                README.md (subject index) · CLAUDE.md · .gitignore · tools/
+  <subject>/           LEARNING.md · PROGRESS.md · curriculum/ · plans/ · builds/
+                       lessons/ · flashcards/deck.md · reflections/ · scratch/ (gitignored)
+```
+
+Shared tooling sits at the root; a subject owns everything in its folder, including its profile, toolchain and linked projects, so subjects with different languages live side by side. Claude Code loads the root `CLAUDE.md` from any subject folder. `/learn:init migrate` folds a v0.1.0 standalone repo in with a subtree merge (`read-tree --prefix=<slug>/`), so its history is kept.
 
 ## Learn-mode state and hook
 
@@ -151,7 +167,7 @@ tools/guard.sh       pre-commit guard; tools/hooks/pre-commit runs it
 
 The pre-commit guard (`tools/guard.sh`, run by `tools/hooks/pre-commit`, which `/learn:init` enables with repo-local `git config core.hooksPath tools/hooks` so a global hooks path can't bypass it) checks the **staged** content of every commit, renames included, and blocks:
 
-- data-like files (`csv`, `parquet`, `json`, `sqlite`, `xlsx`, model artefacts, …, any case) outside `lessons/*/exercises/*/data/`, except named config files (`package.json`, `tsconfig*.json`, `.vscode/settings.json`, …) and SQL scripts under `lessons/`; archives and dumps (`zip`, `gz`, `sql`, `bak`, …) count as data;
+- data-like files (`csv`, `parquet`, `json`, `sqlite`, `xlsx`, model artefacts, …, any case) outside `<subject>/lessons/*/exercises/*/data/`, except named config files (`package.json`, `tsconfig*.json`, `.vscode/settings.json`, …) and SQL scripts under `<subject>/lessons/`; archives and dumps (`zip`, `gz`, `sql`, `bak`, …) count as data;
 - any file over 1 MB;
 - anything [gitleaks](https://github.com/gitleaks/gitleaks) flags, when it's installed.
 
@@ -162,9 +178,9 @@ The guard is a seatbelt, not the policy: the skills also follow the policy when 
 | Decision | Alternatives | Verdict |
 |---|---|---|
 | Learning repo separate from projects | A `learning/` folder in each project | Separate: keeps team history clean, spans several projects, survives leaving a job |
-| One repo per subject, many projects | One repo per project | Per subject: what you learn about Rust on project A is the same Rust on project B |
+| One learning repo, a folder per subject, many projects per subject | One repo per subject (v0.1.0); one repo per project | One repo with subject folders: a single remote, guard and hook setup, one index of everything you study; organising by subject keeps what you learn about Rust on project A the same Rust on project B |
 | Registry outside git | Paths committed in the learning repo | Outside: `LEARNING.md` names projects by slug and sensitivity only, so no absolute paths or work remotes reach a repo you might publish |
-| Toolchain recorded per repo | Hard-coded language | Per repo: the same skills teach Python, Rust, SQL or music theory |
+| Toolchain recorded per subject | Hard-coded language | Per subject: the same skills teach Python, Rust, SQL or music theory, side by side in one repo |
 | Plain Markdown state | A database or app | Markdown + git: diffable, portable, readable without the plugin |
 | Learn mode backed by a hook + state file | Rely on the skill staying in context | Hook: survives compaction and long sessions; silent everywhere else |
 | Learn mode keyed by project path | Keyed by session ID | Project path: the skill can compute it, worktrees isolate parallel sessions; a skill can't read its own session ID |

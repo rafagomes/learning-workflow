@@ -77,8 +77,8 @@ def repo_model(t):
     s = Svg(880, 330, t)
     s.card(20, 30, 210, 191, "purple", "learning-workflow", "this plugin · public",
            ["skills/", "  init · plan · build · off", "  curriculum · teach", "  practice · quiz · reflect", "  init/templates/", "hooks/ · docs/"])
-    s.card(330, 30, 240, 210, "green", "Your learning repo", "one per subject · private",
-           ["LEARNING.md · PROGRESS.md", "curriculum/ · plans/", "lessons/", "  lesson · lab · exercises", "builds/ · reflections/", "flashcards/  scratch/"])
+    s.card(330, 30, 240, 210, "green", "Your learning repo", "one for every subject · private",
+           ["README.md  (subject index)", "<subject>/", "  LEARNING.md · PROGRESS.md", "  curriculum/ · plans/", "  lessons/ · builds/", "  reflections/ · flashcards/"])
     s.card(670, 30, 190, 84, "orange", "Project A", "work", ["your employer's repo"])
     s.card(670, 134, 190, 84, "blue", "Project B", "personal", ["your side project"])
     s.arrow("M230,96 L326,96", "purple")
@@ -95,7 +95,7 @@ def repo_model(t):
     s.text(765, 257, "back at the learning repo", 12, 400, "muted", "middle")
     s.pill(440, 294, "registry + learn-mode state: ~/.config/learning-workflow/ (outside every repo)", "line", size=12)
     return s.render("How the repos relate",
-                    "The plugin creates and works in a private learning repo per subject. Study skills read linked work and personal projects; in build mode Claude codes in the project with you. Projects never reference the learning repo.")
+                    "The plugin creates and works in one private learning repo with a folder per subject. Study skills read linked work and personal projects; in build mode Claude codes in the project with you. Projects never reference the learning repo.")
 
 
 def build_mode(t):

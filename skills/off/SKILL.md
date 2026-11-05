@@ -19,5 +19,5 @@ echo "$state"
    - Write `builds/<date>-<step>.md` with the concepts shown so far and any predictions, marked as paused.
    - In the plan, the step **stays `in progress`**; add a Log line saying it was paused.
    - In `PROGRESS.md`, concepts shown but still `todo` → `learning`; no other status changes.
-   - Commit in the learning repo: `docs: build log <step> (paused)`.
+   - Commit in the learning repo: `docs(<subject>): build log <step> (paused)`.
 4. Delete the state file (`rm -f "$state"`) and confirm in one line. The next `/learn:build <step>` resumes the step.
