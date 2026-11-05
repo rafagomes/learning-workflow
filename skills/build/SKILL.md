@@ -63,7 +63,7 @@ Then rewrite the state file, moving the concept to "shown". A concept that needs
 
 ## 3. Done-check
 
-When the learner says the step is done, or a PR for it is opened, ask the done-check questions **one at a time**, numbered as `/learn:init` → **Position** says (the first carries the count: `Done-check · 4 questions · Question 1/4 · …`), as `/learn:init` → **Questions and examples** says, grounded in the code actually written (adjust the planned questions to it; put the code or output a question needs in its preview). Each needs the right reason as well as the right pick. After each answer (and its "why?"): the verdict first (**Correct.**, **Incorrect.** or **Partly correct.**), then one sentence why; **Partly correct** counts as a miss. Each miss becomes a flashcard in `flashcards/deck.md` (box 1).
+When the learner says the step is done, or a PR for it is opened, ask the done-check questions **one at a time**, numbered as `/learn:init` → **Position** says (the first carries the count: `Done-check · 4 questions · Question 1/4 · …`), as `/learn:init` → **Questions and examples** says, grounded in the code or doc actually written (adjust the planned questions to it; put the code or output a question needs in its preview). Each needs the right reason as well as the right pick. After each answer (and its "why?"): the verdict first (**Correct.**, **Incorrect.** or **Partly correct.**), then one sentence why; **Partly correct** counts as a miss. Each miss becomes a flashcard in `flashcards/deck.md` (box 1).
 
 ## 4. Wrap-up
 
