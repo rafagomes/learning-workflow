@@ -21,7 +21,7 @@ Two kinds stay in plain text, because options would defeat them:
 - **Hints** (practice's first rung, a question pointing at the concept): options would name the approach that rung 2 is meant to hold back.
 - **Open questions** that ask for the learner's account (reflect's talk-through questions).
 
-**Flashcards** (quiz review mode, build's spaced review) first stayed plain text too, to train recall rather than recognition. In use, the learner preferred picking, so they are now AskUserQuestion calls like the rest. To keep them closer to recall, the distractors are near misses (the same idea swapped, a near-miss formula, the confusion the card exists to fix), and a typed Other is judged on its meaning. Headless, cards stay plain text without options, so recall is kept where there is no dialog.
+**Flashcards** (quiz review mode, build's spaced review) first stayed plain text too, to train recall rather than recognition. In use, the learner preferred picking, so they are now AskUserQuestion calls like the rest. To keep them closer to recall, the distractors are near misses (the same idea swapped, a near-miss formula, the confusion the card exists to fix), and a typed Other is judged on its meaning. Without AskUserQuestion (headless, or denied), cards stay plain text without options, so recall is kept where there is no dialog.
 
 - **One question per call**, so it stays one question at a time.
 - **2–4 options, none marked "(Recommended)"**, and no order or wording that gives the right one away (the right answer's position varies; options are similar in length and tone).
@@ -67,7 +67,7 @@ The writer records only what it is sent. Each part sent to it now carries, per q
 5. A lesson building on an earlier example re-shows the full table with the new columns; a lesson on an unrelated concept uses a fresh example of ≤ 6 rows; no question says "from our earlier table" without showing it.
 6. The committed `lesson.md` records, per question, the data shown, the options, the pick and the verdict; `quiz.md` does the same and its score matches the picks.
 7. `/learn:build`: the done-check and predictions use AskUserQuestion, also after `/compact`; the build log records the picks, citing project code as `slug:path@sha` rather than pasting it.
-8. `/learn:quiz review` and build's spaced review ask each card as one AskUserQuestion call (`Card n/N · `, near-miss distractors); practice's first hint is a plain question.
+8. `/learn:quiz review` and build's spaced review ask each card as one AskUserQuestion call (`Card n/N · `, the card's answer as one option, near-miss distractors that are each clearly wrong); the verdict is only **Correct.** or **Incorrect.** and moves the box; "stop" or "skip" typed via Other ends the review and leaves that card as it was; the review's log entry records each card's options, pick and verdict. Practice's first hint is a plain question.
 9. A quiz where the learner picks the right option on a critical explain question but the wrong reason in the "why?" follow-up scores it **partly** (one question, 0.5) and the topic is not marked ready; the same in a done-check is a miss and the concept doesn't become `built`.
-10. With AskUserQuestion unavailable, questions are asked in plain text with the options listed and the data shown above them.
+10. With AskUserQuestion unavailable (headless, or denied), questions are asked in plain text with the options listed and the data shown above them; flashcards are the exception, asked without options and answered in the learner's own words.
 11. `bash tests/run.sh` and `claude plugin validate .` pass.
