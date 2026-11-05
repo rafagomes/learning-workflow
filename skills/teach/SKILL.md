@@ -51,7 +51,7 @@ The conversation only teaches: it explains, asks, reacts to answers and runs the
 Until its last sha is in, nothing else touches the learning repo's files or git (the lab file excepted, below): wait for it before another `/learn` skill runs, before ending the session, and before starting a replacement writer (say, when `/compact` lost its ID). If it reports an error, it has stopped: send it nothing more, fix the error inline and write inline for the rest of the session.
 
 The writer has a fresh context, so its brief carries everything:
-- the subject folder's absolute path; per lesson (in the first message about it): its number, slug, and parts in order (**Lesson structure** or **Short lesson**), each written as `## <part>` with the content sent;
+- the subject folder's absolute path; per lesson (in the first message about it): its number, slug, and parts in order (**Lesson structure** or **Short lesson**), each written as `## <part>` with the content sent, leaving out the conversation's roadmap line, `[n/N · <part>]` markers and `Question n/N · ` prefixes;
 - the data policy as `LEARNING.md` records it, with each linked project's slug and sensitivity;
 - the **Finish** rules below and the **Plan items** rules they use (every item with the concept name, `<plan>/<step>`, skip notes), the card format in `flashcards/deck.md`, and the commit messages (the lesson's, and a skip's, see **Skipping**);
 - **it never invents content**: it writes only what it was sent, reworded at most, with no number it wasn't given; what's missing it leaves out. Each question is written with the data it showed (a linked project's code only as its `slug:path@sha` citation and a paraphrase), its options, the pick and the verdict word exactly as sent (Correct, Partly correct or Incorrect; never softened or reworded), so the lesson reads on its own;
@@ -63,7 +63,7 @@ The writer has a fresh context, so its brief carries everything:
 
 ## Lesson structure
 
-**Roadmap.** Open each lesson with one line of its parts in order, leaving out those that won't happen (Watch when no video would help or videos are off, In the project with no linked project, a short lesson's Lab unless added), with the check's count: `Lesson 012 · Problem → Intuition → Mechanism → Watch → Lab → In the project → Pitfalls → Vocabulary → Check (3 questions)`. Open each part with its position, `[3/9 · Mechanism]`, and end it with one short line on what's next. If the plan changes (no video qualifies after all, a short lesson gains a lab), restate the roadmap in one line. Markers are for the conversation only; `lesson.md` keeps its `## <part>` headings.
+**Roadmap.** Open each lesson with one line of its parts in order, leaving out those that won't happen (Watch when no video would help or videos are off, In the project with no linked project, a short lesson's Lab unless added), with the check's count: `Lesson 012 · Problem → Intuition → Mechanism → Watch → Lab → In the project → Pitfalls → Vocabulary → Check (3 questions)`. Open each part with its position, `[3/9 · Mechanism]`, and end it with one short line on what's next. If the plan changes (no video qualifies after all, a short lesson gains a lab), restate the roadmap in one line; a dropped Watch's "No video" line goes with it. Markers are for the conversation only; `lesson.md` keeps its `## <part>` headings.
 
 Work through these parts; the writer records each in `lessons/<NNN>-<topic-slug>/lesson.md` as you go (NNN = next free number, counting lessons the writer hasn't committed yet):
 
