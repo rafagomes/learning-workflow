@@ -19,6 +19,7 @@ Subject folder in the learning repo, created {{DATE}} with the `learn` plugin (`
 | Toolchain | {{TOOLCHAIN}} |
 | Run | `{{RUN_CMD}}` |
 | Test | `{{TEST_CMD}}` |
+| In-folder test | `{{IN_FOLDER_TEST_CMD}}` |
 
 ## Linked projects
 

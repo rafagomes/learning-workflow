@@ -42,7 +42,7 @@ hooks/
 skills/
   init/
     SKILL.md              create the learning repo, add subjects, link projects, migrate; defines the shared contract
-    toolchains.md         default run/test commands per subject
+    toolchains.md         default run, test and in-folder test commands per subject
     templates/
       repo/               copied once into the learning repo root
         README.md  CLAUDE.md  gitignore  tools/guard.sh  tools/hooks/pre-commit

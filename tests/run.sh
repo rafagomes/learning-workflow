@@ -26,12 +26,19 @@ if bash tests/guard_test.sh; then ok "guard behaviour"; else bad "guard behaviou
 if bash -n hooks/learn-mode.sh && bash tests/hook_test.sh; then ok "learn-mode hook"; else bad "learn-mode hook"; fi
 if python3 -c 'import json; json.load(open("hooks/hooks.json"))'; then ok "valid JSON: hooks/hooks.json"; else bad "invalid JSON: hooks/hooks.json"; fi
 
-# Exercises must tell the learner what to do first (spec 009).
+# Exercises must tell the learner what to do first (spec 009). Patterns are anchored to the headings they belong to.
 missing=""
-for term in "Start here" "Reading a failing test" "Stuck?" "TODO: replace with your code" "In-folder test command"; do
-  grep -qF "$term" skills/practice/SKILL.md || missing="$missing \"$term\""
-done
-if [ -z "$missing" ]; then ok "practice README structure"; else bad "skills/practice/SKILL.md lacks:$missing"; fi
+check() { grep -qE -- "$2" "$1" || missing="$missing $1:/$2/"; }
+check skills/practice/SKILL.md '^2\. \*\*Start here\*\*'
+check skills/practice/SKILL.md '^4\. \*\*Reading a failing test\*\*'
+check skills/practice/SKILL.md '^7\. \*\*Stuck\?\*\*'
+check skills/practice/SKILL.md '^\| solution stub \|.*TODO: replace with your code'
+check skills/practice/SKILL.md '^\*\*In-folder test command\.\*\*'
+check skills/practice/SKILL.md '^## Hand over$'
+check skills/init/SKILL.md '^Two kinds that sound alike.*\*\*feedback question\*\*.*no verdict'
+check skills/init/toolchains.md '^## Exercises$'
+check skills/init/templates/subject/LEARNING.md '^\| In-folder test \|'
+if [ -z "$missing" ]; then ok "practice Start here contract"; else bad "spec 009 text missing:$missing"; fi
 
 # claude plugin update only pulls a new version, so plugin.json must match the newest released CHANGELOG heading.
 pv=$(python3 -c 'import json; print(json.load(open(".claude-plugin/plugin.json"))["version"])')

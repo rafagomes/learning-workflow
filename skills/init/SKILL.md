@@ -36,7 +36,7 @@ Use AskUserQuestion for anything the argument doesn't give:
 2. **Projects to link**: paths to git repos. Offer the current repo if the session is inside one. Zero is fine (a pure-subject folder); more can be added later with `add`.
 3. **Location of the learning repo**, only when the registry has no `repo` yet. Default `~/Learning`. Never inside a project.
 4. **Learner profile** for this subject: current level (new / some experience / working knowledge), preferred depth (practical first / theory first / balanced), lesson language, and the default **hands-on level** for build mode: `claude` (Claude codes and explains), `adaptive` (Claude writes plumbing, the learner writes the core), or `you` (the learner codes, Claude coaches). When another subject exists, offer its language and hands-on level as the default.
-5. **Toolchain** for labs and exercises: propose the default for the subject from this skill's `toolchains.md` (or detect it from a linked project's manifest: `pyproject.toml`, `package.json`, `Cargo.toml`, `go.mod`, …) and confirm. Record a run command and a test command. Use `none` for subjects without code; labs then become worked problems and exercises become problem sets checked in conversation.
+5. **Toolchain** for labs and exercises: propose the default for the subject from this skill's `toolchains.md` (or detect it from a linked project's manifest: `pyproject.toml`, `package.json`, `Cargo.toml`, `go.mod`, …) and confirm. Record a run command, a test command, and an in-folder test command for exercises (`toolchains.md` → **Exercises**). Use `none` for subjects without code; labs then become worked problems and exercises become problem sets checked in conversation.
 
 ## 3. Create the learning repo (first time only)
 
@@ -152,7 +152,7 @@ Then:
 
 ## Questions and examples (every study skill)
 
-**Questions.** Every question that asks the learner to answer, predict or explain (a lesson's predictions, "your turn" questions and check, quiz questions, build mode's predictions, "is this clear?" questions and done-check) is one AskUserQuestion call, so answering is a pick, not typing:
+**Questions.** Every question that asks the learner to answer, predict or explain (a lesson's predictions, "your turn" questions and check, quiz questions, build mode's predictions, "is this clear?" comprehension checks and done-check) is one AskUserQuestion call, so answering is a pick, not typing:
 
 - One question per call; 2–4 short options. Never mark one "(Recommended)", and never let order or wording give the right one away: vary its position, keep options alike in length and tone.
 - Distractors are real misconceptions: a swapped formula, the tempting wrong idea, an off-by-one, the confusion just warned about.
@@ -168,7 +168,7 @@ Then:
 
 Three kinds stay in plain text: flashcards (they train recall, so the learner answers in their own words before seeing anything; the reply still opens with **Correct.** or **Incorrect.**), hints (practice's pointing question must not hand over the approach as an option), and open questions that ask for the learner's account (reflect's talk-through questions).
 
-A **feedback question** has no right answer (practice's "are these instructions clear?" after handing over exercises): ask it with AskUserQuestion in the format above, prefixed with what it belongs to (`Practice · question · `), and after a teaching turn as **Content before the dialog** says, but give no verdict and don't record it as evidence.
+Two kinds that sound alike follow different rules. A **comprehension check** (build mode's "is this clear?": a question on a concept, with a right option and distractors) is a question like any other above: verdict, record. A **feedback question** asks about the materials, not the concept (practice's handover question "are these instructions clear?", on the exercise's instructions and setup): it has no right answer, so it uses the format above, its prefix (`Practice · feedback · `) and **Content before the dialog**, but gets no verdict and is never recorded as evidence.
 
 **Examples.** Every question and explanation shows all the data it relies on, right there:
 
